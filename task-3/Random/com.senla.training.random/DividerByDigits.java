@@ -1,12 +1,13 @@
 package task1;
 
 public class DividerByDigits {
-   private int[] mass = new int[3];
+    private int[] mass = new int[3];
+    private int number;
 
-    protected int[] divider() {
-        int number;
-        RandomGenerator random = new RandomGenerator();
-        number = random.getNumber();
+    public DividerByDigits(int number) {
+        this.number = number;
+    }
+    protected int[] divide() {
 
             int digitFirst = (number / 100) % 10;
             mass[0] = digitFirst;
@@ -18,9 +19,5 @@ public class DividerByDigits {
 
         return mass;
     }
-    public int[] getMass() {
-        return mass;
-    }
-
 
 }

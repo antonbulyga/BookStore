@@ -24,10 +24,8 @@ public class InstallationProducts implements IAssemblyLine{
         IProductPart part3 = line3.buildProductPart();
         iProduct.installThirdPart(part3);
 
-
-        Tank installation = new Tank();
         System.out.println("The tank is complete");
 
-        return installation;
+        return iProduct;
     }
 }

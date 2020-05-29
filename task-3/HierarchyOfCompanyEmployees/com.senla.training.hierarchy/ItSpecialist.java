@@ -8,5 +8,8 @@ abstract class ItSpecialist {
     public int getWage(){
         return wage;
     }
+    public void setWage(int wage) {
+        this.wage = wage;
+    }
 
 }
