@@ -8,16 +8,14 @@ public class ItStartup {
 
             AdderToArray adderToArray = new AdderToArray();
             ItSpecialist architect = new Architect(3500);
-            ItSpecialist[] arrayOfItSpecialists1 = adderToArray.add(arrayOfItSpecialists, architect);
-            if(arrayOfItSpecialists1.length <= maxCountOfEmployee) {
+            arrayOfItSpecialists = adderToArray.add(arrayOfItSpecialists, architect);
+            if(arrayOfItSpecialists.length <= maxCountOfEmployee) {
                 ItSpecialist javaDev = new JavaDev(3200);
-                ItSpecialist[] arrayOfItSpecialists2 = adderToArray.add(arrayOfItSpecialists1, javaDev);
-                arrayOfItSpecialists = arrayOfItSpecialists2;
+                arrayOfItSpecialists = adderToArray.add(arrayOfItSpecialists, javaDev);
             }
             if(arrayOfItSpecialists.length <= maxCountOfEmployee) {
             ItSpecialist javaScriptDev = new JavaScriptDev(3100);
-            ItSpecialist[] arrayOfItSpecialists3 = adderToArray.add(arrayOfItSpecialists, javaScriptDev);
-            arrayOfItSpecialists = arrayOfItSpecialists3;
+            arrayOfItSpecialists = adderToArray.add(arrayOfItSpecialists, javaScriptDev);
             }
         return arrayOfItSpecialists;
     }
