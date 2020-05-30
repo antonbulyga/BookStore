@@ -6,7 +6,7 @@ public class Main {
         CreatorOfSecondPart creatureSecondPart = new CreatorOfSecondPart();
         CreatorOfThirdPart creatureThirdPart = new CreatorOfThirdPart();
         Tank tank = new Tank();
-        InstallationProducts installationProducts = new InstallationProducts(creatureFirstPart,creatureSecondPart,creatureThirdPart);
+        AssemblyLine installationProducts = new AssemblyLine(creatureFirstPart,creatureSecondPart,creatureThirdPart);
         installationProducts.assembleProduct(tank);
         System.out.println();
     }

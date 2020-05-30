@@ -1,28 +1,24 @@
 package task2;
 
 public class ItStartup {
-    private int maxCountOfEmployee = 3;
-    private ItSpecialist[] arrayOfItSpecialists = new ItSpecialist[maxCountOfEmployee];
 
-    public ItSpecialist[] create() {
+    private ItSpecialist[] arrayOfItSpecialists = new ItSpecialist[0];
 
-        if(arrayOfItSpecialists.length <= maxCountOfEmployee) {
+    public ItSpecialist[] create(int maxCountOfEmployee) {
+
+            AdderToArray adderToArray = new AdderToArray();
             ItSpecialist architect = new Architect(3500);
-            arrayOfItSpecialists[0] = architect;
-
-            ItSpecialist javaDev = new JavaDev(3200);
-            arrayOfItSpecialists[1] = javaDev;
-
+            ItSpecialist[] arrayOfItSpecialists1 = adderToArray.add(arrayOfItSpecialists, architect);
+            if(arrayOfItSpecialists1.length <= maxCountOfEmployee) {
+                ItSpecialist javaDev = new JavaDev(3200);
+                ItSpecialist[] arrayOfItSpecialists2 = adderToArray.add(arrayOfItSpecialists1, javaDev);
+                arrayOfItSpecialists = arrayOfItSpecialists2;
+            }
+            if(arrayOfItSpecialists.length <= maxCountOfEmployee) {
             ItSpecialist javaScriptDev = new JavaScriptDev(3100);
-            arrayOfItSpecialists[2] = javaScriptDev;
-        }
-        else {
-            System.out.println("You can't hire more");
-        }
+            ItSpecialist[] arrayOfItSpecialists3 = adderToArray.add(arrayOfItSpecialists, javaScriptDev);
+            arrayOfItSpecialists = arrayOfItSpecialists3;
+            }
         return arrayOfItSpecialists;
-
-
-
-
     }
 }

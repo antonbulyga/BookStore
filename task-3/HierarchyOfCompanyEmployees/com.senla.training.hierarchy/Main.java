@@ -2,9 +2,11 @@ package task2;
 
 
 public class Main {
+
     public static void main(String[] args) {
         ItStartup itSturtup = new ItStartup();
-        ItSpecialist[] array = itSturtup.create();
+        int maxCountOfEmployee = 1;
+        ItSpecialist[] array = itSturtup.create(maxCountOfEmployee);
         WageCounter wageCounter = new WageCounter();
         wageCounter.count(array);
     }

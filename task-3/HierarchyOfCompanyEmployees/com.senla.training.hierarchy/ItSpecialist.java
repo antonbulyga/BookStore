@@ -1,6 +1,6 @@
 package task2;
 
-abstract class ItSpecialist {
+public class ItSpecialist {
     private int wage;
     public ItSpecialist(int wage){
         this.wage = wage;

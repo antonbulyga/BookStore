@@ -1,12 +1,12 @@
 package task4;
 
-public class InstallationProducts implements IAssemblyLine{
-    ILineStep line1;
-    ILineStep line2;
-    ILineStep line3;
+public class AssemblyLine implements IAssemblyLine{
+   private ILineStep line1;
+   private ILineStep line2;
+   private ILineStep line3;
 
 
-    public InstallationProducts(ILineStep line1, ILineStep line2, ILineStep line3) {
+    public AssemblyLine(ILineStep line1, ILineStep line2, ILineStep line3) {
         this.line1 = line1;
         this.line2 = line2;
         this.line3 = line3;

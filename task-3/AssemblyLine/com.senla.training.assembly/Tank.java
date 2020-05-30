@@ -1,9 +1,9 @@
 package task4;
 
 public class Tank implements IProduct{
-    protected IProductPart body;
-    protected IProductPart tower;
-    protected IProductPart engine;
+    private IProductPart body;
+    private IProductPart tower;
+    private IProductPart engine;
 
 
     @Override
