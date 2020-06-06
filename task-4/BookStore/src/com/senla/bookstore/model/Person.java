@@ -1,4 +1,4 @@
-package task6;
+package com.senla.bookstore.model;
 
 public class Person {
     private int id;
