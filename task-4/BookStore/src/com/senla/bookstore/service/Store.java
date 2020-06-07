@@ -46,7 +46,7 @@ public class Store {
         arrayOfOrders = orderService.addOrder(arrayOfOrders, order2);
         checkingInStockStatus(order2, arrayOfRequestBooks);
         orderExecution(order2);
-        sumOfMoneyPerPeriodOfTime(arrayOfOrders);
+
     }
 
     public void bookSort() {
@@ -62,6 +62,11 @@ public class Store {
         orderService.sortOrdersByPrice(arrayOfOrders);
         orderService.sortOrdersByStatus(arrayOfOrders);
     }
+
+    public void showInfoForUser() {
+        sumOfMoneyPerPeriodOfTime(arrayOfOrders);
+        orderService.showDetailsOfOrder(order1);
+        countOfDoneOrdersByPeriodOfTime(arrayOfOrders);    }
 
     public void requestSort(){
          requestForBookService.sortRequestByCount(arrayOfRequestBooks);
@@ -108,7 +113,6 @@ public class Store {
                     order.setBooks(arrayOfBookInStock);
                 }
             }
-
         }
     }
 
@@ -184,24 +188,33 @@ public class Store {
             requestForBooks[i].setRequestStatus(RequestForBookStatus.CANCELLED);
         }
     }
-
     public void sumOfMoneyPerPeriodOfTime(Order[] orders) {
         LocalDate date1 = LocalDate.of(2020,06,01);
-        LocalDate date2 = LocalDate.of(2020,06,06);
+        LocalDate date2 = LocalDate.of(2020,06,07);
         double sum = 0;
         for (int i = 0; i < orders.length; i++) {
             if(orders[i].getDateOfDoneOrder().compareTo(date1) == -1 && orders[i].getDateOfDoneOrder().compareTo(date2) == 1 || orders[i].getDateOfDoneOrder().compareTo(date2) == 0 || orders[i].getDateOfDoneOrder().compareTo(date1) ==0 ){
-               sum += orders[i].getPriceOfOrder();
+                sum += orders[i].getPriceOfOrder();
             }
         }
         System.out.println("Amount of orders by period of time " + " from " + date1 + " to "+ date2 + " is "+ sum);
-
     }
 
-
-    public Customer[] getArrayOfCustomers() {
-        return arrayOfCustomers;
+    public void countOfDoneOrdersByPeriodOfTime(Order[] orders) {
+        LocalDate date1 = LocalDate.of(2020, 06, 01);
+        LocalDate date2 = LocalDate.of(2020, 06, 07);
+        int sum = 0;
+        for (int i = 0; i < orders.length; i++) {
+            if (orders[i].getDateOfDoneOrder().compareTo(date1) == -1 && orders[i].getDateOfDoneOrder().compareTo(date2) == 1 || orders[i].getDateOfDoneOrder().compareTo(date2) == 0 || orders[i].getDateOfDoneOrder().compareTo(date1) == 0) {
+                sum++;
+            }
+        }
+        System.out.println("Count of orders by period of time " + " from " + date1 + " to " + date2 + " is " + sum);
     }
+
+       public Customer[] getArrayOfCustomers() {
+            return arrayOfCustomers;
+        }
 
     public void setArrayOfCustomers(Customer[] arrayOfCustomers) {
         this.arrayOfCustomers = arrayOfCustomers;

@@ -16,6 +16,8 @@ public class Test {
        store.bookSort();
        store.orderSort();
        store.requestSort();
+       store.showInfoForUser();
+
     }
 
     public StockLevel[] initStockLevel() {

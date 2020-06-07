@@ -23,6 +23,7 @@ public class OrderService {
         return order;
     }
 
+
     public void sortOrdersByDateOfDone(Order[] orders) {
         OrderDataOfDoneComparator orderDataOfDoneComparator = new OrderDataOfDoneComparator();
         Arrays.sort(orders, orderDataOfDoneComparator);
@@ -49,5 +50,11 @@ public class OrderService {
             System.out.println(orders[i].getId() + " - " +orders[i].getOrderStatus());
         }
     }
+
+    public void showDetailsOfOrder(Order order){
+        System.out.println("Details of the customer: " + "name: " + order.getCustomer().getName() + " age " + order.getCustomer().getAge());
+        System.out.println("Details of the order : " + "price of order is " +  order.getPriceOfOrder() + ", date of done order is: " +order.getDateOfDoneOrder());
+    }
+
 
 }
