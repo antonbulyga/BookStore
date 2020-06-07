@@ -66,7 +66,9 @@ public class Store {
     public void showInfoForUser() {
         sumOfMoneyPerPeriodOfTime(arrayOfOrders);
         orderService.showDetailsOfOrder(order1);
-        countOfDoneOrdersByPeriodOfTime(arrayOfOrders);    }
+        countOfDoneOrdersByPeriodOfTime(arrayOfOrders);
+        showUnsoldBooksMoreThanSixMonth(arrayOfBooksInStorehouse);
+    }
 
     public void requestSort(){
          requestForBookService.sortRequestByCount(arrayOfRequestBooks);
@@ -210,6 +212,25 @@ public class Store {
             }
         }
         System.out.println("Count of orders by period of time " + " from " + date1 + " to " + date2 + " is " + sum);
+    }
+
+    public void showUnsoldBooksMoreThanSixMonth(Book[] books) {
+        LocalDate date = LocalDate.now();
+        Book[] arrayOfUnsoldBooksMoreThanSixMonth = new Book[0];
+        for (int i = 0; i < books.length; i++) {
+            if(books[i].getBookStatus() == BookStatus.IN_STOCK) {
+                LocalDate date2 = books[i].getArriveDate().plusMonths(6);
+                int compareResult = date2.compareTo(date);
+                if (compareResult <0){
+                    arrayOfUnsoldBooksMoreThanSixMonth = bookService.addBook(arrayOfUnsoldBooksMoreThanSixMonth, books[i]);
+                }
+            }
+        }
+        System.out.println("Books unsold for more than 6 month : ");
+        for (int i = 0; i < arrayOfUnsoldBooksMoreThanSixMonth.length; i++) {
+
+            System.out.println(arrayOfUnsoldBooksMoreThanSixMonth[i].getTitle());
+        }
     }
 
        public Customer[] getArrayOfCustomers() {
