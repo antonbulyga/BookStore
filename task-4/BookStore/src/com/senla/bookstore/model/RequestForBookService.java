@@ -1,11 +1,16 @@
 package com.senla.bookstore.model;
 
+import com.senla.bookstore.service.Store;
+
 import java.util.Arrays;
 
 public class RequestForBookService {
-    public RequestForBook[] addBookRequest(RequestForBook[] arrayOfRequests, RequestForBook requestForBook){
+    Store store = new Store();
+    public RequestForBook[] addBookRequest(Store store, RequestForBook requestForBook){
+        RequestForBook[] arrayOfRequests = store.getArrayOfRequestBooks();
         RequestForBook[] copyOfArray = Arrays.copyOf(arrayOfRequests, arrayOfRequests.length + 1);
         copyOfArray[copyOfArray.length - 1] = requestForBook;
+        store.setArrayOfRequestBooks(copyOfArray);
         return copyOfArray;
     }
 
@@ -21,9 +26,8 @@ public class RequestForBookService {
     public void createRequestForBook(Book book, Order order){
         RequestForBookService requestForBookService = new RequestForBookService();
         RequestForBook[] requestForBookInBook = book.getRequestForBooks();
-        int count = requestForBookInBook.length;
         RequestForBook requestForBook = new RequestForBook(book, RequestForBookStatus.ACTIVE, order);
-        requestForBookInBook = requestForBookService.addBookRequest(requestForBookInBook, requestForBook);
+        requestForBookInBook = requestForBookService.addBookRequest(store, requestForBook);
         book.setRequestForBooks(requestForBookInBook);
     }
 }

@@ -5,53 +5,31 @@ import com.senla.bookstore.service.Store;
 import java.time.LocalDate;
 
 public class StoreService {
-    BookService bookService = new BookService();
-    OrderService orderService = new OrderService();
-    Store store = new Store();
-    RequestForBookService requestForBookService = new RequestForBookService();
-
-    public void bookSort() {
-        bookService.sortBookByPrice(store.getArrayOfBooksInStorehouse());
-        bookService.sortBookByAuthor(store.getArrayOfBooksInStorehouse());
-        bookService.sortBookByDateArrive(store.getArrayOfBooksInStorehouse());
-        bookService.sortBookByAvailabilityInStock(store.getArrayOfBooksInStorehouse());
-        bookService.sortBookByPublicationDate(store.getArrayOfBooksInStorehouse());
-    }
-
-    public void orderSort() {
-        orderService.sortOrdersByDateOfDone(store.getArrayOfOrders());
-        orderService.sortOrdersByPrice(store.getArrayOfOrders());
-        orderService.sortOrdersByStatus(store.getArrayOfOrders());
-    }
-
-    public void showInfoForUser(Order order1, Order order2) {
-        sumOfMoneyPerPeriodOfTime(store.getArrayOfOrders());
-        orderService.showDetailsOfOrder(order1);
-        orderService.showDetailsOfOrder(order2);
-        countOfDoneOrdersByPeriodOfTime(store.getArrayOfOrders());
-        showUnsoldBooksMoreThanSixMonth(store.getArrayOfBooksInStorehouse());
-    }
+    private BookService bookService = new BookService();
+    private OrderService orderService = new OrderService();
+    private Store store = new Store();
+    private RequestForBookService requestForBookService = new RequestForBookService();
 
     public void requestSort(){
         requestForBookService.sortRequestByCount(store.getArrayOfRequestBooks());
     }
 
-    public void checkingInStockStatus(Order order) {
-        RequestForBook[] arrayOfRequestsInOrder = new RequestForBook[0];
+    public void checkingInStockStatus(Order order, Store store) {
+        RequestForBook[] arrayOfRequestsInOrder;
         RequestForBook[] requestForBooks = store.getArrayOfRequestBooks();
         Book[] books = order.getBooks();
         Book[] arrayOfBookInStock = new Book[books.length];
         RequestForBook requestForBook;
         for (int i = 0; i < books.length; i++) {
             if(books[i].getBookStatus().equals(BookStatus.IN_STOCK)) {
-                arrayOfBookInStock = bookService.addBook(arrayOfBookInStock, books[i]);
+                arrayOfBookInStock = bookService.addBook(store, books[i]);
             }
             else {
                 requestForBook = new RequestForBook(books[i], RequestForBookStatus.ACTIVE, order);
-                arrayOfRequestsInOrder = requestForBookService.addBookRequest(arrayOfRequestsInOrder, requestForBook);
+                arrayOfRequestsInOrder = requestForBookService.addBookRequest(store, requestForBook);
                 books[i].setRequestForBooks(arrayOfRequestsInOrder);
                 order.setArrayOfRequestForBooks(arrayOfRequestsInOrder);
-                requestForBooks = requestForBookService.addBookRequest(requestForBooks, requestForBook);
+                requestForBooks = requestForBookService.addBookRequest(store, requestForBook);
                 store.setArrayOfRequestBooks(requestForBooks);
             }
         }
@@ -60,20 +38,17 @@ public class StoreService {
 
     public void orderExecution(Order order, StockLevel[] stockLevels){
         LocalDate date = LocalDate.now();
-        Book[] books = order.getBooks();
+        Book[] booksInOrder = order.getBooks();
+        RequestForBook[] requestForBooks = order.getArrayOfRequestForBooks();
         int tmp;
-        int counter = 0;
-        for (int i = 0; i < books.length ; i++) {
-            if (books[i].getRequestForBooks().length == 0) {
-                counter++;
-            }
-        }
-        if (counter == books.length) {
+        if (requestForBooks.length == 0) {
             order.setOrderStatus(OrderStatus.DONE);
             order.setDateOfDoneOrder(date);
             for (int i = 0; i <stockLevels.length ; i++) {
-                tmp = stockLevels[i].getCount();
-                stockLevels[i].setCount(tmp - 1);
+                if(stockLevels[i].equals(booksInOrder[i])) {
+                    tmp = stockLevels[i].getCount();
+                    stockLevels[i].setCount(tmp - 1);
+                }
             }
         }
     }
@@ -91,9 +66,11 @@ public class StoreService {
         }
     }
 
-    public void completingRequestAfterArrivingNewBook(RequestForBook[] requestForBooks, Book book, StockLevel[] stockLevels ) {
+    public void completingRequestAfterArrivingNewBook( Book book, StockLevel[] stockLevels) {
+        RequestForBook[] requestForBooks = store.getArrayOfRequestBooks();
         RequestForBook[] requestForBooksLocal;
         Order order;
+        Order[] arraysOfOrders = store.getArrayOfOrders();
         for (int i = 0; i < requestForBooks.length; i++) {
             if(requestForBooks[i].getRequestStatus() == RequestForBookStatus.ACTIVE){
                 order = requestForBooks[i].getOrder();
@@ -102,7 +79,10 @@ public class StoreService {
                     if(requestForBooksLocal[j].getBook() == book){
                         requestForBooks[i].setRequestStatus(RequestForBookStatus.COMPLETED);
                         requestForBooksLocal[j] = null;
-                        orderExecution(order, stockLevels);
+                        store.setArrayOfOrders(arraysOfOrders);
+                        if(requestForBooksLocal.length == 0) {
+                            orderExecution(order, stockLevels);
+                        }
                     }
                 }
             }
@@ -137,9 +117,7 @@ public class StoreService {
             requestForBooks[i].setRequestStatus(RequestForBookStatus.CANCELLED);
         }
     }
-    public void sumOfMoneyPerPeriodOfTime(Order[] orders) {
-        LocalDate date1 = LocalDate.of(2020,06,01);
-        LocalDate date2 = LocalDate.of(2020,06,07);
+    public void sumOfMoneyPerPeriodOfTime(Order[] orders , LocalDate date1, LocalDate date2) {
         double sum = 0;
         for (int i = 0; i < orders.length; i++) {
             if(orders[i].getDateOfDoneOrder().compareTo(date1) == -1 && orders[i].getDateOfDoneOrder().compareTo(date2) == 1 || orders[i].getDateOfDoneOrder().compareTo(date2) == 0 || orders[i].getDateOfDoneOrder().compareTo(date1) ==0 ){
@@ -149,9 +127,8 @@ public class StoreService {
         System.out.println("Amount of orders by period of time " + " from " + date1 + " to "+ date2 + " is "+ sum);
     }
 
-    public void countOfDoneOrdersByPeriodOfTime(Order[] orders) {
-        LocalDate date1 = LocalDate.of(2020, 06, 01);
-        LocalDate date2 = LocalDate.of(2020, 06, 07);
+    public void countOfDoneOrdersByPeriodOfTime(Order[] orders, LocalDate date1, LocalDate date2) {
+
         int sum = 0;
         for (int i = 0; i < orders.length; i++) {
             if (orders[i].getDateOfDoneOrder().compareTo(date1) == -1 && orders[i].getDateOfDoneOrder().compareTo(date2) == 1 || orders[i].getDateOfDoneOrder().compareTo(date2) == 0 || orders[i].getDateOfDoneOrder().compareTo(date1) == 0) {
@@ -169,14 +146,11 @@ public class StoreService {
                 LocalDate date2 = books[i].getArriveDate().plusMonths(6);
                 int compareResult = date2.compareTo(date);
                 if (compareResult <0){
-                    arrayOfUnsoldBooksMoreThanSixMonth = bookService.addBook(arrayOfUnsoldBooksMoreThanSixMonth, books[i]);
+                    arrayOfUnsoldBooksMoreThanSixMonth = bookService.addBook(store, books[i]);
                 }
+                System.out.println("Books unsold for more than 6 month : ");
+                System.out.println(arrayOfUnsoldBooksMoreThanSixMonth[i].getTitle());
             }
-        }
-        System.out.println("Books unsold for more than 6 month : ");
-        for (int i = 0; i < arrayOfUnsoldBooksMoreThanSixMonth.length; i++) {
-
-            System.out.println(arrayOfUnsoldBooksMoreThanSixMonth[i].getTitle());
         }
     }
 }

@@ -1,11 +1,16 @@
 package com.senla.bookstore.model;
 
+import com.senla.bookstore.service.Store;
+
 import java.util.Arrays;
 
 public class BookService {
-    public Book[] addBook(Book[] arrayOfBookInStore, Book book){
+    Store store = new Store();
+    public Book[] addBook(Store store, Book book){
+        Book[] arrayOfBookInStore = store.getArrayOfBooksInStorehouse();
         Book[] copyOfArray = Arrays.copyOf(arrayOfBookInStore, arrayOfBookInStore.length + 1);
         copyOfArray[copyOfArray.length - 1] = book;
+        store.setArrayOfBooksInStorehouse(copyOfArray);
         return copyOfArray;
     }
 
@@ -51,5 +56,13 @@ public class BookService {
         for (int i = 0; i < books.length; i++) {
             System.out.println(books[i].getTitle() + " - " + books[i].getArriveDate());
         }
+    }
+
+    public void bookSort() {
+        sortBookByPrice(store.getArrayOfBooksInStorehouse());
+        sortBookByAuthor(store.getArrayOfBooksInStorehouse());
+        sortBookByDateArrive(store.getArrayOfBooksInStorehouse());
+        sortBookByAvailabilityInStock(store.getArrayOfBooksInStorehouse());
+        sortBookByPublicationDate(store.getArrayOfBooksInStorehouse());
     }
 }

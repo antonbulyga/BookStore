@@ -1,16 +1,20 @@
 package com.senla.bookstore.model;
 
+import com.senla.bookstore.service.Store;
+
 import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.Date;
 
 public class OrderService {
-    public Order[] addOrder(Order[] arrayOfOrder, Order order){
+    Store store = new Store();
+    public Order[] addOrder(Store store, Order order){
+        Order[] arrayOfOrder = store.getArrayOfOrders();
         Order[] copyOfArray = Arrays.copyOf(arrayOfOrder, arrayOfOrder.length + 1);
         copyOfArray[copyOfArray.length - 1] = order;
+        store.setArrayOfOrders(arrayOfOrder);
         return copyOfArray;
     }
-
 
    public Order createOrder(Book[] books, Customer customer){
        LocalDate date = LocalDate.now();
@@ -56,5 +60,10 @@ public class OrderService {
         System.out.println("Details of the order : " + "price of order is " +  order.getPriceOfOrder() + ", date of done order is: " +order.getDateOfDoneOrder());
     }
 
+    public void orderSort() {
+        sortOrdersByDateOfDone(store.getArrayOfOrders());
+        sortOrdersByPrice(store.getArrayOfOrders());
+        sortOrdersByStatus(store.getArrayOfOrders());
+    }
 
 }
