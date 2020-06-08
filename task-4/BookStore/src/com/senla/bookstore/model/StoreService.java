@@ -10,10 +10,6 @@ public class StoreService {
     private Store store = new Store();
     private RequestForBookService requestForBookService = new RequestForBookService();
 
-    public void requestSort(){
-        requestForBookService.sortRequestByCount(store.getArrayOfRequestBooks());
-    }
-
     public void checkingInStockStatus(Order order, Store store) {
         RequestForBook[] arrayOfRequestsInOrder;
         RequestForBook[] requestForBooks = store.getArrayOfRequestBooks();
@@ -45,10 +41,13 @@ public class StoreService {
             order.setOrderStatus(OrderStatus.DONE);
             order.setDateOfDoneOrder(date);
             for (int i = 0; i <stockLevels.length ; i++) {
-                if(stockLevels[i].equals(booksInOrder[i])) {
-                    tmp = stockLevels[i].getCount();
-                    stockLevels[i].setCount(tmp - 1);
+                for (int j = 0; j < booksInOrder.length; j++) {
+                    if(stockLevels[i].getBook().equals(booksInOrder[j])) {
+                        tmp = stockLevels[i].getCount();
+                        stockLevels[i].setCount(tmp - 1);
+                    }
                 }
+
             }
         }
     }
@@ -141,16 +140,19 @@ public class StoreService {
     public void showUnsoldBooksMoreThanSixMonth(Book[] books) {
         LocalDate date = LocalDate.now();
         Book[] arrayOfUnsoldBooksMoreThanSixMonth = new Book[0];
+        System.out.println("Books unsold for more than 6 month : ");
         for (int i = 0; i < books.length; i++) {
+
             if(books[i].getBookStatus() == BookStatus.IN_STOCK) {
                 LocalDate date2 = books[i].getArriveDate().plusMonths(6);
                 int compareResult = date2.compareTo(date);
-                if (compareResult <0){
+                if (compareResult < 0) {
                     arrayOfUnsoldBooksMoreThanSixMonth = bookService.addBook(store, books[i]);
                 }
-                System.out.println("Books unsold for more than 6 month : ");
-                System.out.println(arrayOfUnsoldBooksMoreThanSixMonth[i].getTitle());
             }
+        }
+        for (int i = 0; i < arrayOfUnsoldBooksMoreThanSixMonth.length; i++) {
+            System.out.println(arrayOfUnsoldBooksMoreThanSixMonth[i].getTitle());
         }
     }
 }

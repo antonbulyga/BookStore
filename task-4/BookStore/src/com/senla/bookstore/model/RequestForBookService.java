@@ -23,6 +23,26 @@ public class RequestForBookService {
         }
     }
 
+    public void requestSort(Store store){
+        sortRequestByCount(store.getArrayOfRequestBooks());
+        sortRequestByAlphabet(store.getArrayOfRequestBooks());
+    }
+
+    public void sortRequestByAlphabet(RequestForBook[] requestForBooks) {
+        RequestForBookAlphabeticalComparator requestForBookCountComparator = new RequestForBookAlphabeticalComparator();
+        Arrays.sort(requestForBooks, requestForBookCountComparator);
+        System.out.println("Array of requests sorted by Alphabet: ");
+        if(requestForBooks.length<0){
+            System.out.println("You have no requests");
+        }
+        else {
+            for (int i = 0; i < requestForBooks.length; i++) {
+                System.out.println("Book id : " + requestForBooks[i].getBook() + " - " + requestForBooks[i].getBook().getTitle());
+            }
+        }
+
+    }
+
     public void createRequestForBook(Book book, Order order){
         RequestForBookService requestForBookService = new RequestForBookService();
         RequestForBook[] requestForBookInBook = book.getRequestForBooks();

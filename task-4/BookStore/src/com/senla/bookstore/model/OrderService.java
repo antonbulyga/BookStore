@@ -7,7 +7,6 @@ import java.util.Arrays;
 import java.util.Date;
 
 public class OrderService {
-    Store store = new Store();
     public Order[] addOrder(Store store, Order order){
         Order[] arrayOfOrder = store.getArrayOfOrders();
         Order[] copyOfArray = Arrays.copyOf(arrayOfOrder, arrayOfOrder.length + 1);
@@ -60,7 +59,7 @@ public class OrderService {
         System.out.println("Details of the order : " + "price of order is " +  order.getPriceOfOrder() + ", date of done order is: " +order.getDateOfDoneOrder());
     }
 
-    public void orderSort() {
+    public void orderSort(Store store) {
         sortOrdersByDateOfDone(store.getArrayOfOrders());
         sortOrdersByPrice(store.getArrayOfOrders());
         sortOrdersByStatus(store.getArrayOfOrders());

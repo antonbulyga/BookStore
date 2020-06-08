@@ -58,11 +58,12 @@ public class BookService {
         }
     }
 
-    public void bookSort() {
-        sortBookByPrice(store.getArrayOfBooksInStorehouse());
-        sortBookByAuthor(store.getArrayOfBooksInStorehouse());
-        sortBookByDateArrive(store.getArrayOfBooksInStorehouse());
-        sortBookByAvailabilityInStock(store.getArrayOfBooksInStorehouse());
-        sortBookByPublicationDate(store.getArrayOfBooksInStorehouse());
+    public void bookSort(Store store) {
+        Book[] books = store.getArrayOfBooksInStorehouse();
+        sortBookByPrice(books);
+        sortBookByAuthor(books);
+        sortBookByDateArrive(books);
+        sortBookByAvailabilityInStock(books);
+        sortBookByPublicationDate(books);
     }
 }
