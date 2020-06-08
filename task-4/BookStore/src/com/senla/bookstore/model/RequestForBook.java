@@ -1,25 +1,24 @@
 package com.senla.bookstore.model;
 
 public class RequestForBook {
-    private int bookId;
+    private Book book;
     private RequestForBookStatus requestStatus;
-    private int count;
-    private int orderId;
+    private Order order;
 
-    public RequestForBook(int bookId, RequestForBookStatus requestStatus,int count, int orderId) {
-        this.bookId = bookId;
+    public RequestForBook(Book book, RequestForBookStatus requestStatus, Order order) {
+        this.book = book;
         this.requestStatus = requestStatus;
-        this.count = count;
-        this.orderId = orderId;
+        this.order = order;
     }
 
-    public int getBookId() {
-        return bookId;
+    public Book getBook() {
+        return book;
     }
 
-    public void setBookId(int bookId) {
-        this.bookId = bookId;
+    public void setBook(Book book) {
+        this.book = book;
     }
+
     public RequestForBookStatus getRequestStatus() {
         return requestStatus;
     }
@@ -28,19 +27,11 @@ public class RequestForBook {
         this.requestStatus = requestStatus;
     }
 
-    public int getCount() {
-        return count;
+    public Order getOrder() {
+        return order;
     }
 
-    public void setCount(int count) {
-        this.count = count;
-    }
-
-    public int getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(int orderId) {
-        this.orderId = orderId;
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

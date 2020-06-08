@@ -1,7 +1,7 @@
 package com.senla.bookstore.model;
 
 import java.time.LocalDate;
-import java.util.Date;
+
 
 public class Book {
     private int id;
@@ -9,24 +9,27 @@ public class Book {
     private String author;
     private double price;
     private BookStatus bookStatus;
-    private StockLevel stockLevel;
-    private RequestForBook requestForBook;
+    private RequestForBook[] requestForBooks;
     private LocalDate arriveDate;
     private LocalDate publicationDate;
 
-
-
-    public Book(int id, String title, String author, double price, BookStatus bookStatus, StockLevel stockLevel, RequestForBook requestForBook, LocalDate arriveDate, LocalDate publicationDate) {
+    public Book(int id, String title, String author, double price, BookStatus bookStatus, RequestForBook[] requestForBooks, LocalDate arriveDate, LocalDate publicationDate) {
         this.id = id;
         this.author = author;
         this.title = title;
         this.price = price;
         this.bookStatus = bookStatus;
-        this.stockLevel = stockLevel;
-        this.requestForBook = requestForBook;
+        this.requestForBooks = requestForBooks;
         this.arriveDate = arriveDate;
         this.publicationDate = publicationDate;
+    }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getTitle() {
@@ -37,7 +40,7 @@ public class Book {
         this.title = title;
     }
 
-    public String getAutor() {
+    public String getAuthor() {
         return author;
     }
 
@@ -53,7 +56,6 @@ public class Book {
         this.price = price;
     }
 
-
     public BookStatus getBookStatus() {
         return bookStatus;
     }
@@ -61,30 +63,13 @@ public class Book {
     public void setBookStatus(BookStatus bookStatus) {
         this.bookStatus = bookStatus;
     }
-    public int getId() {
-        return id;
+
+    public RequestForBook[] getRequestForBooks() {
+        return requestForBooks;
     }
 
-    public void setId(int id) {
-        this.id = id;
-    }
-
-    public StockLevel getStockLevel() {
-        return stockLevel;
-    }
-
-    public void setStockLevel(StockLevel stockLevel) {
-        this.stockLevel = stockLevel;
-    }
-    public RequestForBook getRequestForBook() {
-        return requestForBook;
-    }
-
-    public void setRequestForBook(RequestForBook requestForBook) {
-        this.requestForBook = requestForBook;
-    }
-    public String getAuthor() {
-        return author;
+    public void setRequestForBooks(RequestForBook[] requestForBooks) {
+        this.requestForBooks = requestForBooks;
     }
 
     public LocalDate getArriveDate() {
@@ -102,8 +87,4 @@ public class Book {
     public void setPublicationDate(LocalDate publicationDate) {
         this.publicationDate = publicationDate;
     }
-
-
-
-
 }

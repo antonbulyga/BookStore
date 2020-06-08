@@ -23,7 +23,7 @@ public class BookService {
         Arrays.sort(books, bookAlphabeticalComparator);
         System.out.println("Array of books sorted by autor: ");
         for (int i = 0; i < books.length; i++) {
-            System.out.println(books[i].getTitle() + " - " +books[i].getAutor());
+            System.out.println(books[i].getTitle() + " - " +books[i].getAuthor());
         }
     }
 

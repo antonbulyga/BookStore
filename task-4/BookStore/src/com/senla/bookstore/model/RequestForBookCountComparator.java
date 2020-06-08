@@ -6,7 +6,7 @@ public class RequestForBookCountComparator implements Comparator<RequestForBook>
 
     @Override
     public int compare(RequestForBook a, RequestForBook b) {
-        return Integer.compare(a.getCount(), b.getCount());
+        return Integer.compare(a.getBook().getRequestForBooks().length, b.getBook().getRequestForBooks().length);
     }
 
 }

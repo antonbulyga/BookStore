@@ -1,15 +1,20 @@
 package com.senla.bookstore.model;
 
 public class StockLevel {
-    int id;
+    Book book;
     int count;
 
-    public int getId() {
-        return id;
+    public StockLevel(Book book, int count) {
+        this.book = book;
+        this.count = count;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public Book getBook() {
+        return book;
+    }
+
+    public void setBook(Book book) {
+        this.book = book;
     }
 
     public int getCount() {
@@ -17,11 +22,6 @@ public class StockLevel {
     }
 
     public void setCount(int count) {
-        this.count = count;
-    }
-
-    public StockLevel(int id, int count) {
-        this.id = id;
         this.count = count;
     }
 }

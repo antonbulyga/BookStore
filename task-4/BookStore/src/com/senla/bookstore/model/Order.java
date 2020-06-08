@@ -21,7 +21,6 @@ public class Order {
         this.orderStatus = orderStatus;
         this.customer = customer;
         this.priceOfOrder = priceOfOrder;
-
     }
 
     public LocalDate getDateOfOrder() {
