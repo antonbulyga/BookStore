@@ -10,7 +10,7 @@ public class StoreService {
     private Store store = new Store();
     private RequestForBookService requestForBookService = new RequestForBookService();
 
-    public void checkingInStockStatus(Order order, Store store) {
+    public void addOrderToStore(Order order, Store store) {
         RequestForBook[] arrayOfRequestsInOrder;
         RequestForBook[] requestForBooks = store.getArrayOfRequestBooks();
         Book[] books = order.getBooks();
@@ -32,12 +32,13 @@ public class StoreService {
 
     }
 
-    public void orderExecution(Order order, StockLevel[] stockLevels){
+    public void executeOrder(Order order, Stock stock){
         LocalDate date = LocalDate.now();
         Book[] booksInOrder = order.getBooks();
-        RequestForBook[] requestForBooks = order.getArrayOfRequestForBooks();
+        RequestForBook[] requestForBooksInOrder = order.getArrayOfRequestForBooks();
+        StockLevel[] stockLevels = stock.getArrayOfStockLevels();
         int tmp;
-        if (requestForBooks.length == 0) {
+        if (requestForBooksInOrder.length == 0) {
             order.setOrderStatus(OrderStatus.DONE);
             order.setDateOfDoneOrder(date);
             for (int i = 0; i <stockLevels.length ; i++) {
@@ -49,12 +50,16 @@ public class StoreService {
                 }
 
             }
+            stock.setArrayOfStockLevels(stockLevels);
+        }
+        else {
+            System.out.println("The order was not completed because there are outstanding requests");
         }
     }
 
-    public void arriveBookToStock(Book book, StockLevel[] stockLevels) {
+    public void arriveBookToStock(Book book, Stock stock) {
         int countOfBooksInStock;
-        Stock stock = new Stock();
+        StockLevel[] stockLevels = stock.getArrayOfStockLevels();
 
         for (int i = 0; i < stockLevels.length; i++) {
             if(stockLevels[i].getBook() == book){
@@ -63,9 +68,10 @@ public class StoreService {
                 stockLevels[i].setCount(countOfBooksInStock++);
             }
         }
+        stock.setArrayOfStockLevels(stockLevels);
     }
 
-    public void completingRequestAfterArrivingNewBook( Book book, StockLevel[] stockLevels) {
+    public void completingRequestAfterArrivingNewBook( Book book, Stock stock) {
         RequestForBook[] requestForBooks = store.getArrayOfRequestBooks();
         RequestForBook[] requestForBooksLocal;
         Order order;
@@ -80,7 +86,7 @@ public class StoreService {
                         requestForBooksLocal[j] = null;
                         store.setArrayOfOrders(arraysOfOrders);
                         if(requestForBooksLocal.length == 0) {
-                            orderExecution(order, stockLevels);
+                            executeOrder(order, stock);
                         }
                     }
                 }
@@ -137,8 +143,9 @@ public class StoreService {
         System.out.println("Count of orders by period of time " + " from " + date1 + " to " + date2 + " is " + sum);
     }
 
-    public void showUnsoldBooksMoreThanSixMonth(Book[] books) {
+    public void showUnsoldBooksMoreThanSixMonth(Store store) {
         LocalDate date = LocalDate.now();
+        Book[] books = store.getArrayOfBooksInStorehouse();
         Book[] arrayOfUnsoldBooksMoreThanSixMonth = new Book[0];
         System.out.println("Books unsold for more than 6 month : ");
         for (int i = 0; i < books.length; i++) {

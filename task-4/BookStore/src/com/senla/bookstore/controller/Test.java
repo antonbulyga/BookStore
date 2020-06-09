@@ -43,14 +43,14 @@ public class Test {
         LocalDate date1 = LocalDate.of(2020, 06, 01);
         LocalDate date2 = LocalDate.of(2020, 06, 07);
        // storeService.deleteOrder(order1);
-       storeService.checkingInStockStatus(order1, store);
-       storeService.orderExecution(order1, stockLevels);
-       storeService.arriveBookToStock(arrayOfBookInStore[3], stockLevels);
-       storeService.completingRequestAfterArrivingNewBook(arrayOfBookInStore[2], stockLevels);
+       storeService.addOrderToStore(order1, store);
+       storeService.executeOrder(order1, stock);
+       storeService.arriveBookToStock(arrayOfBookInStore[3], stock);
+       storeService.completingRequestAfterArrivingNewBook(arrayOfBookInStore[2], stock);
 
         requestForBookService.createRequestForBook(arrayOfBookInStore[2],order1);
-        storeService.checkingInStockStatus(order2, store);
-        storeService.orderExecution(order2, stockLevels);
+        storeService.addOrderToStore(order2, store);
+        storeService.executeOrder(order2, stock);
         bookService.bookSort(store);
         orderService.orderSort(store);
         requestForBookService.requestSort(store);
