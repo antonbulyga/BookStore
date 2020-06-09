@@ -19,7 +19,7 @@ public class RequestForBookService {
         Arrays.sort(requestForBooks, requestForBookCountComparator);
         System.out.println("Array of requests sorted by number of requests per book: ");
         for (int i = 0; i < requestForBooks.length; i++) {
-            System.out.println("Book id : " + requestForBooks[i].getBook() + " - " + requestForBooks[i].getBook().getRequestForBooks().length);
+            System.out.println(requestForBooks[i].getBook().getTitle() + " - " + requestForBooks[i].getBook().getRequestForBooks().length);
         }
     }
 
@@ -37,7 +37,7 @@ public class RequestForBookService {
         }
         else {
             for (int i = 0; i < requestForBooks.length; i++) {
-                System.out.println("Book id : " + requestForBooks[i].getBook() + " - " + requestForBooks[i].getBook().getTitle());
+                System.out.println(requestForBooks[i].getBook().getAuthor() + " - " + requestForBooks[i].getBook().getTitle());
             }
         }
 
@@ -45,7 +45,7 @@ public class RequestForBookService {
 
     public void createRequestForBook(Book book, Order order){
         RequestForBookService requestForBookService = new RequestForBookService();
-        RequestForBook[] requestForBookInBook = book.getRequestForBooks();
+        RequestForBook[] requestForBookInBook;
         RequestForBook requestForBook = new RequestForBook(book, RequestForBookStatus.ACTIVE, order);
         requestForBookInBook = requestForBookService.addBookRequest(store, requestForBook);
         book.setRequestForBooks(requestForBookInBook);
