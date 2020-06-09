@@ -13,7 +13,7 @@ public class Store {
     private Book[] arrayOfBooksInStorehouse = new Book[0];
     private RequestForBook[] arrayOfRequestBooks = new RequestForBook[0];
 
-       public Customer[] getArrayOfCustomers() {
+    public Customer[] getArrayOfCustomers() {
             return arrayOfCustomers;
         }
 

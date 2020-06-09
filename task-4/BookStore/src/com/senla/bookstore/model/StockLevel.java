@@ -1,8 +1,8 @@
 package com.senla.bookstore.model;
 
 public class StockLevel {
-    Book book;
-    int count;
+   private Book book;
+   private int count;
 
     public StockLevel(Book book, int count) {
         this.book = book;

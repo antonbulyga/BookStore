@@ -5,7 +5,6 @@ import com.senla.bookstore.service.Store;
 import java.util.Arrays;
 
 public class BookService {
-    Store store = new Store();
     public Book[] addBook(Store store, Book book){
         Book[] arrayOfBookInStore = store.getArrayOfBooksInStorehouse();
         Book[] copyOfArray = Arrays.copyOf(arrayOfBookInStore, arrayOfBookInStore.length + 1);
@@ -50,7 +49,7 @@ public class BookService {
     }
 
     public void sortBookByPublicationDate(Book[] books) {
-        BookAvailabilityComparator bookAvailabilityComparator = new BookAvailabilityComparator();
+        BookPublicationDataComparator bookAvailabilityComparator = new BookPublicationDataComparator();
         Arrays.sort(books, bookAvailabilityComparator);
         System.out.println("Array of books sorted by date of publication: ");
         for (int i = 0; i < books.length; i++) {

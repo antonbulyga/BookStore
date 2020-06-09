@@ -59,7 +59,7 @@ public class Test {
         orderService.showDetailsOfOrder(order2);
 
         storeService.countOfDoneOrdersByPeriodOfTime(store.getArrayOfOrders(), date1, date2);
-        storeService.showUnsoldBooksMoreThanSixMonth(store.getArrayOfBooksInStorehouse());
+        storeService.showUnsoldBooksMoreThanSixMonth(store);
     }
     public static Book[] initBook(BookService bookService, Store store) {
         Book[] arrayOfBookInStorehouse;
