@@ -13,7 +13,7 @@ public class Order {
     private double priceOfOrder;
     private OrderStatus orderStatus;
     private Customer customer;
-    private List<RequestForBook> arrayOfRequestForBooks = new ArrayList<>();
+    private List<RequestForBook> listOfRequestForBooks = new ArrayList<>();
 
     public Order(int id, LocalDate dateOfOrder, LocalDate dateOfDoneOrder, List<Book> books, OrderStatus orderStatus, Customer customer, int priceOfOrder) {
         this.id = id;
@@ -82,10 +82,10 @@ public class Order {
     }
 
     public List<RequestForBook> getArrayOfRequestForBooks() {
-        return arrayOfRequestForBooks;
+        return listOfRequestForBooks;
     }
 
-    public void setArrayOfRequestForBooks(List<RequestForBook> arrayOfRequestForBooks) {
-        this.arrayOfRequestForBooks = arrayOfRequestForBooks;
+    public void setArrayOfRequestForBooks(List<RequestForBook> listOfRequestForBooks) {
+        this.listOfRequestForBooks = listOfRequestForBooks;
     }
 }

@@ -4,7 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Stock {
-   private List<StockLevel> arrayOfStockLevels = new ArrayList<>();
+   private List<StockLevel> arrayOfStockLevels;
+
+    public Stock(List<StockLevel> arrayOfStockLevels) {
+        this.arrayOfStockLevels = arrayOfStockLevels;
+    }
 
     public List<StockLevel> getArrayOfStockLevels() {
         return arrayOfStockLevels;

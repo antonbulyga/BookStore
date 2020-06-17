@@ -2,6 +2,7 @@ package com.senla.bookstore.controller;
 
 
 import com.senla.bookstore.model.*;
+import com.senla.bookstore.model.сontrollers.BookController;
 import com.senla.bookstore.service.RequestForBookService;
 import com.senla.bookstore.model.Store;
 import com.senla.bookstore.service.BookService;
@@ -9,25 +10,33 @@ import com.senla.bookstore.service.OrderService;
 import com.senla.bookstore.service.StoreService;
 import com.senla.bookstore.view.MenuController;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class Test {
-    public static void main(String[] args) {
-       Store store = new Store();
-       Stock stock = new Stock();
-       OrderService orderService = new OrderService();
+    public static void main(String[] args) throws IOException {
+        MenuController menuController = new MenuController();
+        menuController.run();
+    }
+      /* List<Book> arrayOfBookInStore = initBook();
+       List<StockLevel> stockLevels = initStockLevel(arrayOfBookInStore);
+       Stock stock = new Stock(stockLevels);
+       List<Customer> arrayOfCustomers = initCustomer();
+      Store store = new Store(stock, arrayOfBookInStore,arrayOfCustomers);
+     OrderService orderService = orderService.getInstance();
+       orderService.setStore(store);
        RequestForBookService requestForBookService = new RequestForBookService();
        StoreService storeService = new StoreService();
        BookService bookService = new BookService();
-        MenuController menuController = new MenuController();
-       List<Book> arrayOfBookInStore = initBook(store);
+       MenuController menuController = new MenuController();
+
        store.setListOfBooksInStorehouse(arrayOfBookInStore);
-       List<StockLevel> stockLevels = initStockLevel(arrayOfBookInStore, stock);
+
        stock.setArrayOfStockLevels(stockLevels);
        setBookStatus(stock);
-       List<Customer> arrayOfCustomers = initCustomer(store);
+
        List<Book> arrayOfBooksForFirstOrder = addBookForFirstOrder(arrayOfBookInStore);
        List<Book> arrayOfBooksForSecondOrder = addBookForSecondOrder(arrayOfBookInStore);
        List<Book> arrayOfBooksForThirdOrder = addBookForThirdOrder(arrayOfBookInStore);
@@ -53,24 +62,24 @@ public class Test {
        storeService.completingRequestAfterArrivingNewBook(arrayOfBookInStore.get(2), stock);
 
         requestForBookService.createRequestForBook(arrayOfBookInStore.get(2),order1);
-        requestForBookService.showListOfRequestsForBooks(store);
+        requestForBookService.showListOfRequestsForBooks();
         storeService.addOrderToStore(order2, store);
         storeService.executeOrder(order2, stock);
-        bookService.showBooksInStock(arrayOfBookInStore);
-        bookService.bookSort(store);
-        orderService.showListOfOrders(arrayOfOrders);
-        orderService.orderSort(store);
-        requestForBookService.requestSort(store);
+        bookService.showBooksInStock();
+        bookService.bookSort();
+        orderService.showListOfOrders();
+        orderService.orderSort();
+        requestForBookService.requestSort();
         storeService.sumOfMoneyPerPeriodOfTime(store.getListOfOrders(), date1, date2);
         orderService.showDetailsOfOrder(order1);
         orderService.showDetailsOfOrder(order2);
 
-        storeService.countOfDoneOrdersByPeriodOfTime(store.getListOfOrders(), date1, date2);
+        orderService.countOfDoneOrdersByPeriodOfTime(store.getListOfOrders(), date1, date2);
         storeService.showUnsoldBooksMoreThanSixMonth(store);
         menuController.run();
 
     }
-    public static List<Book> initBook(Store store) {
+    public static List<Book> initBook() {
         List<Book> arrayOfBookInStorehouse = new ArrayList<Book>();
         arrayOfBookInStorehouse.add(new Book( 1,"Война и мир", "Лев Толстой", 4, null, null, LocalDate.of(2020,04,06), LocalDate.of(2012,05,20)));
         arrayOfBookInStorehouse.add(new Book(2,"Преступление и наказание", "Федор Достоевский", 3.5, null, null, LocalDate.of(2020,06,5), LocalDate.of(1996,05,25)));
@@ -80,12 +89,11 @@ public class Test {
         arrayOfBookInStorehouse.add(new Book(6,"Введение в психоанализ", "Зигмунд Фрейд", 7, null,null, LocalDate.of(2018,03,13), LocalDate.of(2020,01,4)));
         arrayOfBookInStorehouse.add(new Book(7,"Психология влияния", "Роберт Чалдини", 6, null,  null,LocalDate.of (2017,04,06), LocalDate.of(2001,02,18)));
         arrayOfBookInStorehouse.add(new Book(8,"Как перестать беспокоитьс и начать жить", "Дейл Карнеги", 7, null, null, LocalDate.of(2020,02,27), LocalDate.of(2000,02,19)));
-        store.setListOfBooksInStorehouse(arrayOfBookInStorehouse);
         return  arrayOfBookInStorehouse;
 
     }
 
-    public static List<StockLevel> initStockLevel(List<Book> books, Stock stock) {
+    public static List<StockLevel> initStockLevel(List<Book> books) {
         List<StockLevel> arrayOfStockLevels = new ArrayList<StockLevel>();
         arrayOfStockLevels.add(new StockLevel(books.get(0), 10));
         arrayOfStockLevels.add(new StockLevel(books.get(1), 11));
@@ -95,7 +103,6 @@ public class Test {
         arrayOfStockLevels.add(new StockLevel(books.get(5), 3));
         arrayOfStockLevels.add(new StockLevel(books.get(6), 15));
         arrayOfStockLevels.add(new StockLevel(books.get(7), 25));
-        stock.setArrayOfStockLevels(arrayOfStockLevels);
         return arrayOfStockLevels;
 
     }
@@ -116,12 +123,11 @@ public class Test {
     }
 
 
-    public static List<Customer> initCustomer(Store store){
+    public static List<Customer> initCustomer(){
         List<Customer> arrayOfCustomer = new ArrayList<>();
         arrayOfCustomer.add(new Customer(1, 32, "Иван Петров"));
         arrayOfCustomer.add(new Customer(2, 23, "Мария Чернобровина"));
         arrayOfCustomer.add(new Customer(3, 33, "Антон Чабанов"));
-        store.setListOfCustomers(arrayOfCustomer);
         return arrayOfCustomer;
     }
 
@@ -164,6 +170,6 @@ public class Test {
     public static Order createThirdOrder(List<Book> arrayOfBooksForThirdOrder, Customer customer, OrderService orderService){
         Order order3 = orderService.createOrder(arrayOfBooksForThirdOrder, customer);
         return order3;
-    }
+    }*/
 
 }

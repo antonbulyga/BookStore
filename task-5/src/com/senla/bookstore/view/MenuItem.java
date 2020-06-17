@@ -1,11 +1,13 @@
 package com.senla.bookstore.view;
 
+import java.io.IOException;
+
 public class MenuItem  {
     private TitleOfMenuItems titleOfMenuItems;
     private IAction action;
     private Menu nextMenu;
 
-    public void doAction(){
+    public void doAction() throws IOException {
         action.execute();
     }
 

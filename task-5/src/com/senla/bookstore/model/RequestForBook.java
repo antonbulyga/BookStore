@@ -13,6 +13,10 @@ public class RequestForBook {
         this.order = order;
     }
 
+    public RequestForBook(){
+
+    }
+
     public Book getBook() {
         return book;
     }
@@ -36,4 +40,5 @@ public class RequestForBook {
     public void setOrder(Order order) {
         this.order = order;
     }
+
 }

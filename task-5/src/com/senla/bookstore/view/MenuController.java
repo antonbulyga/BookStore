@@ -1,13 +1,21 @@
 package com.senla.bookstore.view;
 
-public class MenuController {
-    private Builder builder;
-    private Navigator navigator;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
-    public void run(){
-         builder.buildMenu();
-         navigator.printMenu();
-         navigator.navigate(2);
+public class MenuController {
+    private Builder builder = Builder.getInstance();
+    private Navigator navigator = Navigator.getInstance();
+
+    public void run() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        builder.buildMenu();
+        navigator.setCurrentMenu(builder.getRootMenu());
+        navigator.printMenu();
+        System.out.println("Fill in index");
+        int index = Integer.parseInt(reader.readLine());
+         navigator.navigate(index);
     }
 
     public Builder getBuilder() {

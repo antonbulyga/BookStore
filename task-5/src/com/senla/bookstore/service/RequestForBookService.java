@@ -13,16 +13,29 @@ import java.util.Collections;
 import java.util.List;
 
 public class RequestForBookService {
+    private static RequestForBookService instance;
+    private Store store;
 
-    public void showListOfRequestsForBooks(Store store){
+    private RequestForBookService() {
+        store = StoreService.getInstance().getStore();
+    }
+
+    public static RequestForBookService getInstance(){
+        if(instance == null){
+            instance = new RequestForBookService();
+        }
+        return instance;
+    }
+
+    public void showListOfRequestsForBooks(){
         List<RequestForBook> listOfRequestForBooks = store.getListOfRequestBooks();
         System.out.println("List of Request for books :");
         for (int i = 0; i < listOfRequestForBooks.size(); i++) {
-             System.out.println(listOfRequestForBooks.get(i));
+             System.out.println(listOfRequestForBooks.get(i).getBook().getTitle());
         }
     }
 
-    public void sortRequestByCount(Store store) {
+    public void sortRequestByCount() {
         RequestForBookCountComparator requestForBookCountComparator = new RequestForBookCountComparator();
         List<RequestForBook> requestForBooks = store.getListOfRequestBooks();
         Collections.sort(requestForBooks, requestForBookCountComparator);
@@ -32,12 +45,12 @@ public class RequestForBookService {
         }
     }
 
-    public void requestSort(Store store){
-        sortRequestByCount(store);
-        sortRequestByAlphabet(store);
+    public void requestSort(){
+        sortRequestByCount();
+        sortRequestByAlphabet();
     }
 
-    public void sortRequestByAlphabet(Store store) {
+    public void sortRequestByAlphabet() {
         RequestForBookAlphabeticalComparator requestForBookCountComparator = new RequestForBookAlphabeticalComparator();
         List<RequestForBook> requestForBooks = store.getListOfRequestBooks();
         Collections.sort(requestForBooks, requestForBookCountComparator);
@@ -58,5 +71,13 @@ public class RequestForBookService {
         RequestForBook requestForBook = new RequestForBook(book, RequestForBookStatus.ACTIVE, order);
         requestForBookInBook.add(requestForBook);
         book.setRequestForBooks(requestForBookInBook);
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
     }
 }

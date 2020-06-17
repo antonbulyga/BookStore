@@ -8,23 +8,35 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class StoreService {
+    private static StoreService instance;
     private Store store = new Store();
 
-    public void addOrderToStore(Order order, Store store) {
-        List<RequestForBook> arrayOfRequestsInOrder = new ArrayList<>();
+    private StoreService() {
+
+    }
+
+    public static StoreService getInstance(){
+        if(instance == null){
+            instance = new StoreService();
+        }
+        return instance;
+    }
+
+    public void addOrderToStore(Order order) {
+        List<RequestForBook> listOfRequestsInOrder = new ArrayList<>();
         List<RequestForBook> requestForBooks = store.getListOfRequestBooks();
         List<Book> books = order.getBooks();
-        List<Book> arrayOfBookInStock = new ArrayList<>();
+        List<Book> listOfBookInStock = new ArrayList<>();
         RequestForBook requestForBook;
         for (int i = 0; i < books.size(); i++) {
             if(books.get(i).getBookStatus().equals(BookStatus.IN_STOCK)) {
-                arrayOfBookInStock.add(books.get(i));
+                listOfBookInStock.add(books.get(i));
             }
             else {
                 requestForBook = new RequestForBook(books.get(i), RequestForBookStatus.ACTIVE, order);
-                arrayOfRequestsInOrder.add(requestForBook);
-                books.get(i).setRequestForBooks(arrayOfRequestsInOrder);
-                order.setArrayOfRequestForBooks(arrayOfRequestsInOrder);
+                listOfRequestsInOrder.add(requestForBook);
+                books.get(i).setRequestForBooks(listOfRequestsInOrder);
+                order.setArrayOfRequestForBooks(listOfRequestsInOrder);
                 requestForBooks.add(requestForBook);
                 store.setListOfRequestBooks(requestForBooks);
             }
@@ -32,11 +44,11 @@ public class StoreService {
 
     }
 
-    public void executeOrder(Order order, Stock stock){
+    public void executeOrder(Order order){
         LocalDate date = LocalDate.now();
         List<Book> booksInOrder = order.getBooks();
         List<RequestForBook> requestForBooksInOrder = order.getArrayOfRequestForBooks();
-        List<StockLevel> stockLevels = stock.getArrayOfStockLevels();
+        List<StockLevel> stockLevels = store.getStock().getArrayOfStockLevels();
         int tmp;
         if (requestForBooksInOrder.size() == 0) {
             order.setOrderStatus(OrderStatus.DONE);
@@ -50,16 +62,16 @@ public class StoreService {
                 }
 
             }
-            stock.setArrayOfStockLevels(stockLevels);
+            store.getStock().setArrayOfStockLevels(stockLevels);
         }
         else {
             System.out.println("The order was not completed because there are outstanding requests");
         }
     }
 
-    public void arriveBookToStock(Book book, Stock stock) {
+    public void arriveBookToStock(Book book) {
         int countOfBooksInStock;
-        List<StockLevel> stockLevels = stock.getArrayOfStockLevels();
+        List<StockLevel> stockLevels = store.getStock().getArrayOfStockLevels();
 
         for (int i = 0; i < stockLevels.size(); i++) {
             if(stockLevels.get(i).getBook() == book){
@@ -68,10 +80,10 @@ public class StoreService {
                 stockLevels.get(i).setCount(countOfBooksInStock++);
             }
         }
-        stock.setArrayOfStockLevels(stockLevels);
+        store.getStock().setArrayOfStockLevels(stockLevels);
     }
 
-    public void completingRequestAfterArrivingNewBook( Book book, Stock stock) {
+    public void completingRequestAfterArrivingNewBook(Book book) {
         List<RequestForBook> requestForBooks = store.getListOfRequestBooks();
         List<RequestForBook> requestForBooksLocal;
         Order order;
@@ -86,7 +98,7 @@ public class StoreService {
                         requestForBooksLocal.remove(requestForBooksLocal.get(j));
                         store.setListOfOrders(arraysOfOrders);
                         if(requestForBooksLocal.size() == 0) {
-                            executeOrder(order, stock);
+                            executeOrder(order);
                         }
                     }
                 }
@@ -95,33 +107,7 @@ public class StoreService {
         }
     }
 
-    public void deleteOrder(Order order){
-        List<RequestForBook> arrayOfRequestBooks = store.getListOfRequestBooks();
-        List<RequestForBook> requestForBooksLocal = order.getArrayOfRequestForBooks();
-        List<Order> arrayOfOrders = store.getListOfOrders();
-        for (int i = 0; i < arrayOfRequestBooks.size(); i++) {
-            for (int j = 0; j < requestForBooksLocal.size(); j++) {
-                if(arrayOfRequestBooks.get(i) == requestForBooksLocal.get(j)){
-                    arrayOfRequestBooks.remove(arrayOfRequestBooks.get(i));
-                }
-            }
-        }
-        for (int i = 0; i < arrayOfOrders.size(); i++) {
-            if(order.getId() == arrayOfOrders.get(i).getId()){
-                arrayOfOrders.remove(arrayOfOrders.get(i));
-            }
-        }
-        store.setListOfRequestBooks(arrayOfRequestBooks);
-        store.setListOfOrders(arrayOfOrders);
-    }
 
-    public void changeOrderStatusToCancelled(Order order){
-        order.setOrderStatus(OrderStatus.CANCELLED);
-        List<RequestForBook> requestForBooks = order.getArrayOfRequestForBooks();
-        for (int i = 0; i < requestForBooks.size(); i++) {
-            requestForBooks.get(i).setRequestStatus(RequestForBookStatus.CANCELLED);
-        }
-    }
     public void sumOfMoneyPerPeriodOfTime(List<Order> orders , LocalDate date1, LocalDate date2) {
         double sum = 0;
         for (int i = 0; i < orders.size(); i++) {
@@ -132,15 +118,6 @@ public class StoreService {
         System.out.println("Amount of orders by period of time " + " from " + date1 + " to "+ date2 + " is "+ sum);
     }
 
-    public void countOfDoneOrdersByPeriodOfTime(List<Order> orders, LocalDate date1, LocalDate date2) {
-        int sum = 0;
-        for (int i = 0; i < orders.size(); i++) {
-            if (orders.get(i).getDateOfDoneOrder().compareTo(date1) == -1 && orders.get(i).getDateOfDoneOrder().compareTo(date2) == 1 || orders.get(i).getDateOfDoneOrder().compareTo(date2) == 0 || orders.get(i).getDateOfDoneOrder().compareTo(date1) == 0) {
-                sum++;
-            }
-        }
-        System.out.println("Count of orders by period of time " + " from " + date1 + " to " + date2 + " is " + sum);
-    }
 
     public void listOfDoneOrdersByPeriodOfTime(List<Order> orders, LocalDate date1, LocalDate date2){
         List<Order> listOfDoneOrdersByPeriodOfTime = new ArrayList<>();
@@ -156,14 +133,15 @@ public class StoreService {
     }
 
     public void sortListOfDoneOrdersByPeriodOfTimeByDateOfDone(List<Order> listOfDoneOrdersByPeriodOfTime){
-        OrderService orderService = new OrderService();
-        orderService.sortOrdersByDateOfDone(listOfDoneOrdersByPeriodOfTime);
+        OrderService orderService = OrderService.getInstance();
+        orderService.sortOrdersByDateOfDone();
     }
 
     public void sortListOfDoneOrdersByPeriodOfTimeByPrice(List<Order> listOfDoneOrdersByPeriodOfTime){
-        OrderService orderService = new OrderService();
-        orderService.sortOrdersByPrice(listOfDoneOrdersByPeriodOfTime);
+        OrderService orderService = OrderService.getInstance();
+        orderService.sortOrdersByPrice();
     }
+
 
 
 
@@ -185,5 +163,13 @@ public class StoreService {
         for (int i = 0; i < arrayOfUnsoldBooksMoreThanSixMonth.size(); i++) {
             System.out.println(arrayOfUnsoldBooksMoreThanSixMonth.get(i).getTitle());
         }
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
     }
 }

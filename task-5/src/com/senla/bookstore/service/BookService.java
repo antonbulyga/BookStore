@@ -4,20 +4,47 @@ import com.senla.bookstore.model.Book;
 import com.senla.bookstore.model.Comparators.*;
 import com.senla.bookstore.model.Store;
 
-
 import java.util.Collections;
 import java.util.List;
 
 public class BookService {
-    public void showBooksInStock(List<Book> books){
-        System.out.println("List of the books in stock");
-        for (int i = 0; i < books.size(); i++) {
-            System.out.println(books.get(i));
-        }
+    private  static BookService instance;
+    private Store store;
+
+    private BookService() {
+        store = StoreService.getInstance().getStore();
     }
 
-    public void sortBookByPrice(List<Book> books) {
+    public static BookService getInstance(){
+        if(instance == null){
+            instance = new BookService();
+        }
+        return instance;
+    }
+
+    public List<Book> getListOfBooksInStoreHouse(){
+        List<Book> books = store.getListOfBooksInStorehouse();
+        return books;
+    }
+
+    public void addBookToListOfBooks(Book book){
+        List<Book> books = store.getListOfBooksInStorehouse();
+        books.add(book);
+        store.setListOfBooksInStorehouse(books);
+    }
+
+    public void showBooksInStock(){
+        List<Book> books = store.getListOfBooksInStorehouse();
+        System.out.println("List of the books in stock");
+        for (int i = 0; i < books.size(); i++) {
+            System.out.println(books.get(i).getTitle() + " " + i);
+        }
+
+    }
+
+    public void sortBookByPrice() {
         BookPriceComparator bookPriceComparator = new BookPriceComparator();
+        List<Book> books = store.getListOfBooksInStorehouse();
         Collections.sort(books, bookPriceComparator);
         System.out.println("List of books sorted by price: ");
         for (int i = 0; i < books.size(); i++) {
@@ -25,8 +52,9 @@ public class BookService {
         }
     }
 
-    public void sortBookByAuthor(List<Book> books) {
+    public void sortBookByAuthor() {
         BookAlphabeticalComparator bookAlphabeticalComparator = new BookAlphabeticalComparator();
+        List<Book> books = store.getListOfBooksInStorehouse();
         Collections.sort(books, bookAlphabeticalComparator);
         System.out.println("List of books sorted by autor: ");
         for (int i = 0; i < books.size(); i++) {
@@ -34,16 +62,18 @@ public class BookService {
         }
     }
 
-    public void sortBookByDateArrive(List<Book> books) {
+    public void sortBookByDateArrive() {
         BookArriveDataComparator bookDataComparator = new BookArriveDataComparator();
+        List<Book> books = store.getListOfBooksInStorehouse();
         Collections.sort(books, bookDataComparator);
         System.out.println("List of books sorted by date of arrive: ");
         for (int i = 0; i < books.size(); i++) {
-            System.out.println(books.get(i).getTitle() + " - " +books.get(i).getArriveDate());
+            System.out.println(books.get(i).getTitle() + " - " + books.get(i).getArriveDate());
         }
     }
-    public void sortBookByAvailabilityInStock(List<Book> books) {
+    public void sortBookByAvailabilityInStock() {
         BookAvailabilityComparator bookAvailabilityComparator = new BookAvailabilityComparator();
+        List<Book> books = store.getListOfBooksInStorehouse();
         Collections.sort(books, bookAvailabilityComparator);
         System.out.println("List of books sorted by availability in stock: ");
         for (int i = 0; i < books.size(); i++) {
@@ -51,8 +81,9 @@ public class BookService {
         }
     }
 
-    public void sortBookByPublicationDate(List<Book> books) {
+    public void sortBookByPublicationDate() {
         BookPublicationDataComparator bookAvailabilityComparator = new BookPublicationDataComparator();
+        List<Book> books = store.getListOfBooksInStorehouse();
         Collections.sort(books, bookAvailabilityComparator);
         System.out.println("List of books sorted by date of publication: ");
         for (int i = 0; i < books.size(); i++) {
@@ -60,12 +91,19 @@ public class BookService {
         }
     }
 
-    public void bookSort(Store store) {
-        List<Book> books = store.getListOfBooksInStorehouse();
-        sortBookByPrice(books);
-        sortBookByAuthor(books);
-        sortBookByDateArrive(books);
-        sortBookByAvailabilityInStock(books);
-        sortBookByPublicationDate(books);
+    public void bookSort() {
+        sortBookByPrice();
+        sortBookByAuthor();
+        sortBookByDateArrive();
+        sortBookByAvailabilityInStock();
+        sortBookByPublicationDate();
+    }
+
+    public Store getStore() {
+        return store;
+    }
+
+    public void setStore(Store store) {
+        this.store = store;
     }
 }
