@@ -19,7 +19,7 @@ public class Navigator {
     }
 
     public void printMenu(){
-        System.out.println(currentMenu.getName());
+        System.out.println(currentMenu.getMenuNames());
         List<MenuItem> menuItems = currentMenu.getMenuItems();
         for (int i = 0; i < menuItems.size(); i++) {
             System.out.println(i + " " + currentMenu.getMenuItems().get(i).getTitleOfMenuItems());
@@ -30,6 +30,7 @@ public class Navigator {
         if ((index < menuItems.size()) && (index >= 0)) {
             if (menuItems.get(index).getAction() == null) {
                 currentMenu = menuItems.get(index).getNextMenu();
+                printMenu();
             } else {
                 menuItems.get(index).doAction();
             }

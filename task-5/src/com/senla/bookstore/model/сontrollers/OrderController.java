@@ -1,9 +1,9 @@
 package com.senla.bookstore.model.сontrollers;
 
-import com.senla.bookstore.model.Book;
-import com.senla.bookstore.model.Customer;
-import com.senla.bookstore.model.Order;
-import com.senla.bookstore.service.OrderService;
+import com.senla.bookstore.model.entity.Book;
+import com.senla.bookstore.model.entity.Customer;
+import com.senla.bookstore.model.entity.Order;
+import com.senla.bookstore.model.service.OrderService;
 
 import java.time.LocalDate;
 import java.util.List;

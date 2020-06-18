@@ -9,13 +9,20 @@ public class MenuController {
     private Navigator navigator = Navigator.getInstance();
 
     public void run() throws IOException {
-        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         builder.buildMenu();
         navigator.setCurrentMenu(builder.getRootMenu());
         navigator.printMenu();
         System.out.println("Fill in index");
+        int index1 = printIndex();
+        navigator.navigate(index1);
+        int index2 = printIndex();
+        navigator.navigate(index2);
+    }
+
+    public int printIndex() throws IOException {
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         int index = Integer.parseInt(reader.readLine());
-         navigator.navigate(index);
+        return index;
     }
 
     public Builder getBuilder() {

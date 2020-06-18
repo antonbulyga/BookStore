@@ -1,9 +1,12 @@
 package com.senla.bookstore.view;
 
+import com.senla.bookstore.view.api.IAction;
+import com.senla.bookstore.view.enumeration.TitleOfMenuItem;
+
 import java.io.IOException;
 
 public class MenuItem  {
-    private TitleOfMenuItems titleOfMenuItems;
+    private TitleOfMenuItem titleOfMenuItem;
     private IAction action;
     private Menu nextMenu;
 
@@ -11,18 +14,18 @@ public class MenuItem  {
         action.execute();
     }
 
-    public MenuItem(TitleOfMenuItems titleOfMenuItems, IAction action, Menu nextMenu){
-        this.titleOfMenuItems = titleOfMenuItems;
+    public MenuItem(TitleOfMenuItem titleOfMenuItems, IAction action, Menu nextMenu){
+        this.titleOfMenuItem = titleOfMenuItems;
         this.action = action;
         this.nextMenu = nextMenu;
     }
 
-    public TitleOfMenuItems getTitleOfMenuItems() {
-        return titleOfMenuItems;
+    public TitleOfMenuItem getTitleOfMenuItems() {
+        return titleOfMenuItem;
     }
 
-    public void setTitleOfMenuItems(TitleOfMenuItems titleOfMenuItems) {
-        this.titleOfMenuItems = titleOfMenuItems;
+    public void setTitleOfMenuItems(TitleOfMenuItem titleOfMenuItems) {
+        this.titleOfMenuItem = titleOfMenuItems;
     }
 
     public IAction getAction() {

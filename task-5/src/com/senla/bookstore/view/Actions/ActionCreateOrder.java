@@ -1,14 +1,13 @@
-package com.senla.bookstore.view.Actions;
+package com.senla.bookstore.view.actions;
 
-import com.senla.bookstore.model.Book;
-import com.senla.bookstore.model.Customer;
-import com.senla.bookstore.model.Order;
+import com.senla.bookstore.model.entity.Book;
+import com.senla.bookstore.model.entity.Customer;
+import com.senla.bookstore.model.entity.Order;
 import com.senla.bookstore.model.сontrollers.BookController;
 import com.senla.bookstore.model.сontrollers.CustomerController;
 import com.senla.bookstore.model.сontrollers.OrderController;
 import com.senla.bookstore.model.сontrollers.StoreController;
-import com.senla.bookstore.service.BookService;
-import com.senla.bookstore.view.IAction;
+import com.senla.bookstore.view.api.IAction;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

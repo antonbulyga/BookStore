@@ -1,9 +1,8 @@
 package com.senla.bookstore.model.сontrollers;
 
-import com.senla.bookstore.model.Book;
-import com.senla.bookstore.model.Order;
-import com.senla.bookstore.model.RequestForBook;
-import com.senla.bookstore.service.RequestForBookService;
+import com.senla.bookstore.model.entity.Book;
+import com.senla.bookstore.model.entity.Order;
+import com.senla.bookstore.model.service.RequestForBookService;
 
 public class RequestForBookController {
     private static RequestForBookController instance;

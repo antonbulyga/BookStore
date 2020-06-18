@@ -1,10 +1,9 @@
 package com.senla.bookstore.model.сontrollers;
 
-import com.senla.bookstore.model.Book;
-import com.senla.bookstore.model.Order;
-import com.senla.bookstore.model.Stock;
-import com.senla.bookstore.model.Store;
-import com.senla.bookstore.service.StoreService;
+import com.senla.bookstore.model.entity.Book;
+import com.senla.bookstore.model.entity.Order;
+import com.senla.bookstore.model.entity.Store;
+import com.senla.bookstore.model.service.StoreService;
 
 
 public class StoreController {

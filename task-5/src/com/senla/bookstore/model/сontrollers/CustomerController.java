@@ -1,7 +1,7 @@
 package com.senla.bookstore.model.сontrollers;
 
-import com.senla.bookstore.model.Customer;
-import com.senla.bookstore.service.CustomerService;
+import com.senla.bookstore.model.entity.Customer;
+import com.senla.bookstore.model.service.CustomerService;
 
 import java.util.List;
 

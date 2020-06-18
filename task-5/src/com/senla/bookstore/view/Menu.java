@@ -1,23 +1,25 @@
 package com.senla.bookstore.view;
 
+import com.senla.bookstore.view.enumeration.MenuNames;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class Menu {
 
-    private Enum name;
+    private MenuNames menuNames;
     private List<MenuItem> menuItems = new ArrayList<MenuItem>();
 
-    public Menu(Enum name) {
-        this.name = name;
+    public Menu(MenuNames menuNames) {
+        this.menuNames = menuNames;
     }
 
-    public Enum getName() {
-        return name;
+    public MenuNames getMenuNames() {
+        return menuNames;
     }
 
-    public void setName(Enum name) {
-        this.name = name;
+    public void setMenuNames(MenuNames menuNames) {
+        this.menuNames = menuNames;
     }
 
     public List<MenuItem> getMenuItems() {
@@ -27,9 +29,4 @@ public class Menu {
     public void setMenuItems(List<MenuItem> menuItems) {
         this.menuItems = menuItems;
     }
-
-    public void add(MenuItem menuItem) {
-        menuItems.add(menuItem);
-    }
-
 }

@@ -1,7 +1,7 @@
 package com.senla.bookstore.model.сontrollers;
 
-import com.senla.bookstore.model.StockLevel;
-import com.senla.bookstore.service.StockLevelService;
+import com.senla.bookstore.model.entity.StockLevel;
+import com.senla.bookstore.model.service.StockLevelService;
 
 import java.util.List;
 

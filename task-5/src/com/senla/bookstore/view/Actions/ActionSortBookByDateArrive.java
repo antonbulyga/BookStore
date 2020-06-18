@@ -1,8 +1,7 @@
-package com.senla.bookstore.view.Actions;
+package com.senla.bookstore.view.actions;
 
 import com.senla.bookstore.model.сontrollers.BookController;
-import com.senla.bookstore.service.BookService;
-import com.senla.bookstore.view.IAction;
+import com.senla.bookstore.view.api.IAction;
 
 
 public class ActionSortBookByDateArrive implements IAction {
