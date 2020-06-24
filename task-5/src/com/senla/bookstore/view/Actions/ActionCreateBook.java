@@ -38,6 +38,7 @@ public class ActionCreateBook implements IAction {
         int monthOfPublication = Integer.parseInt(publicationDate.substring(5,7));
         int dayOfPublication = Integer.parseInt(publicationDate.substring(8,10));
         LocalDate dateOfPublication = LocalDate.of(yearOfPublication, monthOfPublication, dayOfPublication);
+
         Book book = new Book(id, title, author, price, bookStatus, requestForBooks, arriveDate, dateOfPublication);
         BookController.getInstance().addBookToListOfBooks(book);
 
