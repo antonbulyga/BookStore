@@ -33,4 +33,13 @@ public class CustomerController {
        Customer customer = CustomerService.getInstance().createCustomer(id, age, name);
         return customer;
     }
+
+    public Customer getCustomerById(int id){
+        Customer customer = CustomerService.getInstance().getCustomerById(id);
+        return customer;
+    }
+
+    public void updateCustomer(Customer customer){
+        CustomerService.getInstance().updateCustomer(customer);
+    }
 }

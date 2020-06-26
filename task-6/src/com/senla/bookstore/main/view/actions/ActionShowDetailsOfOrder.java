@@ -1,7 +1,7 @@
 package com.senla.bookstore.main.view.actions;
 
 import com.senla.bookstore.main.model.entity.Order;
-import com.senla.bookstore.main.model.utils.IntegerInput;
+import com.senla.bookstore.main.model.utils.input.IntegerInput;
 import com.senla.bookstore.main.model.сontrollers.OrderController;
 import com.senla.bookstore.main.model.service.StoreService;
 import com.senla.bookstore.main.view.api.IAction;

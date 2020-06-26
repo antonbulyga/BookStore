@@ -5,11 +5,4 @@ public class Customer extends Person {
         super(id, age, name);
     }
 
-    @Override
-    public String toString() {
-        return  this.getId()
-                + "," + this.getId()
-                + "," + this.getName()
-                + "," + this.getAge();
-    }
 }

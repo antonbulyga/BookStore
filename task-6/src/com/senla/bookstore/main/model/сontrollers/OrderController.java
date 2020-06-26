@@ -3,6 +3,7 @@ package com.senla.bookstore.main.model.сontrollers;
 import com.senla.bookstore.main.model.entity.Book;
 import com.senla.bookstore.main.model.entity.Customer;
 import com.senla.bookstore.main.model.entity.Order;
+import com.senla.bookstore.main.model.service.BookService;
 import com.senla.bookstore.main.model.service.OrderService;
 
 import java.time.LocalDate;
@@ -27,9 +28,18 @@ public class OrderController {
         return orders;
     }
 
-    public Order createOrder(List<Book> books, Customer customer, String dateOfDoneOrderString){
-      Order order =  OrderService.getInstance().createOrder(books, customer, dateOfDoneOrderString);
+    public Order createOrder(List<Book> books, Customer customer, LocalDate dateOfDoneOrder){
+      Order order =  OrderService.getInstance().createOrder(books, customer, dateOfDoneOrder);
       return order;
+    }
+
+    public Order getOrderById(int id){
+        Order order = OrderService.getInstance().getOrderById(id);
+        return order;
+    }
+
+    public void updateOrder(Order order) {
+        OrderService.getInstance().updateOrder(order);
     }
 
     public void addOrderToListOfOrders(Order order){

@@ -1,4 +1,4 @@
-package com.senla.bookstore.main.model.utils;
+package com.senla.bookstore.main.model.utils.input;
 
 import java.io.BufferedReader;
 import java.io.IOException;

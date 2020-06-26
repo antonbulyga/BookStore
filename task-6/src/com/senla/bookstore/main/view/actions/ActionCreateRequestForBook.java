@@ -2,7 +2,7 @@ package com.senla.bookstore.main.view.actions;
 
 import com.senla.bookstore.main.model.entity.Book;
 import com.senla.bookstore.main.model.entity.Order;
-import com.senla.bookstore.main.model.utils.IntegerInput;
+import com.senla.bookstore.main.model.utils.input.IntegerInput;
 import com.senla.bookstore.main.model.сontrollers.BookController;
 import com.senla.bookstore.main.model.сontrollers.OrderController;
 import com.senla.bookstore.main.model.сontrollers.RequestForBookController;
@@ -22,6 +22,7 @@ public class ActionCreateRequestForBook implements IAction {
             System.out.println("Fill in index of book");
             indexOfBook = IntegerInput.getInputInteger();
             if(indexOfBook < 0){
+                System.out.println("Incorrect input, try again");
                 indexOfBook = 0;
             }
         }
@@ -30,6 +31,7 @@ public class ActionCreateRequestForBook implements IAction {
             System.out.println("Fill in index of order");
             indexOfOrder = IntegerInput.getInputInteger();
             if(indexOfOrder < 0){
+                System.out.println("Incorrect input, try again");
                 indexOfOrder = 0;
             }
         }

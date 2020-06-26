@@ -19,13 +19,6 @@ public class RequestForBook {
 
     }
 
-    @Override
-    public String toString() {
-        return  this.id
-                + "," + this.book.getId()
-                + "," + this.requestStatus
-                + "," + this.order.getId();
-    }
 
     public Book getBook() {
         return book;

@@ -3,7 +3,7 @@ package com.senla.bookstore.main.view.actions;
 import com.senla.bookstore.main.model.entity.Book;
 import com.senla.bookstore.main.model.entity.Customer;
 import com.senla.bookstore.main.model.entity.Order;
-import com.senla.bookstore.main.model.utils.IntegerInput;
+import com.senla.bookstore.main.model.utils.input.IntegerInput;
 import com.senla.bookstore.main.model.сontrollers.BookController;
 import com.senla.bookstore.main.model.сontrollers.CustomerController;
 import com.senla.bookstore.main.model.сontrollers.OrderController;
@@ -24,6 +24,7 @@ public class ActionCreateOrder implements IAction {
         while (index == 0){
             index = IntegerInput.getInputInteger();
             if(index < 0){
+                System.out.println("Incorrect input, try again");
                 index = 0;
             }
         }

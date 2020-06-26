@@ -1,6 +1,7 @@
 package com.senla.bookstore.main.model.service;
 
 import com.senla.bookstore.main.model.entity.*;
+import com.senla.bookstore.main.model.utils.generators.StockLevelIdGenerator;
 import com.senla.bookstore.main.model.сomparators.RequestForBookStatus;
 import com.senla.bookstore.main.model.enumeration.BookStatus;
 import com.senla.bookstore.main.model.enumeration.OrderStatus;
@@ -82,16 +83,21 @@ public class StoreService {
     public void arriveBookToStock(Book book) {
         int countOfBooksInStock;
         List<StockLevel> stockLevels = store.getStock().getArrayOfStockLevels();
-
-        for (int i = 0; i < stockLevels.size(); i++) {
-            if(stockLevels.get(i).getBook().getId() == book.getId()){
-                stockLevels.get(i).getBook().setBookStatus(BookStatus.IN_STOCK);
-                countOfBooksInStock = stockLevels.get(i).getCount();
-                countOfBooksInStock = countOfBooksInStock + 1;
-                stockLevels.get(i).setCount(countOfBooksInStock);
-            }
+        if(stockLevels.size() == 0){
+            StockLevel stockLevel = new StockLevel(StockLevelIdGenerator.getStockLevelId(), book, 0);
+            store.getStock().setArrayOfStockLevels(stockLevels);
         }
-        store.getStock().setArrayOfStockLevels(stockLevels);
+        else {
+            for (int i = 0; i < stockLevels.size(); i++) {
+                if (stockLevels.get(i).getBook().getId() == book.getId()) {
+                    stockLevels.get(i).getBook().setBookStatus(BookStatus.IN_STOCK);
+                    countOfBooksInStock = stockLevels.get(i).getCount();
+                    countOfBooksInStock = countOfBooksInStock + 1;
+                    stockLevels.get(i).setCount(countOfBooksInStock);
+                }
+            }
+            store.getStock().setArrayOfStockLevels(stockLevels);
+        }
     }
 
     public void completingRequestAfterArrivingNewBook(Book book) {

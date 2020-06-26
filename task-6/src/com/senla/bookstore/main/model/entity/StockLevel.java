@@ -1,10 +1,12 @@
 package com.senla.bookstore.main.model.entity;
 
 public class StockLevel {
+   private int id;
    private Book book;
    private int count;
 
-    public StockLevel(Book book, int count) {
+    public StockLevel(int id, Book book, int count) {
+        this.id = id;
         this.book = book;
         this.count = count;
     }

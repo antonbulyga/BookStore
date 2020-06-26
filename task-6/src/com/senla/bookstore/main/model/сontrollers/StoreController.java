@@ -5,6 +5,9 @@ import com.senla.bookstore.main.model.entity.Order;
 import com.senla.bookstore.main.model.entity.Store;
 import com.senla.bookstore.main.model.service.StoreService;
 
+import java.time.LocalDate;
+import java.util.List;
+
 
 public class StoreController {
     private static StoreController instance;
@@ -18,6 +21,10 @@ public class StoreController {
             instance = new StoreController();
         }
         return instance;
+    }
+
+    public void sumOfMoneyPerPeriodOfTime(List<Order> orders , LocalDate date1, LocalDate date2) {
+        StoreService.getInstance().sumOfMoneyPerPeriodOfTime(orders, date1, date2);
     }
 
     public void addOrderToStore(Order order){

@@ -3,6 +3,7 @@ package com.senla.bookstore.main.model.сontrollers;
 import com.senla.bookstore.main.model.entity.Book;
 import com.senla.bookstore.main.model.service.BookService;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class BookController {
@@ -24,9 +25,18 @@ public class BookController {
         return books;
     }
 
-    public Book createBook(int id, String title, String author, double price, String bookStatus, String publicationDate){
-       Book book = BookService.getInstance().createBook(id, title, author, price, bookStatus, publicationDate);
+    public Book createBook(int id, String title, String author, double price, LocalDate publicationDate){
+       Book book = BookService.getInstance().createBook(id, title, author, price, publicationDate);
        return book;
+    }
+
+    public Book getBookById(int id){
+       Book book = BookService.getInstance().getBookById(id);
+       return book;
+    }
+
+    public void bookUpdate(int id, String title, String author, double price, LocalDate publicationDate){
+        BookService.getInstance().bookUpdate(id, title, author, price, publicationDate);
     }
 
 

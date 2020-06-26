@@ -1,11 +1,13 @@
 package com.senla.bookstore.main.model.service;
 
 import com.senla.bookstore.main.model.entity.*;
+import com.senla.bookstore.main.model.utils.generators.OrderIdGenerator;
 import com.senla.bookstore.main.model.сomparators.OrderDataOfDoneComparator;
 import com.senla.bookstore.main.model.сomparators.OrderPriceComparator;
 import com.senla.bookstore.main.model.сomparators.OrderStatusComparator;
 import com.senla.bookstore.main.model.сomparators.RequestForBookStatus;
 import com.senla.bookstore.main.model.enumeration.OrderStatus;
+import com.senla.bookstore.main.model.сontrollers.OrderController;
 
 import java.time.LocalDate;
 import java.util.Collections;
@@ -37,34 +39,27 @@ public class OrderService {
         store.setListOfOrders(orders);
     }
 
-    public Order createOrder(List<Book> books , Customer customer, String dateOfDoneOrderString){
+    public Order createOrder(List<Book> books , Customer customer, LocalDate dateOfDoneOrder){
         LocalDate date = LocalDate.now();
-        LocalDate dateOfDoneOrder = null;
-        if(dateOfDoneOrderString != null) {
-            int yearOfPublication = Integer.parseInt(dateOfDoneOrderString.substring(0, 4));
-            int monthOfPublication = Integer.parseInt(dateOfDoneOrderString.substring(4, 6));
-            int dayOfPublication = Integer.parseInt(dateOfDoneOrderString.substring(6, 8));
-            dateOfDoneOrder = LocalDate.of(yearOfPublication, monthOfPublication, dayOfPublication);
-        }
         int priceOfOrder = 0;
         List<Order> listOfOrders = getListOfOrders();
-        int id;
-        if(listOfOrders == null){
-            id = 0;
-        }
-        else {
-            id = listOfOrders.size() +1;
-        }
-        Order order = new Order(id, date , dateOfDoneOrder, books, OrderStatus.NEW, customer, 0);
+        Order order = new Order(OrderIdGenerator.getOrderId(), date , dateOfDoneOrder, books, OrderStatus.NEW, customer, 0);
         for (int i = 0; i < books.size(); i++) {
            priceOfOrder += books.get(i).getPrice();
         }
         order.setPriceOfOrder(priceOfOrder);
-        for (int i = 0; i < listOfOrders.size(); i++) {
-            listOfOrders.add(order);
-        }
-        store.setListOfOrders(listOfOrders);
         return order;
+    }
+
+    public void updateOrder(Order order) {
+        List<Order> orders = store.getListOfOrders();
+        for (int i = 0; i < orders.size(); i++) {
+            if (orders.get(i).getId() == order.getId()) {
+                OrderController.getInstance().deleteOrder(orders.get(i));
+                orders.add(order);
+            }
+        }
+
     }
 
     public void showListOfOrders(){
@@ -153,6 +148,17 @@ public class OrderService {
         sortOrdersByDateOfDone();
         sortOrdersByPrice();
         sortOrdersByStatus();
+    }
+
+    public Order getOrderById(int id){
+        List<Order> orders = store.getListOfOrders();
+        Order order = null;
+        for (int i = 0; i < orders.size(); i++) {
+            if(orders.get(i).getId() == id){
+                order = orders.get(i);
+            }
+        }
+        return order;
     }
 
     public Store getStore() {

@@ -21,6 +21,19 @@ public class RequestForBookController {
         return instance;
     }
 
+    public RequestForBook getRequestForBookById(int id){
+        RequestForBook requestForBook = RequestForBookService.getInstance().getRequestForBookById(id);
+        return requestForBook;
+    }
+
+    public void addRequestForBookToList(RequestForBook requestForBook){
+        RequestForBookService.getInstance().addRequestForBookToList(requestForBook);
+    }
+
+    public void updateRequestForBook(RequestForBook requestForBook){
+        RequestForBookService.getInstance().updateRequestForBook(requestForBook);
+    }
+
     public void showListOfRequestsForBooks() {
         RequestForBookService.getInstance().showListOfRequestsForBooks();
     }

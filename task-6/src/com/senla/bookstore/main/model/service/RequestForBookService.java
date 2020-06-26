@@ -1,6 +1,7 @@
 package com.senla.bookstore.main.model.service;
 
 import com.senla.bookstore.main.model.entity.Book;
+import com.senla.bookstore.main.model.utils.generators.RequestForBookIdGenerator;
 import com.senla.bookstore.main.model.сomparators.RequestForBookAlphabeticalComparator;
 import com.senla.bookstore.main.model.сomparators.RequestForBookCountComparator;
 import com.senla.bookstore.main.model.сomparators.RequestForBookStatus;
@@ -67,25 +68,53 @@ public class RequestForBookService {
     }
 
     public RequestForBook createRequestForBook(Book book, Order order){
-        List<RequestForBook> requestForBookInBook = new ArrayList<>();
-        int id;
-        List<RequestForBook> lisOfRequestsForBook = store.getListOfRequestBooks();
-        if(lisOfRequestsForBook == null){
-            id = 0;
-        }
-        else {
-            id = lisOfRequestsForBook.size() + 1;
-        }
-        RequestForBook requestForBook = new RequestForBook(id, book, RequestForBookStatus.ACTIVE, order);
-        requestForBookInBook.add(requestForBook);
-        book.setRequestForBooks(requestForBookInBook);
-        order.setArrayOfRequestForBooks(requestForBookInBook);
+        RequestForBook requestForBook = new RequestForBook(RequestForBookIdGenerator.getRequestForBookId(), book, RequestForBookStatus.ACTIVE, order);
         return requestForBook;
+    }
+
+    public void addRequestForBookToList(RequestForBook requestForBook){
+        List<RequestForBook> requestForBookInBook = new ArrayList<>();
+        List<RequestForBook> lisOfRequestsForBook = store.getListOfRequestBooks();
+        requestForBookInBook.add(requestForBook);
+        requestForBook.getBook().setRequestForBooks(requestForBookInBook);
+        requestForBook.getOrder().setArrayOfRequestForBooks(requestForBookInBook);
+    }
+
+    public void updateRequestForBook(RequestForBook requestForBook){
+        List<RequestForBook> lisOfRequestsForBook = store.getListOfRequestBooks();
+        for (int i = 0; i < lisOfRequestsForBook.size(); i++) {
+            if(requestForBook.getId() == lisOfRequestsForBook.get(i).getId()){
+                deleteRequestForBook(lisOfRequestsForBook.get(i));
+                lisOfRequestsForBook.add(requestForBook);
+                store.setListOfRequestBooks(lisOfRequestsForBook);
+            }
+        }
+    }
+
+    public void deleteRequestForBook(RequestForBook requestForBook){
+        List<RequestForBook> lisOfRequestsForBook = store.getListOfRequestBooks();
+        for (int i = 0; i < lisOfRequestsForBook.size(); i++) {
+            if(requestForBook.getId() == lisOfRequestsForBook.get(i).getId()){
+                lisOfRequestsForBook.remove(lisOfRequestsForBook.get(i));
+            }
+        }
+        store.setListOfRequestBooks(lisOfRequestsForBook);
     }
 
     public List<RequestForBook> getListOfRequestForBook(){
         List<RequestForBook> requestForBookList = store.getListOfRequestBooks();
         return requestForBookList;
+    }
+
+    public RequestForBook getRequestForBookById(int id){
+        List<RequestForBook> requestForBooks = store.getListOfRequestBooks();
+        RequestForBook requestForBook = null;
+        for (int i = 0; i < requestForBooks.size(); i++) {
+            if(requestForBooks.get(i).getId() == id){
+                requestForBook = requestForBooks.get(i);
+            }
+        }
+        return requestForBook;
     }
 
     public Store getStore() {
