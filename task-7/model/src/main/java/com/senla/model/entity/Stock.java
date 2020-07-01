@@ -1,9 +1,10 @@
 package main.java.com.senla.model.entity;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Stock {
+public class Stock implements Serializable {
    private List<StockLevel> arrayOfStockLevels = new ArrayList<>();
 
     public List<StockLevel> getArrayOfStockLevels() {

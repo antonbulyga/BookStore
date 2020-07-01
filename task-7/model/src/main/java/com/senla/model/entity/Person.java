@@ -1,6 +1,8 @@
 package main.java.com.senla.model.entity;
 
-public class Person {
+import java.io.Serializable;
+
+public class Person implements Serializable {
     private int id;
     private int age;
     private String name;
