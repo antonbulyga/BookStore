@@ -20,8 +20,12 @@ public class StockLevelController {
     }
 
     public List<StockLevel> getArrayOfStockLevels(){
-        List<StockLevel> stockLevels = StockLevelService.getInstance().getArrayOfStockLevels();
+        List<StockLevel> stockLevels = StockLevelService.getInstance().getListOfStockLevels();
         return stockLevels;
+    }
+
+    public void setListOfStockLevels(List<StockLevel> stockLevels){
+        StockLevelService.getInstance().setListOfStockLevels(stockLevels);
     }
 
     public void setArrayOfStockLevels(List<StockLevel> stockLevels){

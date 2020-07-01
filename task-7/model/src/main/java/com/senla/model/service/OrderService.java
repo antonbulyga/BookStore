@@ -38,6 +38,10 @@ public class OrderService {
         return orders;
     }
 
+    public void setListOfOrders(List<Order> orders){
+        OrderRepository.getInstance().setListOfOrders(orders);
+    }
+
     public void addOrderToListOfOrders(Order order){
         List<Order> orders = OrderRepository.getInstance().getListOfOrders();
         orders.add(order);

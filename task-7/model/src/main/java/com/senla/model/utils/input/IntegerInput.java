@@ -8,7 +8,7 @@ public class IntegerInput {
     private static int inputInteger = 0;
 
     public static int getInputInteger() {
-        try {
+        try{
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             inputInteger = Integer.parseInt(reader.readLine());
         } catch (NumberFormatException e) {

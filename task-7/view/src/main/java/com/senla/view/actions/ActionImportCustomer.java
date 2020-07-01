@@ -13,8 +13,7 @@ public class ActionImportCustomer implements IAction {
     @Override
     public void execute(){
         List<Customer> customerList = CustomerController.getInstance().getListOfCustomers();
-        try {
-             BufferedReader reader = new BufferedReader(new FileReader(PropertyData.getProperty("customerFile")));
+        try(BufferedReader reader = new BufferedReader(new FileReader(PropertyData.getProperty("customerFile")))){
                String line;
                 while ((line = reader.readLine()) != null) {
                     String[] strings = line.split(",");

@@ -37,6 +37,10 @@ public class BookController {
         return books;
     }
 
+    public void setListOfBooksInStoreHouse(List<Book> books){
+        BookService.getInstance().setListOfBooksInStoreHouse(books);
+    }
+
     public Book createBook(int id, String title, String author, double price, LocalDate publicationDate){
        Book book = BookService.getInstance().createBook(id, title, author, price, publicationDate);
        return book;

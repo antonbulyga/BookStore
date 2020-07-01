@@ -54,4 +54,8 @@ public class RequestForBookController {
         List<RequestForBook> requestForBookList = RequestForBookService.getInstance().getListOfRequestForBook();
         return  requestForBookList;
     }
+
+    public void setListOfRequestForBook(List<RequestForBook> requestForBooks){
+        RequestForBookService.getInstance().setListOfRequestForBook(requestForBooks);
+    }
 }

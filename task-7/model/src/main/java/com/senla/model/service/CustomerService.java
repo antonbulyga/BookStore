@@ -24,6 +24,10 @@ public class CustomerService {
         return customers;
     }
 
+    public void setListOfCustomers(List<Customer> customers){
+        CustomerRepository.getInstance().setListOfCustomers(customers);
+    }
+
     public void addCustomerToListOfCustomers(Customer customer){
         List<Customer> customers = CustomerRepository.getInstance().getListOfCustomers();
         customers.add(customer);

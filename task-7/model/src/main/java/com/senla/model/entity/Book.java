@@ -2,11 +2,13 @@ package main.java.com.senla.model.entity;
 
 import main.java.com.senla.model.enumeration.BookStatus;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
 
-public class Book {
+public class Book implements Serializable {
+    private static final long serialVersionUID = -374865195154915227L;
     private int id;
     private String title;
     private String author;

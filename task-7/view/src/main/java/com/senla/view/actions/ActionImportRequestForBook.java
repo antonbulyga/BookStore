@@ -17,11 +17,10 @@ import java.util.List;
 public class ActionImportRequestForBook implements IAction {
     @Override
     public void execute(){
-        try {
         List<Order> orders = OrderController.getInstance().getListOfOrders();
         List<Book> books = BookController.getInstance().getListOfBooksInStoreHouse();
         List<RequestForBook> requestForBooks = RequestForBookController.getInstance().getListOfRequestForBook();
-        BufferedReader reader = new BufferedReader(new FileReader(PropertyData.getProperty("requestForBookFile")));
+        try(BufferedReader reader = new BufferedReader(new FileReader(PropertyData.getProperty("requestForBookFile")))){
             String line;
             while ((line = reader.readLine()) != null) {
                     String[] strings = line.split(",");

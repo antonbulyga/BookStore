@@ -143,6 +143,10 @@ public class BookService {
         return books;
     }
 
+    public void setListOfBooksInStoreHouse(List<Book> books){
+        BookRepository.getInstance().setListOfBooksInStorehouse(books);
+    }
+
     public void addBookToListOfBooks(Book book){
         List<Book> books = BookRepository.getInstance().getListOfBooksInStorehouse();
         books.add(book);

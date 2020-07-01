@@ -130,6 +130,10 @@ public class RequestForBookService {
         return requestForBookList;
     }
 
+    public void setListOfRequestForBook(List<RequestForBook> requestForBooks){
+       RequestForBookRepository.getInstance().setListOfRequestForBooks(requestForBooks);
+    }
+
     public RequestForBook getRequestForBookById(int id){
         List<RequestForBook> requestForBooks = RequestForBookRepository.getInstance().getListOfRequestForBooks();
         RequestForBook requestForBook = null;

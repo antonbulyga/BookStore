@@ -1,6 +1,7 @@
 package main.java.com.senla.model;
 
 
+import main.java.com.senla.model.utils.WriteObject;
 import main.java.com.senla.view.MenuController;
 
 import java.io.IOException;

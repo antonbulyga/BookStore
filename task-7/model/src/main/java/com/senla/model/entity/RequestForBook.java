@@ -2,7 +2,10 @@ package main.java.com.senla.model.entity;
 
 import main.java.com.senla.model.сomparators.RequestForBookStatus;
 
-public class RequestForBook {
+import java.io.Serializable;
+
+public class RequestForBook implements Serializable {
+    private static final long serialVersionUID = -4009735170071392702L;
     private int id;
     private Book book;
     private RequestForBookStatus requestStatus;

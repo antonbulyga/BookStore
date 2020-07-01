@@ -43,6 +43,7 @@ import java.util.List;
             listOfMenuItemsOfBook.add(new MenuItem(TitleOfMenuItem.IMPORT_BOOK, new ActionImportBook(), booksMenu));
             listOfMenuItemsOfBook.add(new MenuItem(TitleOfMenuItem.EXPORT_BOOK, new ActionExportBook(), booksMenu));
             listOfMenuItemsOfBook.add(new MenuItem(TitleOfMenuItem.BACK_TO_THE_MAIN_MENU, null, rootMenu));
+            listOfMenuItemsOfBook.add(new MenuItem(TitleOfMenuItem.EXIT, new ActionExit(), null));
             booksMenu.setMenuItems(listOfMenuItemsOfBook);
             return booksMenu;
         }
@@ -60,6 +61,7 @@ import java.util.List;
             listOfOrdersItemsOfOrder.add(new MenuItem(TitleOfMenuItem.SHOW_SUM_OF_MONEY_PER_PERIOD_OF_TIME,new ActionSumOfMoneyPerPeriodOfTime(),orderMenu));
             listOfOrdersItemsOfOrder.add(new MenuItem(TitleOfMenuItem.IMPORT_ORDER,new ActionImportOrder(),orderMenu));
             listOfOrdersItemsOfOrder.add(new MenuItem(TitleOfMenuItem.BACK_TO_THE_MAIN_MENU, null, rootMenu));
+            listOfOrdersItemsOfOrder.add(new MenuItem(TitleOfMenuItem.EXIT, new ActionExit(), null));
             orderMenu.setMenuItems(listOfOrdersItemsOfOrder);
             return orderMenu;
         }
@@ -70,6 +72,7 @@ import java.util.List;
             listOfCustomersItemsOfOrder.add(new MenuItem(TitleOfMenuItem.CREATE_CUSTOMER,new ActionCreateCustomer(),customerMenu));
             listOfCustomersItemsOfOrder.add(new MenuItem(TitleOfMenuItem.EXPORT_CUSTOMER,new ActionExportCustomer(),customerMenu));
             listOfCustomersItemsOfOrder.add(new MenuItem(TitleOfMenuItem.BACK_TO_THE_MAIN_MENU, null, rootMenu));
+            listOfCustomersItemsOfOrder.add(new MenuItem(TitleOfMenuItem.EXIT, new ActionExit(), null));
             customerMenu.setMenuItems(listOfCustomersItemsOfOrder);
             return customerMenu;
         }
@@ -84,6 +87,7 @@ import java.util.List;
             listOfRequestsForBookItemsOfOrder.add(new MenuItem(TitleOfMenuItem.IMPORT_REQUEST_FOR_BOOK,new ActionImportRequestForBook(),requestMenu));
             listOfRequestsForBookItemsOfOrder.add(new MenuItem(TitleOfMenuItem.EXPORT_REQUEST_FOR_BOOK,new ActionExportRequestForBook(),requestMenu));
             listOfRequestsForBookItemsOfOrder.add(new MenuItem(TitleOfMenuItem.BACK_TO_THE_MAIN_MENU, null, rootMenu));
+            listOfRequestsForBookItemsOfOrder.add(new MenuItem(TitleOfMenuItem.EXIT, new ActionExit(), null));
             requestMenu.setMenuItems(listOfRequestsForBookItemsOfOrder);
             return requestMenu;
         }
@@ -95,6 +99,8 @@ import java.util.List;
             rootMenuItems.add(new MenuItem(TitleOfMenuItem.ORDER_MENU, null, orderMenu));
             rootMenuItems.add(new MenuItem(TitleOfMenuItem.CUSTOMER_MENU, null, customerMenu));
             rootMenuItems.add(new MenuItem(TitleOfMenuItem.REQUEST_FOR_BOOK_MENU, null, requestMenu));
+            rootMenuItems.add(new MenuItem(TitleOfMenuItem.INITIALIZE_STORE, new ActionInitializeStore(), null));
+            rootMenuItems.add(new MenuItem(TitleOfMenuItem.EXIT, new ActionExit(), null));
             rootMenu.setMenuItems(rootMenuItems);
             return rootMenu;
         }

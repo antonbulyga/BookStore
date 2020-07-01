@@ -2,12 +2,14 @@ package main.java.com.senla.model.entity;
 
 import main.java.com.senla.model.enumeration.OrderStatus;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 
-public class Order {
+public class Order implements Serializable {
+    private static final long serialVersionUID = -8721753150087324417L;
     private int id;
     private LocalDate dateOfOrder;
     private LocalDate dateOfDoneOrder;

@@ -15,8 +15,8 @@ public class ActionImportBook implements IAction {
     @Override
     public void execute() {
         List<Book> bookList = BookController.getInstance().getListOfBooksInStoreHouse();
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(PropertyData.getProperty("bookFile")));
+
+        try(BufferedReader reader = new BufferedReader(new FileReader(PropertyData.getProperty("bookFile")))){
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] strings = line.split(",");

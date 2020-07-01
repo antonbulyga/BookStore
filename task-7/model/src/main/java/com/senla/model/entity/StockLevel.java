@@ -1,9 +1,12 @@
 package main.java.com.senla.model.entity;
 
-public class StockLevel {
-   private int id;
-   private Book book;
-   private int count;
+import java.io.Serializable;
+
+public class StockLevel implements Serializable {
+    private static final long serialVersionUID = 6550407611099866803L;
+    private int id;
+    private Book book;
+    private int count;
 
     public StockLevel(int id, Book book, int count) {
         this.id = id;

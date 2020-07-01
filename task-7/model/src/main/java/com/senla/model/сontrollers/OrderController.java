@@ -40,6 +40,10 @@ public class OrderController {
         return orders;
     }
 
+    public void setListOfOrders(List<Order> orders){
+        OrderService.getInstance().setListOfOrders(orders);
+    }
+
     public Order createOrder(List<Book> books, Customer customer, LocalDate dateOfDoneOrder){
       Order order =  OrderService.getInstance().createOrder(books, customer, dateOfDoneOrder);
       return order;

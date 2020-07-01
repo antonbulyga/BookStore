@@ -25,6 +25,10 @@ public class CustomerController {
         return customers;
     }
 
+    public void setListOfCustomers(List<Customer> customers){
+        CustomerService.getInstance().setListOfCustomers(customers);
+    }
+
     public void addCustomerToListOfCustomers(Customer customer){
         CustomerService.getInstance().addCustomerToListOfCustomers(customer);
     }

@@ -1,5 +1,7 @@
 package main.java.com.senla.view;
 
+import main.java.com.senla.model.utils.ReadObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -11,7 +13,7 @@ public class MenuController {
     public void run(){
         builder.buildMenu();
         navigator.setCurrentMenu(builder.getRootMenu());
-        try {
+        try{
             BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
             while (true) {
                 navigator.printMenu();

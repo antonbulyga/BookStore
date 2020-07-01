@@ -20,12 +20,11 @@ import java.util.List;
 public class ActionImportOrder implements IAction {
     @Override
     public void execute() throws IOException {
-        try {
             List<Book> books = BookController.getInstance().getListOfBooksInStoreHouse();
             List<Book> listOfBookInOrder = new ArrayList<>();
             List<Order> listOfOrders = OrderController.getInstance().getListOfOrders();
             List<Customer> customers = CustomerController.getInstance().getListOfCustomers();
-            BufferedReader reader = new BufferedReader(new FileReader(PropertyData.getProperty("orderFile")));
+            try(BufferedReader reader = new BufferedReader(new FileReader(PropertyData.getProperty("orderFile")))){
             String line;
             while ((line = reader.readLine()) != null) {
                     String[] strings = line.split(",");
