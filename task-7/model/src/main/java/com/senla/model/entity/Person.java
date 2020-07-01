@@ -3,6 +3,7 @@ package main.java.com.senla.model.entity;
 import java.io.Serializable;
 
 public class Person implements Serializable {
+    private static final long serialVersionUID = 7400651916257654955L;
     private int id;
     private int age;
     private String name;

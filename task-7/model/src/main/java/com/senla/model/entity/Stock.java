@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Stock implements Serializable {
-   private List<StockLevel> arrayOfStockLevels = new ArrayList<>();
+    private static final long serialVersionUID = 2513578828813258863L;
+    private List<StockLevel> arrayOfStockLevels = new ArrayList<>();
 
     public List<StockLevel> getArrayOfStockLevels() {
         return arrayOfStockLevels;
