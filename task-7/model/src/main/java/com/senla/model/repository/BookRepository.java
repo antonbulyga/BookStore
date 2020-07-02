@@ -5,8 +5,6 @@ import main.java.com.senla.model.entity.RequestForBook;
 import main.java.com.senla.model.entity.StockLevel;
 import main.java.com.senla.model.enumeration.BookStatus;
 import main.java.com.senla.model.service.BookService;
-import main.java.com.senla.model.service.RequestForBookService;
-import main.java.com.senla.model.сontrollers.RequestForBookController;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -32,9 +30,6 @@ public class BookRepository {
         LocalDate arriveDate = LocalDate.now();
         Book book = new Book(id, title, author, price, BookStatus.IN_STOCK, requestForBooks, arriveDate, publicationDate);
         addBookToListOfBookInTheStorehouse(book);
-        RequestForBookService.getInstance().closerRequestForBooksAfterArrivingBook(book);
-        //BookService.getInstance().arriveBookToStock(book);
-        //BookService.getInstance().completingRequestAfterArrivingNewBook(book);
         return book;
     }
 
@@ -45,13 +40,35 @@ public class BookRepository {
     }
 
     public void bookUpdate(Book book) {
-        List<StockLevel> stockLevels = StockRepository.getInstance().getListOfStockLevels();
-
-        for (int i = 0; i < stockLevels.size(); i++) {
-            if (stockLevels.get(i).getBook().getId() == book.getId()) {
-                BookService.getInstance().arriveBookToStock(book);
+        List<Book> books = getListOfBooksInStorehouse();
+        for (int i = 0; i < books.size(); i++) {
+            if (books.get(i).getId() == book.getId()) {
+                deleteBook(books.get(i));
+                books.set(i, book);
+                setListOfBooksInStorehouse(books);
             }
         }
+    }
+
+    public void deleteBook(Book book){
+        List<Book> books = getListOfBooksInStorehouse();
+        for (int i = 0; i < books.size(); i++) {
+            if (books.get(i).getId() == book.getId()) {
+                books.remove(books.get(i));
+            }
+        }
+        setListOfBooksInStorehouse(books);
+    }
+
+    public Book getBookById(int id){
+        List<Book> books = BookRepository.getInstance().getListOfBooksInStorehouse();
+        Book book = null;
+        for (int i = 0; i < books.size(); i++) {
+            if(books.get(i).getId() == id){
+                book = books.get(i);
+            }
+        }
+        return book;
     }
 
     public void setListOfBooksInStorehouse(List<Book> listOfBooksInStorehouse) {

@@ -36,7 +36,8 @@ public class CustomerRepository {
         for (int i = 0; i < customerList.size(); i++) {
             if(customer.getId() == customerList.get(i).getId()){
                 deleteCustomer(customerList.get(i));
-                customerList.add(customer);
+                customerList.set(i, customer);
+                setListOfCustomers(customerList);
             }
         }
     }

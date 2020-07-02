@@ -42,7 +42,7 @@ public class RequestForBookRepository {
         for (int i = 0; i < lisOfRequestsForBook.size(); i++) {
             if(requestForBook.getId() == lisOfRequestsForBook.get(i).getId()){
                 deleteRequestForBook(lisOfRequestsForBook.get(i));
-                lisOfRequestsForBook.add(requestForBook);
+                lisOfRequestsForBook.set(i, requestForBook);
                 RequestForBookRepository.getInstance().setListOfRequestForBooks(lisOfRequestsForBook);
             }
         }

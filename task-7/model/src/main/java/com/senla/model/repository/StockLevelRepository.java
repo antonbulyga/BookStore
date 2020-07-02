@@ -5,17 +5,17 @@ import main.java.com.senla.model.entity.StockLevel;
 import java.util.ArrayList;
 import java.util.List;
 
-public class StockRepository {
-    private static StockRepository instance;
+public class StockLevelRepository {
+    private static StockLevelRepository instance;
     private List<StockLevel> listOfStockLevels = new ArrayList<>();
 
-    private StockRepository(){
+    private StockLevelRepository(){
 
     }
 
-    public static StockRepository getInstance(){
+    public static StockLevelRepository getInstance(){
         if(instance == null){
-            instance = new StockRepository();
+            instance = new StockLevelRepository();
         }
         return instance;
     }

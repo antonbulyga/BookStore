@@ -5,14 +5,11 @@ import main.java.com.senla.model.enumeration.BookStatus;
 import main.java.com.senla.model.repository.BookRepository;
 import main.java.com.senla.model.repository.OrderRepository;
 import main.java.com.senla.model.repository.RequestForBookRepository;
-import main.java.com.senla.model.repository.StockRepository;
+import main.java.com.senla.model.repository.StockLevelRepository;
 import main.java.com.senla.model.utils.PropertyData;
 import main.java.com.senla.model.utils.generators.StockLevelIdGenerator;
 import main.java.com.senla.model.сomparators.*;
-import main.java.com.senla.model.сontrollers.BookController;
-import main.java.com.senla.model.сontrollers.RequestForBookController;
 
-import java.time.Duration;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -35,6 +32,9 @@ public class BookService {
 
     public Book createBook(int id, String title, String author, double price, LocalDate publicationDate){
        Book book = BookRepository.getInstance().createBook(id, title, author, price, publicationDate);
+        RequestForBookService.getInstance().closerRequestForBooksAfterArrivingBook(book);
+        //BookService.getInstance().arriveBookToStock(book);
+        //BookService.getInstance().completingRequestAfterArrivingNewBook(book);
        return book;
     }
     public List<Book> getListOfBooksInStoreHouse(){
@@ -132,11 +132,11 @@ public class BookService {
 
     public void arriveBookToStock(Book book) {
         int countOfBooksInStock;
-        List<StockLevel> stockLevels = StockRepository.getInstance().getListOfStockLevels();
+        List<StockLevel> stockLevels = StockLevelRepository.getInstance().getListOfStockLevels();
         if(stockLevels.size() == 0){
             StockLevel stockLevel = new StockLevel(StockLevelIdGenerator.getStockLevelId(), book, 0);
             stockLevels.add(stockLevel);
-            StockRepository.getInstance().setListOfStockLevels(stockLevels);
+            StockLevelRepository.getInstance().setListOfStockLevels(stockLevels);
         }
         else {
             for (int i = 0; i < stockLevels.size(); i++) {
@@ -147,7 +147,7 @@ public class BookService {
                     stockLevels.get(i).setCount(countOfBooksInStock);
                 }
             }
-            StockRepository.getInstance().setListOfStockLevels(stockLevels);
+            StockLevelRepository.getInstance().setListOfStockLevels(stockLevels);
         }
     }
 
@@ -155,7 +155,9 @@ public class BookService {
         BookRepository.getInstance().setListOfBooksInStorehouse(books);
     }
 
-
+    public void deleteBook(Book book){
+        BookRepository.getInstance().deleteBook(book);
+    }
 
     public void showBooksInStock(){
         List<Book> books = BookRepository.getInstance().getListOfBooksInStorehouse();
@@ -216,13 +218,7 @@ public class BookService {
     }
 
     public Book getBookById(int id){
-        List<Book> books = BookRepository.getInstance().getListOfBooksInStorehouse();
-        Book book = null;
-        for (int i = 0; i < books.size(); i++) {
-            if(books.get(i).getId() == id){
-               book = books.get(i);
-            }
-        }
+        Book book = BookRepository.getInstance().getBookById(id);
         return book;
     }
 

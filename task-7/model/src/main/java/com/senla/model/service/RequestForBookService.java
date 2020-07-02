@@ -43,12 +43,7 @@ public class RequestForBookService {
     public static boolean getAbleToChangeRequestForBookStatusFromProperty(){
         boolean ableToChange;
         String ableToChangeString = PropertyData.getProperty("ableOfChange");
-        if(ableToChangeString.equals("true")){
-            ableToChange = true;
-        }
-        else {
-            ableToChange = false;
-        }
+        ableToChange = Boolean.parseBoolean(ableToChangeString);
         return ableToChange;
     }
 

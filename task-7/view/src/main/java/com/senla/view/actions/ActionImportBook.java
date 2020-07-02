@@ -3,6 +3,7 @@ package main.java.com.senla.view.actions;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.utils.PropertyData;
 import main.java.com.senla.model.сontrollers.BookController;
+import main.java.com.senla.model.сontrollers.StockLevelController;
 import main.java.com.senla.view.api.IAction;
 
 import java.io.*;
@@ -31,6 +32,8 @@ public class ActionImportBook implements IAction {
                 Book book = BookController.getInstance().createBook(id, title, author, price, publicationDate);
                 if (bookList.get(id).getId() == book.getId()) {
                     BookController.getInstance().bookUpdate(book);
+                    StockLevelController.getInstance().stockLevelsUpdate(book);
+
                 } else {
                     BookController.getInstance().addBookToListOfBooks(book);
                 }

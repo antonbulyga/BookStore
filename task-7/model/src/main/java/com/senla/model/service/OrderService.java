@@ -4,15 +4,13 @@ import main.java.com.senla.model.entity.*;
 import main.java.com.senla.model.enumeration.BookStatus;
 import main.java.com.senla.model.repository.OrderRepository;
 import main.java.com.senla.model.repository.RequestForBookRepository;
-import main.java.com.senla.model.repository.StockRepository;
-import main.java.com.senla.model.utils.generators.OrderIdGenerator;
+import main.java.com.senla.model.repository.StockLevelRepository;
 import main.java.com.senla.model.utils.generators.RequestForBookIdGenerator;
 import main.java.com.senla.model.сomparators.OrderDataOfDoneComparator;
 import main.java.com.senla.model.сomparators.OrderPriceComparator;
 import main.java.com.senla.model.сomparators.OrderStatusComparator;
 import main.java.com.senla.model.сomparators.RequestForBookStatus;
 import main.java.com.senla.model.enumeration.OrderStatus;
-import main.java.com.senla.model.сontrollers.OrderController;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -77,7 +75,7 @@ public class OrderService {
         LocalDate date = LocalDate.now();
         List<Book> booksInOrder = order.getBooks();
         List<RequestForBook> requestForBooksInOrder = order.getArrayOfRequestForBooks();
-        List<StockLevel> stockLevels = StockRepository.getInstance().getListOfStockLevels();
+        List<StockLevel> stockLevels = StockLevelRepository.getInstance().getListOfStockLevels();
         int tmp;
         if (requestForBooksInOrder.size() == 0) {
             order.setOrderStatus(OrderStatus.DONE);
@@ -91,7 +89,7 @@ public class OrderService {
                 }
 
             }
-            StockRepository.getInstance().setListOfStockLevels(stockLevels);
+            StockLevelRepository.getInstance().setListOfStockLevels(stockLevels);
         }
         else {
             System.out.println("The order was not completed because there are outstanding requests");

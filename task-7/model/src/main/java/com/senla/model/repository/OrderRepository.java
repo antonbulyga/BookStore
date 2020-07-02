@@ -5,6 +5,7 @@ import main.java.com.senla.model.entity.Customer;
 import main.java.com.senla.model.entity.Order;
 import main.java.com.senla.model.entity.RequestForBook;
 import main.java.com.senla.model.enumeration.OrderStatus;
+import main.java.com.senla.model.service.OrderService;
 import main.java.com.senla.model.utils.generators.OrderIdGenerator;
 import main.java.com.senla.model.сontrollers.OrderController;
 
@@ -49,8 +50,9 @@ public class OrderRepository {
         List<Order> orders = OrderRepository.getInstance().getListOfOrders();
         for (int i = 0; i < orders.size(); i++) {
             if (orders.get(i).getId() == order.getId()) {
-                OrderController.getInstance().deleteOrder(orders.get(i));
-                orders.add(order);
+                deleteOrder(orders.get(i));
+                orders.set(i, order);
+                setListOfOrders(orders);
             }
         }
     }

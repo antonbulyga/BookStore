@@ -1,5 +1,6 @@
 package main.java.com.senla.model.сontrollers;
 
+import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.entity.StockLevel;
 import main.java.com.senla.model.service.StockLevelService;
 
@@ -17,6 +18,10 @@ public class StockLevelController {
             instance = new StockLevelController();
         }
         return instance;
+    }
+
+    public void stockLevelsUpdate(Book book) {
+        StockLevelService.getInstance().stockLevelsUpdate(book);
     }
 
     public List<StockLevel> getArrayOfStockLevels(){

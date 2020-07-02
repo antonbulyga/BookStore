@@ -20,6 +20,10 @@ public class BookController {
         return instance;
     }
 
+    public void deleteBook(Book book){
+        BookService.getInstance().deleteBook(book);
+    }
+
     public void showStaleBooks(){
         BookService.getInstance().showStaleBooks();
     }
