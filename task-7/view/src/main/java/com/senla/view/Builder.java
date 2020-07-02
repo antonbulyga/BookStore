@@ -42,6 +42,7 @@ import java.util.List;
             listOfMenuItemsOfBook.add(new MenuItem(TitleOfMenuItem.SHOW_UNSOLD_BOOKS_MORE_THAN_SIX_MONTH, new ActionShowUnsoldBooksMoreThanSixMonth(), booksMenu));
             listOfMenuItemsOfBook.add(new MenuItem(TitleOfMenuItem.IMPORT_BOOK, new ActionImportBook(), booksMenu));
             listOfMenuItemsOfBook.add(new MenuItem(TitleOfMenuItem.EXPORT_BOOK, new ActionExportBook(), booksMenu));
+            listOfMenuItemsOfBook.add(new MenuItem(TitleOfMenuItem.SHOW_STALE_BOOK, new ActionShowStaleBooks(), booksMenu));
             listOfMenuItemsOfBook.add(new MenuItem(TitleOfMenuItem.BACK_TO_THE_MAIN_MENU, null, rootMenu));
             listOfMenuItemsOfBook.add(new MenuItem(TitleOfMenuItem.EXIT, new ActionExit(), null));
             booksMenu.setMenuItems(listOfMenuItemsOfBook);

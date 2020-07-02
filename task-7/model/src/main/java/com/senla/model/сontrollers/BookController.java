@@ -20,6 +20,10 @@ public class BookController {
         return instance;
     }
 
+    public void showStaleBooks(){
+        BookService.getInstance().showStaleBooks();
+    }
+
     public void arriveBookToStock(Book book){
         BookService.getInstance().arriveBookToStock(book);
     }
@@ -64,7 +68,7 @@ public class BookController {
    }
 
    public void addBookToListOfBooks(Book book){
-        BookService.getInstance().addBookToListOfBooks(book);
+        BookService.getInstance().addBookToListOfBookInTheStorehouse(book);
    }
 
    public void sortBookByAuthor(){

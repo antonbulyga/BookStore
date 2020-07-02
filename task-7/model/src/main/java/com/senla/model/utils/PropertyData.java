@@ -8,13 +8,15 @@ import java.text.ParseException;
 import java.util.Properties;
 
 public class PropertyData {
+    private static FileInputStream fis;
     private static String path;
 
+    public PropertyData(){
+        init();
+    }
     public static String getProperty(String key) {
-        FileInputStream fis;
         Properties property = new Properties();
         try{
-            fis = new FileInputStream("C:\\Users\\Anton\\Documents\\bulyha_anton\\task-7\\model\\src\\main\\resources\\config.properties");
             property.load(fis);
             path = property.getProperty(key);
         }
@@ -22,6 +24,13 @@ public class PropertyData {
             e.printStackTrace();
         }
         return path;
+    }
+    public void init(){
+        try {
+            fis = new FileInputStream("C:\\Users\\Anton\\Documents\\bulyha_anton\\task-7\\model\\src\\main\\resources\\config.properties");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 }

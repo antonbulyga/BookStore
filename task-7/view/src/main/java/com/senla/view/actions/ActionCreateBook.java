@@ -16,7 +16,7 @@ import java.time.format.DateTimeParseException;
 public class ActionCreateBook implements IAction {
 
     @Override
-    public void execute() throws IOException {
+    public void execute(){
         String title = null;
         String author = null;
         double price = 0;

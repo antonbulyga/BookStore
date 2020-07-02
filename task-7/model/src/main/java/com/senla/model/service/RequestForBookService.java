@@ -31,7 +31,7 @@ public class RequestForBookService {
 
     public void closerRequestForBooksAfterArrivingBook(Book book){
         boolean ableToChange = getAbleToChangeRequestForBookStatusFromProperty();
-        if(ableToChange = true){
+        if(ableToChange == true){
             BookService.getInstance().arriveBookToStock(book);
             BookService.getInstance().completingRequestAfterArrivingNewBook(book);
         }
@@ -92,37 +92,20 @@ public class RequestForBookService {
     }
 
     public RequestForBook createRequestForBook(Book book, Order order){
-        RequestForBook requestForBook = new RequestForBook(RequestForBookIdGenerator.getRequestForBookId(), book, RequestForBookStatus.ACTIVE, order);
+        RequestForBook requestForBook = RequestForBookRepository.getInstance().createRequestForBook(book, order);
         return requestForBook;
     }
 
     public void addRequestForBookToList(RequestForBook requestForBook){
-        List<RequestForBook> requestForBookInBook = new ArrayList<>();
-        List<RequestForBook> lisOfRequestsForBook = RequestForBookRepository.getInstance().getListOfRequestForBooks();
-        requestForBookInBook.add(requestForBook);
-        requestForBook.getBook().setRequestForBooks(requestForBookInBook);
-        requestForBook.getOrder().setArrayOfRequestForBooks(requestForBookInBook);
+        RequestForBookRepository.getInstance().addRequestForBookToList(requestForBook);
     }
 
     public void updateRequestForBook(RequestForBook requestForBook){
-        List<RequestForBook> lisOfRequestsForBook = RequestForBookRepository.getInstance().getListOfRequestForBooks();
-        for (int i = 0; i < lisOfRequestsForBook.size(); i++) {
-            if(requestForBook.getId() == lisOfRequestsForBook.get(i).getId()){
-                deleteRequestForBook(lisOfRequestsForBook.get(i));
-                lisOfRequestsForBook.add(requestForBook);
-                RequestForBookRepository.getInstance().setListOfRequestForBooks(lisOfRequestsForBook);
-            }
-        }
+        RequestForBookRepository.getInstance().updateRequestForBook(requestForBook);
     }
 
     public void deleteRequestForBook(RequestForBook requestForBook){
-        List<RequestForBook> lisOfRequestsForBook = RequestForBookRepository.getInstance().getListOfRequestForBooks();
-        for (int i = 0; i < lisOfRequestsForBook.size(); i++) {
-            if(requestForBook.getId() == lisOfRequestsForBook.get(i).getId()){
-                lisOfRequestsForBook.remove(lisOfRequestsForBook.get(i));
-            }
-        }
-        RequestForBookRepository.getInstance().setListOfRequestForBooks(lisOfRequestsForBook);
+        RequestForBookRepository.getInstance().deleteRequestForBook(requestForBook);
     }
 
     public List<RequestForBook> getListOfRequestForBook(){
@@ -135,13 +118,7 @@ public class RequestForBookService {
     }
 
     public RequestForBook getRequestForBookById(int id){
-        List<RequestForBook> requestForBooks = RequestForBookRepository.getInstance().getListOfRequestForBooks();
-        RequestForBook requestForBook = null;
-        for (int i = 0; i < requestForBooks.size(); i++) {
-            if(requestForBooks.get(i).getId() == id){
-                requestForBook = requestForBooks.get(i);
-            }
-        }
+        RequestForBook requestForBook = RequestForBookRepository.getInstance().getRequestForBookById(id);
         return requestForBook;
     }
 }

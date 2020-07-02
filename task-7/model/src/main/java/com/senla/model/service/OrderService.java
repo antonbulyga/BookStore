@@ -43,20 +43,11 @@ public class OrderService {
     }
 
     public void addOrderToListOfOrders(Order order){
-        List<Order> orders = OrderRepository.getInstance().getListOfOrders();
-        orders.add(order);
-        OrderRepository.getInstance().setListOfOrders(orders);
+        OrderRepository.getInstance().addOrderToListOfOrders(order);
     }
 
     public Order createOrder(List<Book> books , Customer customer, LocalDate dateOfDoneOrder){
-        LocalDate date = LocalDate.now();
-        int priceOfOrder = 0;
-        List<Order> listOfOrders = getListOfOrders();
-        Order order = new Order(OrderIdGenerator.getOrderId(), date , dateOfDoneOrder, books, OrderStatus.NEW, customer, 0);
-        for (int i = 0; i < books.size(); i++) {
-           priceOfOrder += books.get(i).getPrice();
-        }
-        order.setPriceOfOrder(priceOfOrder);
+        Order order = OrderRepository.getInstance().createOrder(books, customer, dateOfDoneOrder);
         return order;
     }
 
@@ -141,14 +132,7 @@ public class OrderService {
     }
 
     public void updateOrder(Order order) {
-        List<Order> orders = OrderRepository.getInstance().getListOfOrders();
-        for (int i = 0; i < orders.size(); i++) {
-            if (orders.get(i).getId() == order.getId()) {
-                OrderController.getInstance().deleteOrder(orders.get(i));
-                orders.add(order);
-            }
-        }
-
+      OrderRepository.getInstance().updateOrder(order);
     }
 
     public void showListOfOrders(){
@@ -195,23 +179,7 @@ public class OrderService {
     }
 
     public void deleteOrder(Order order){
-        List<RequestForBook> arrayOfRequestBooks = RequestForBookRepository.getInstance().getListOfRequestForBooks();
-        List<RequestForBook> requestForBooksLocal = order.getArrayOfRequestForBooks();
-        List<Order> arrayOfOrders = OrderRepository.getInstance().getListOfOrders();
-        for (int i = 0; i < arrayOfRequestBooks.size(); i++) {
-            for (int j = 0; j < requestForBooksLocal.size(); j++) {
-                if(arrayOfRequestBooks.get(i) == requestForBooksLocal.get(j)){
-                    arrayOfRequestBooks.remove(arrayOfRequestBooks.get(i));
-                }
-            }
-        }
-        for (int i = 0; i < arrayOfOrders.size(); i++) {
-            if(order.getId() == arrayOfOrders.get(i).getId()){
-                arrayOfOrders.remove(arrayOfOrders.get(i));
-            }
-        }
-        RequestForBookRepository.getInstance().setListOfRequestForBooks(arrayOfRequestBooks);
-        OrderRepository.getInstance().setListOfOrders(arrayOfOrders);
+        OrderRepository.getInstance().deleteOrder(order);
     }
 
     public void changeOrderStatusToCancelled(Order order){
@@ -240,13 +208,7 @@ public class OrderService {
     }
 
     public Order getOrderById(int id){
-        List<Order> orders = OrderRepository.getInstance().getListOfOrders();
-        Order order = null;
-        for (int i = 0; i < orders.size(); i++) {
-            if(orders.get(i).getId() == id){
-                order = orders.get(i);
-            }
-        }
+      Order order = OrderRepository.getInstance().getOrderById(id);
         return order;
     }
 

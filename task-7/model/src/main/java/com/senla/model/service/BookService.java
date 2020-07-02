@@ -9,6 +9,8 @@ import main.java.com.senla.model.repository.StockRepository;
 import main.java.com.senla.model.utils.PropertyData;
 import main.java.com.senla.model.utils.generators.StockLevelIdGenerator;
 import main.java.com.senla.model.сomparators.*;
+import main.java.com.senla.model.сontrollers.BookController;
+import main.java.com.senla.model.сontrollers.RequestForBookController;
 
 import java.time.Duration;
 import java.time.LocalDate;
@@ -31,9 +33,27 @@ public class BookService {
         return instance;
     }
 
-    public void setStaleBookStatus(){
+    public Book createBook(int id, String title, String author, double price, LocalDate publicationDate){
+       Book book = BookRepository.getInstance().createBook(id, title, author, price, publicationDate);
+       return book;
+    }
+    public List<Book> getListOfBooksInStoreHouse(){
+       List<Book> books = BookRepository.getInstance().getListOfBooksInStorehouse();
+       return books;
+    }
+
+    public void addBookToListOfBookInTheStorehouse(Book book){
+        BookRepository.getInstance().addBookToListOfBookInTheStorehouse(book);
+    }
+
+    public void bookUpdate(Book book) {
+        BookRepository.getInstance().bookUpdate(book);
+    }
+
+    public List<Book> setStaleBookStatus(){
         int countOfMonthToMarkBookAsStale = getCountOfMonthToMarkBookAsStale();
         List<Book> books = BookRepository.getInstance().getListOfBooksInStorehouse();
+        List<Book> listOfStaleBooks = new ArrayList<>();
         LocalDate arriveDate = null;
         LocalDate nowDate = arriveDate.now();
         for (int i = 0; i < books.size(); i++) {
@@ -41,11 +61,20 @@ public class BookService {
             long countOfMonth = ChronoUnit.MONTHS.between(arriveDate, nowDate);
             if(countOfMonth > countOfMonthToMarkBookAsStale){
                 books.get(i).setBookStatus(BookStatus.STALE);
+                listOfStaleBooks.add(books.get(i));
             }
+        }
+        return listOfStaleBooks;
+    }
+
+    public void showStaleBooks(){
+        List<Book> listOfStaleBooks = setStaleBookStatus();
+        for (int i = 0; i < listOfStaleBooks.size(); i++) {
+            System.out.println(listOfStaleBooks.get(i) + " " + i);
         }
     }
 
-    public  int getCountOfMonthToMarkBookAsStale(){
+    public int getCountOfMonthToMarkBookAsStale(){
         int countOfMonthToMarkBookAsStale = 0;
         String countOfMonthToMarkBookAsStaleString = PropertyData.getProperty("maxCountOfMonth");
         try {
@@ -55,16 +84,6 @@ public class BookService {
             System.out.println("The data in property is incorrect");
         }
         return countOfMonthToMarkBookAsStale;
-    }
-
-    public Book createBook(int id, String title, String author, double price, LocalDate publicationDate){
-        List<RequestForBook> requestForBooks = new ArrayList<>();
-        LocalDate arriveDate = LocalDate.now();
-        Book book = new Book(id, title, author, price, BookStatus.IN_STOCK, requestForBooks, arriveDate, publicationDate);
-        addBookToListOfBookInTheStorehouse(book);
-        BookService.getInstance().arriveBookToStock(book);
-        BookService.getInstance().completingRequestAfterArrivingNewBook(book);
-        return book;
     }
 
     public void completingRequestAfterArrivingNewBook(Book book) {
@@ -132,26 +151,11 @@ public class BookService {
         }
     }
 
-    public void addBookToListOfBookInTheStorehouse(Book book){
-        List<Book> books = BookRepository.getInstance().getListOfBooksInStorehouse();
-        books.add(book);
-        BookRepository.getInstance().setListOfBooksInStorehouse(books);
-    }
-
-    public List<Book> getListOfBooksInStoreHouse(){
-        List<Book> books = BookRepository.getInstance().getListOfBooksInStorehouse();
-        return books;
-    }
-
     public void setListOfBooksInStoreHouse(List<Book> books){
         BookRepository.getInstance().setListOfBooksInStorehouse(books);
     }
 
-    public void addBookToListOfBooks(Book book){
-        List<Book> books = BookRepository.getInstance().getListOfBooksInStorehouse();
-        books.add(book);
-        BookRepository.getInstance().setListOfBooksInStorehouse(books);
-    }
+
 
     public void showBooksInStock(){
         List<Book> books = BookRepository.getInstance().getListOfBooksInStorehouse();
@@ -220,16 +224,6 @@ public class BookService {
             }
         }
         return book;
-    }
-
-    public void bookUpdate(Book book) {
-        List<StockLevel> stockLevels = StockRepository.getInstance().getListOfStockLevels();
-
-        for (int i = 0; i < stockLevels.size(); i++) {
-            if (stockLevels.get(i).getBook().getId() == book.getId()) {
-                BookService.getInstance().arriveBookToStock(book);
-            }
-        }
     }
 
     public void bookSort() {

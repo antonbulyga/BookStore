@@ -35,5 +35,6 @@ public enum TitleOfMenuItem {
     EXPORT_REQUEST_FOR_BOOK,
     IMPORT_ORDER,
     EXIT,
-    INITIALIZE_STORE
+    INITIALIZE_STORE,
+    SHOW_STALE_BOOK
 }

@@ -21,6 +21,10 @@ public class RequestForBookController {
         return instance;
     }
 
+    public void closerRequestForBooksAfterArrivingBook(Book book){
+        RequestForBookService.getInstance().closerRequestForBooksAfterArrivingBook(book);
+    }
+
     public RequestForBook getRequestForBookById(int id){
         RequestForBook requestForBook = RequestForBookService.getInstance().getRequestForBookById(id);
         return requestForBook;
