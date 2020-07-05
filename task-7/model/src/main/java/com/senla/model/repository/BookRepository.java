@@ -2,9 +2,7 @@ package main.java.com.senla.model.repository;
 
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.entity.RequestForBook;
-import main.java.com.senla.model.entity.StockLevel;
 import main.java.com.senla.model.enumeration.BookStatus;
-import main.java.com.senla.model.service.BookService;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,7 +15,6 @@ public class BookRepository {
     private BookRepository(){
 
     }
-
     public static BookRepository getInstance(){
         if(instance == null){
             instance = new BookRepository();

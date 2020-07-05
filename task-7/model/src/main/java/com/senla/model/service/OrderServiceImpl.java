@@ -17,16 +17,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class OrderService {
-    private static OrderService instance;
+public class OrderServiceImpl {
+    private static OrderServiceImpl instance;
 
-    private OrderService() {
+    private OrderServiceImpl() {
 
     }
 
-    public static OrderService getInstance(){
+    public static OrderServiceImpl getInstance(){
         if(instance == null){
-            instance = new OrderService();
+            instance = new OrderServiceImpl();
         }
         return instance;
     }
@@ -110,12 +110,12 @@ public class OrderService {
     }
 
     public void sortListOfDoneOrdersByPeriodOfTimeByDateOfDone(List<Order> listOfDoneOrdersByPeriodOfTime){
-        OrderService orderService = OrderService.getInstance();
+        OrderServiceImpl orderService = OrderServiceImpl.getInstance();
         orderService.sortOrdersByDateOfDone();
     }
 
     public void sortListOfDoneOrdersByPeriodOfTimeByPrice(List<Order> listOfDoneOrdersByPeriodOfTime){
-        OrderService orderService = OrderService.getInstance();
+        OrderServiceImpl orderService = OrderServiceImpl.getInstance();
         orderService.sortOrdersByPrice();
     }
 

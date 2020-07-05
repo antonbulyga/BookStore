@@ -6,7 +6,8 @@ import java.io.*;
 
 public class WriteObject {
     public static void write(){
-        try(ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(PropertyData.getProperty("bookStoreData")))){
+        try{
+        ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(PropertyData.getProperty("bookStoreData")));
             oos.writeObject(Store.getInstance());
         }
         catch (IOException e){

@@ -25,7 +25,7 @@ public class Navigator {
             System.out.println(i + " " + currentMenu.getMenuItems().get(i).getTitleOfMenuItems());
         }
     }
-    public void navigate(int index) throws IOException {
+    public void navigate(int index) throws IOException, IllegalAccessException {
         List<MenuItem> menuItems = currentMenu.getMenuItems();
         if ((index < menuItems.size()) && (index >= 0)) {
             if (menuItems.get(index).getAction() == null) {

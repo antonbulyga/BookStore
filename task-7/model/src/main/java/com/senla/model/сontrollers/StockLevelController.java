@@ -2,7 +2,7 @@ package main.java.com.senla.model.сontrollers;
 
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.entity.StockLevel;
-import main.java.com.senla.model.service.StockLevelService;
+import main.java.com.senla.model.service.StockLevelServiceImpl;
 
 import java.util.List;
 
@@ -21,19 +21,19 @@ public class StockLevelController {
     }
 
     public void stockLevelsUpdate(Book book) {
-        StockLevelService.getInstance().stockLevelsUpdate(book);
+        StockLevelServiceImpl.getInstance().stockLevelsUpdate(book);
     }
 
     public List<StockLevel> getArrayOfStockLevels(){
-        List<StockLevel> stockLevels = StockLevelService.getInstance().getListOfStockLevels();
+        List<StockLevel> stockLevels = StockLevelServiceImpl.getInstance().getListOfStockLevels();
         return stockLevels;
     }
 
     public void setListOfStockLevels(List<StockLevel> stockLevels){
-        StockLevelService.getInstance().setListOfStockLevels(stockLevels);
+        StockLevelServiceImpl.getInstance().setListOfStockLevels(stockLevels);
     }
 
     public void setArrayOfStockLevels(List<StockLevel> stockLevels){
-        StockLevelService.getInstance().setArrayOfStockLevels(stockLevels);
+        StockLevelServiceImpl.getInstance().setArrayOfStockLevels(stockLevels);
     }
 }

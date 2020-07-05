@@ -13,7 +13,8 @@ public class ReadObject {
         List<RequestForBook> requestForBooks;
         List<Customer> customers;
         List<StockLevel> stockLevels;
-            try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(PropertyData.getProperty("bookStoreData")))){
+            try{
+                ObjectInputStream ois = new ObjectInputStream(new FileInputStream(PropertyData.getProperty("bookStoreData")));
                 Store store = (Store) ois.readObject();
                 books = store.getBooks();
                 BookController.getInstance().setListOfBooksInStoreHouse(books);

@@ -5,9 +5,7 @@ import main.java.com.senla.model.entity.Customer;
 import main.java.com.senla.model.entity.Order;
 import main.java.com.senla.model.entity.RequestForBook;
 import main.java.com.senla.model.enumeration.OrderStatus;
-import main.java.com.senla.model.service.OrderService;
 import main.java.com.senla.model.utils.generators.OrderIdGenerator;
-import main.java.com.senla.model.сontrollers.OrderController;
 
 import java.time.LocalDate;
 import java.util.ArrayList;

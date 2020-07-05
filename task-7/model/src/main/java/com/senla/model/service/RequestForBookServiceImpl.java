@@ -1,30 +1,27 @@
 package main.java.com.senla.model.service;
 
 import main.java.com.senla.model.entity.Book;
-import main.java.com.senla.model.repository.BookRepository;
 import main.java.com.senla.model.repository.RequestForBookRepository;
+import main.java.com.senla.model.service.api.RequestForBookService;
 import main.java.com.senla.model.utils.PropertyData;
-import main.java.com.senla.model.utils.generators.RequestForBookIdGenerator;
 import main.java.com.senla.model.сomparators.RequestForBookAlphabeticalComparator;
 import main.java.com.senla.model.сomparators.RequestForBookCountComparator;
-import main.java.com.senla.model.сomparators.RequestForBookStatus;
 import main.java.com.senla.model.entity.Order;
 import main.java.com.senla.model.entity.RequestForBook;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class RequestForBookService {
-    private static RequestForBookService instance;
+public class RequestForBookServiceImpl implements RequestForBookService {
+    private static RequestForBookServiceImpl instance;
 
-    private RequestForBookService() {
+    private RequestForBookServiceImpl() {
 
     }
 
-    public static RequestForBookService getInstance(){
+    public static RequestForBookServiceImpl getInstance(){
         if(instance == null){
-            instance = new RequestForBookService();
+            instance = new RequestForBookServiceImpl();
         }
         return instance;
     }
@@ -32,11 +29,11 @@ public class RequestForBookService {
     public void closerRequestForBooksAfterArrivingBook(Book book){
         boolean ableToChange = getAbleToChangeRequestForBookStatusFromProperty();
         if(ableToChange == true){
-            BookService.getInstance().arriveBookToStock(book);
-            BookService.getInstance().completingRequestAfterArrivingNewBook(book);
+            BookServiceImpl.getInstance().arriveBookToStock(book);
+            BookServiceImpl.getInstance().completingRequestAfterArrivingNewBook(book);
         }
         else {
-            BookService.getInstance().arriveBookToStock(book);
+            BookServiceImpl.getInstance().arriveBookToStock(book);
         }
     }
 

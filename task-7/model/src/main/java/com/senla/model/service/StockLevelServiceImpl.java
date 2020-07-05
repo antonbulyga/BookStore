@@ -6,17 +6,17 @@ import main.java.com.senla.model.repository.StockLevelRepository;
 
 import java.util.List;
 
-public class StockLevelService {
-    private static StockLevelService instance;
+public class StockLevelServiceImpl {
+    private static StockLevelServiceImpl instance;
 
 
-    private StockLevelService() {
+    private StockLevelServiceImpl() {
 
     }
 
-    public static StockLevelService getInstance(){
+    public static StockLevelServiceImpl getInstance(){
         if(instance == null){
-            instance = new StockLevelService();
+            instance = new StockLevelServiceImpl();
         }
         return instance;
     }
@@ -30,7 +30,7 @@ public class StockLevelService {
         List<StockLevel> stockLevels = StockLevelRepository.getInstance().getListOfStockLevels();
         for (int i = 0; i < stockLevels.size(); i++) {
             if (stockLevels.get(i).getBook().getId() == book.getId()) {
-                BookService.getInstance().arriveBookToStock(book);
+                BookServiceImpl.getInstance().arriveBookToStock(book);
             }
         }
     }

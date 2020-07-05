@@ -1,7 +1,7 @@
 package main.java.com.senla.model.сontrollers;
 
 import main.java.com.senla.model.entity.Customer;
-import main.java.com.senla.model.service.CustomerService;
+import main.java.com.senla.model.service.CustomerServiceImpl;
 
 import java.util.List;
 
@@ -21,29 +21,29 @@ public class CustomerController {
 
 
     public List<Customer> getListOfCustomers(){
-       List<Customer> customers = CustomerService.getInstance().getListOfCustomers();
+       List<Customer> customers = CustomerServiceImpl.getInstance().getListOfCustomers();
         return customers;
     }
 
     public void setListOfCustomers(List<Customer> customers){
-        CustomerService.getInstance().setListOfCustomers(customers);
+        CustomerServiceImpl.getInstance().setListOfCustomers(customers);
     }
 
     public void addCustomerToListOfCustomers(Customer customer){
-        CustomerService.getInstance().addCustomerToListOfCustomers(customer);
+        CustomerServiceImpl.getInstance().addCustomerToListOfCustomers(customer);
     }
 
     public Customer createCustomer(int id, int age, String name){
-       Customer customer = CustomerService.getInstance().createCustomer(id, age, name);
+       Customer customer = CustomerServiceImpl.getInstance().createCustomer(id, age, name);
         return customer;
     }
 
     public Customer getCustomerById(int id){
-        Customer customer = CustomerService.getInstance().getCustomerById(id);
+        Customer customer = CustomerServiceImpl.getInstance().getCustomerById(id);
         return customer;
     }
 
     public void updateCustomer(Customer customer){
-        CustomerService.getInstance().updateCustomer(customer);
+        CustomerServiceImpl.getInstance().updateCustomer(customer);
     }
 }

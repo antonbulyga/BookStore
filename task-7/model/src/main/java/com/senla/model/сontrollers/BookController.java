@@ -1,7 +1,7 @@
 package main.java.com.senla.model.сontrollers;
 
 import main.java.com.senla.model.entity.Book;
-import main.java.com.senla.model.service.BookService;
+import main.java.com.senla.model.service.BookServiceImpl;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -21,74 +21,74 @@ public class BookController {
     }
 
     public void deleteBook(Book book){
-        BookService.getInstance().deleteBook(book);
+        BookServiceImpl.getInstance().deleteBook(book);
     }
 
     public void showStaleBooks(){
-        BookService.getInstance().showStaleBooks();
+        BookServiceImpl.getInstance().showStaleBooks();
     }
 
     public void arriveBookToStock(Book book){
-        BookService.getInstance().arriveBookToStock(book);
+        BookServiceImpl.getInstance().arriveBookToStock(book);
     }
 
     public void showUnsoldBooksMoreThanSixMonth(){
-        BookService.getInstance().showUnsoldBooksMoreThanSixMonth();
+        BookServiceImpl.getInstance().showUnsoldBooksMoreThanSixMonth();
     }
 
     public void completingRequestAfterArrivingNewBook(Book book) {
-        BookService.getInstance().completingRequestAfterArrivingNewBook(book);
+        BookServiceImpl.getInstance().completingRequestAfterArrivingNewBook(book);
     }
 
     public List<Book> getListOfBooksInStoreHouse(){
-       List<Book> books = BookService.getInstance().getListOfBooksInStoreHouse();
+       List<Book> books = BookServiceImpl.getInstance().getListOfBooksInStoreHouse();
         return books;
     }
 
     public void setListOfBooksInStoreHouse(List<Book> books){
-        BookService.getInstance().setListOfBooksInStoreHouse(books);
+        BookServiceImpl.getInstance().setListOfBooksInStoreHouse(books);
     }
 
     public Book createBook(int id, String title, String author, double price, LocalDate publicationDate){
-       Book book = BookService.getInstance().createBook(id, title, author, price, publicationDate);
+       Book book = BookServiceImpl.getInstance().createBook(id, title, author, price, publicationDate);
        return book;
     }
 
     public Book getBookById(int id){
-       Book book = BookService.getInstance().getBookById(id);
+       Book book = BookServiceImpl.getInstance().getBookById(id);
        return book;
     }
 
     public void bookUpdate(Book book){
-        BookService.getInstance().bookUpdate(book);
+        BookServiceImpl.getInstance().bookUpdate(book);
     }
 
     public void showBooksInStock(){
-       BookService.getInstance().showBooksInStock();
+       BookServiceImpl.getInstance().showBooksInStock();
    }
 
    public void sortBookByPrice(){
-        BookService.getInstance().sortBookByPrice();
+        BookServiceImpl.getInstance().sortBookByPrice();
    }
 
    public void addBookToListOfBooks(Book book){
-        BookService.getInstance().addBookToListOfBookInTheStorehouse(book);
+        BookServiceImpl.getInstance().addBookToListOfBookInTheStorehouse(book);
    }
 
    public void sortBookByAuthor(){
-        BookService.getInstance().sortBookByPrice();
+        BookServiceImpl.getInstance().sortBookByPrice();
    }
 
    public void sortBookByDateArrive(){
-        BookService.getInstance().sortBookByDateArrive();
+        BookServiceImpl.getInstance().sortBookByDateArrive();
    }
 
    public void sortBookByAvailabilityInStock(){
-        BookService.getInstance().sortBookByAvailabilityInStock();
+        BookServiceImpl.getInstance().sortBookByAvailabilityInStock();
    }
 
    public void sortBookByPublicationDate(){
-        BookService.getInstance().sortBookByPublicationDate();
+        BookServiceImpl.getInstance().sortBookByPublicationDate();
    }
 
 }

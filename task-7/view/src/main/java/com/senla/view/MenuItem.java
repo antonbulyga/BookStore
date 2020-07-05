@@ -10,7 +10,7 @@ public class MenuItem  {
     private IAction action;
     private Menu nextMenu;
 
-    public void doAction() throws IOException {
+    public void doAction() throws IOException, IllegalAccessException {
         action.execute();
     }
 

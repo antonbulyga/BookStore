@@ -21,7 +21,7 @@ public class MenuController {
                 int index = Integer.parseInt(reader.readLine());
                 navigator.navigate(index);
             }
-        } catch (IOException | NumberFormatException e) {
+        } catch (IOException | NumberFormatException | IllegalAccessException e) {
             System.out.println("Incorrect index, please try again");
         }
 

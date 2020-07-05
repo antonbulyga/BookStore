@@ -6,6 +6,7 @@ import main.java.com.senla.model.repository.BookRepository;
 import main.java.com.senla.model.repository.OrderRepository;
 import main.java.com.senla.model.repository.RequestForBookRepository;
 import main.java.com.senla.model.repository.StockLevelRepository;
+import main.java.com.senla.model.service.api.BookService;
 import main.java.com.senla.model.utils.PropertyData;
 import main.java.com.senla.model.utils.generators.StockLevelIdGenerator;
 import main.java.com.senla.model.сomparators.*;
@@ -16,23 +17,23 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class BookService {
-    private static BookService instance;
+public class BookServiceImpl implements BookService {
+    private static BookServiceImpl instance;
 
-    private BookService() {
+    private BookServiceImpl() {
 
     }
 
-    public static BookService getInstance(){
+    public static BookServiceImpl getInstance(){
         if(instance == null){
-            instance = new BookService();
+            instance = new BookServiceImpl();
         }
         return instance;
     }
 
     public Book createBook(int id, String title, String author, double price, LocalDate publicationDate){
        Book book = BookRepository.getInstance().createBook(id, title, author, price, publicationDate);
-        RequestForBookService.getInstance().closerRequestForBooksAfterArrivingBook(book);
+        RequestForBookServiceImpl.getInstance().closerRequestForBooksAfterArrivingBook(book);
         //BookService.getInstance().arriveBookToStock(book);
         //BookService.getInstance().completingRequestAfterArrivingNewBook(book);
        return book;
@@ -101,7 +102,7 @@ public class BookService {
                         requestForBooksLocal.remove(requestForBooksLocal.get(j));
                         OrderRepository.getInstance().setListOfOrders(arraysOfOrders);
                         if(requestForBooksLocal.size() == 0) {
-                            OrderService.getInstance().executeOrder(order);
+                            OrderServiceImpl.getInstance().executeOrder(order);
                         }
                     }
                 }
