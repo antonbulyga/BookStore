@@ -1,5 +1,6 @@
 package main.java.com.senla.model.utils;
 
+import annotation.Config;
 import main.java.com.senla.model.entity.*;
 import main.java.com.senla.model.сontrollers.*;
 
@@ -7,6 +8,9 @@ import java.io.*;
 import java.util.List;
 
 public class ReadObject {
+    @Config(key = "bookStoreData")
+    private static String path = null;
+
     public static void read(){
         List<Book> books;
         List<Order> orders;
@@ -14,7 +18,7 @@ public class ReadObject {
         List<Customer> customers;
         List<StockLevel> stockLevels;
             try{
-                ObjectInputStream ois = new ObjectInputStream(new FileInputStream(PropertyData.getProperty("bookStoreData")));
+                ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path));
                 Store store = (Store) ois.readObject();
                 books = store.getBooks();
                 BookController.getInstance().setListOfBooksInStoreHouse(books);

@@ -1,5 +1,6 @@
 package main.java.com.senla.view.actions;
 
+import annotation.Config;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.entity.Customer;
 import main.java.com.senla.model.entity.Order;
@@ -18,13 +19,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ActionImportOrder implements IAction {
+    @Config(key = "orderFile")
+    private String path = null;
+
     @Override
     public void execute() throws IOException {
             List<Book> books = BookController.getInstance().getListOfBooksInStoreHouse();
             List<Book> listOfBookInOrder = new ArrayList<>();
             List<Order> listOfOrders = OrderController.getInstance().getListOfOrders();
             List<Customer> customers = CustomerController.getInstance().getListOfCustomers();
-            try(BufferedReader reader = new BufferedReader(new FileReader(PropertyData.getProperty("orderFile")))){
+            try(BufferedReader reader = new BufferedReader(new FileReader(path))){
             String line;
             while ((line = reader.readLine()) != null) {
                     String[] strings = line.split(",");

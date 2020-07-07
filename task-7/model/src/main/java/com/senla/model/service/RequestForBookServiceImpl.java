@@ -41,9 +41,9 @@ public class RequestForBookServiceImpl implements RequestForBookService {
     public static boolean getAbleToChangeRequestForBookStatusFromProperty(){
         boolean ableToChange;
         @Config(key = "ableOfChange")
-        String path = null;
+        String flag = null;
 
-        ableToChange = Boolean.parseBoolean(path);
+        ableToChange = Boolean.parseBoolean(flag);
         return ableToChange;
     }
 

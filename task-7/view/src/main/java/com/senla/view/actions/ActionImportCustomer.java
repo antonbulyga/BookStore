@@ -1,5 +1,6 @@
 package main.java.com.senla.view.actions;
 
+import annotation.Config;
 import main.java.com.senla.model.entity.Customer;
 import main.java.com.senla.model.utils.PropertyData;
 import main.java.com.senla.model.сontrollers.CustomerController;
@@ -9,11 +10,13 @@ import java.io.*;
 import java.util.List;
 
 public class ActionImportCustomer implements IAction {
+    @Config(key = "customerFile")
+    private String path = null;
 
     @Override
     public void execute(){
         List<Customer> customerList = CustomerController.getInstance().getListOfCustomers();
-        try(BufferedReader reader = new BufferedReader(new FileReader(PropertyData.getProperty("customerFile")))){
+        try(BufferedReader reader = new BufferedReader(new FileReader(path))){
                String line;
                 while ((line = reader.readLine()) != null) {
                     String[] strings = line.split(",");

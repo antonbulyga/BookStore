@@ -1,5 +1,6 @@
 package main.java.com.senla.model.service;
 
+import annotation.Config;
 import main.java.com.senla.model.entity.*;
 import main.java.com.senla.model.enumeration.BookStatus;
 import main.java.com.senla.model.repository.BookRepository;
@@ -77,7 +78,9 @@ public class BookServiceImpl implements BookService {
 
     public int getCountOfMonthToMarkBookAsStale(){
         int countOfMonthToMarkBookAsStale = 0;
-        String countOfMonthToMarkBookAsStaleString = PropertyData.getProperty("maxCountOfMonth");
+        @Config(key = "maxCountOfMonth")
+        String maxCountOfMonthString = null;
+        String countOfMonthToMarkBookAsStaleString = maxCountOfMonthString;
         try {
             countOfMonthToMarkBookAsStale = Integer.parseInt(countOfMonthToMarkBookAsStaleString);
         }

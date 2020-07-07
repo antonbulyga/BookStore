@@ -1,5 +1,6 @@
 package main.java.com.senla.view.actions;
 
+import annotation.Config;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.utils.PropertyData;
 import main.java.com.senla.model.сontrollers.BookController;
@@ -12,12 +13,14 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class ActionImportBook implements IAction {
+    @Config(key = "bookFile")
+    private String path = null;
 
     @Override
     public void execute() {
         List<Book> bookList = BookController.getInstance().getListOfBooksInStoreHouse();
 
-        try(BufferedReader reader = new BufferedReader(new FileReader(PropertyData.getProperty("bookFile")))){
+        try(BufferedReader reader = new BufferedReader(new FileReader(path))){
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] strings = line.split(",");

@@ -12,15 +12,10 @@ import java.util.List;
 
 public class ActionExportBook implements IAction {
     @Config(key = "bookFile")
-    private String path;
-
-    public ActionExportBook() {
-    }
+    private String path = null;
 
     @Override
     public void execute() throws IllegalAccessException {
-        ActionExportBook actionExportBook = new ActionExportBook();
-        AnnotationAnalyzer.setKeyFromAnnotation(actionExportBook);
         List<Book> bookList = BookController.getInstance().getListOfBooksInStoreHouse();
         ExportHelper.write(null, bookList, null, null, path);
     }
