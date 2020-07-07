@@ -1,5 +1,6 @@
 package main.java.com.senla.model.service;
 
+import annotation.Config;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.repository.RequestForBookRepository;
 import main.java.com.senla.model.service.api.RequestForBookService;
@@ -39,8 +40,10 @@ public class RequestForBookServiceImpl implements RequestForBookService {
 
     public static boolean getAbleToChangeRequestForBookStatusFromProperty(){
         boolean ableToChange;
-        String ableToChangeString = PropertyData.getProperty("ableOfChange");
-        ableToChange = Boolean.parseBoolean(ableToChangeString);
+        @Config(key = "ableOfChange")
+        String path = null;
+
+        ableToChange = Boolean.parseBoolean(path);
         return ableToChange;
     }
 

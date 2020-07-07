@@ -1,5 +1,7 @@
 package annotation;
 
+import main.java.com.senla.model.utils.PropertyData;
+
 import java.lang.reflect.Field;
 
 public class AnnotationAnalyzer {
@@ -8,24 +10,15 @@ public class AnnotationAnalyzer {
         Field[] fields = clazz.getFields();
         for (Field field : fields) {
             if (field.getAnnotatedType() instanceof Config) {
-                String key = field.getAnnotation(Config.class).key();
+                Config config = field.getAnnotation(Config.class);
+                String key = config.key();
+                String pathOfProperty = config.path();
+                String pathByKey = PropertyData.getProperty(key, pathOfProperty);
                 field.setAccessible(true);
-                field.set(object, key);
+                field.set(object, pathByKey);
                 field.setAccessible(false);
             }
         }
     }
 
-    public static void setPathFromAnnotation(Object object) throws IllegalAccessException {
-        Class clazz = object.getClass();
-        Field[] fields = clazz.getFields();
-        for (Field field : fields) {
-            if (field.getAnnotatedType() instanceof Config) {
-                String path = field.getAnnotation(Config.class).path();
-                field.setAccessible(true);
-                field.set(object, path);
-                field.setAccessible(false);
-            }
-        }
-    }
 }

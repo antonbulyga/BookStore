@@ -11,28 +11,17 @@ import java.text.ParseException;
 import java.util.Properties;
 
 public class PropertyData {
-    private static FileInputStream fis;
-    @Config()
-    private String pathOfPropertyFile;
     private static Properties property;
 
-    public PropertyData(){
-        init();
-    }
-    public static String getProperty(String key) {
-        String pathByKey = property.getProperty(key);
-        return pathByKey;
-    }
-    public void init(){
+    public static String getProperty(String key, String pathOfPropertyFile){
         try {
-            PropertyData propertyData = new PropertyData();
-            AnnotationAnalyzer.setPathFromAnnotation(propertyData);
-            fis = new FileInputStream(pathOfPropertyFile);
+            FileInputStream fis = new FileInputStream(pathOfPropertyFile);
             property = new Properties();
             property.load(fis);
-        } catch (IOException | IllegalAccessException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
+       return property.getProperty(key);
     }
 
 }

@@ -11,8 +11,8 @@ import main.java.com.senla.view.api.IAction;
 import java.util.List;
 
 public class ActionExportBook implements IAction {
-    @Config()
-    private String key;
+    @Config(key = "bookFile")
+    private String path;
 
     public ActionExportBook() {
     }
@@ -22,7 +22,6 @@ public class ActionExportBook implements IAction {
         ActionExportBook actionExportBook = new ActionExportBook();
         AnnotationAnalyzer.setKeyFromAnnotation(actionExportBook);
         List<Book> bookList = BookController.getInstance().getListOfBooksInStoreHouse();
-        String path = PropertyData.getProperty(key);
         ExportHelper.write(null, bookList, null, null, path);
     }
 }
