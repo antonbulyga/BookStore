@@ -1,10 +1,9 @@
 package main.java.com.senla.view.actions;
 
-import annotation.Config;
+import annotation.MyInject;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.entity.Order;
 import main.java.com.senla.model.entity.RequestForBook;
-import main.java.com.senla.model.utils.PropertyData;
 import main.java.com.senla.model.сontrollers.BookController;
 import main.java.com.senla.model.сontrollers.OrderController;
 import main.java.com.senla.model.сontrollers.RequestForBookController;
@@ -16,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class ActionImportRequestForBook implements IAction {
-    @Config(key = "requestForBookFile")
+    @MyInject(key = "requestForBookFile")
     private String path = null;
 
     @Override

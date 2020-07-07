@@ -1,7 +1,7 @@
 package main.java.com.senla.view.actions;
 
 import main.java.com.senla.model.entity.Order;
-import main.java.com.senla.model.repository.OrderRepository;
+import main.java.com.senla.model.repository.OrderRepositoryImpl;
 import main.java.com.senla.model.utils.input.StringInput;
 import main.java.com.senla.model.сontrollers.OrderController;
 import main.java.com.senla.view.api.IAction;
@@ -52,7 +52,7 @@ public class ActionSumOfMoneyPerPeriodOfTime implements IAction {
             System.out.println("Incorrect input date");
         }
 
-        List<Order> listOfOrdersInStore = OrderRepository.getInstance().getListOfOrders();
+        List<Order> listOfOrdersInStore = OrderRepositoryImpl.getInstance().getListOfOrders();
         OrderController.getInstance().sumOfMoneyPerPeriodOfTime(listOfOrdersInStore, firstDate, secondDate);
 
     }

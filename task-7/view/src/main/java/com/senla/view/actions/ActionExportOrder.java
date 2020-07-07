@@ -1,6 +1,6 @@
 package main.java.com.senla.view.actions;
 
-import annotation.Config;
+import annotation.MyInject;
 import main.java.com.senla.model.entity.Order;
 import main.java.com.senla.model.utils.ExportHelper;
 import main.java.com.senla.model.сontrollers.OrderController;
@@ -9,7 +9,7 @@ import main.java.com.senla.view.api.IAction;
 import java.util.List;
 
 public class ActionExportOrder implements IAction {
-    @Config(key = "orderFile")
+    @MyInject(key = "orderFile")
     private String path = null;
 
     @Override

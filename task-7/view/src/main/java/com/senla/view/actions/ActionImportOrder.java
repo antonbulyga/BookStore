@@ -1,10 +1,9 @@
 package main.java.com.senla.view.actions;
 
-import annotation.Config;
+import annotation.MyInject;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.entity.Customer;
 import main.java.com.senla.model.entity.Order;
-import main.java.com.senla.model.utils.PropertyData;
 import main.java.com.senla.model.сontrollers.BookController;
 import main.java.com.senla.model.сontrollers.CustomerController;
 import main.java.com.senla.model.сontrollers.OrderController;
@@ -19,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ActionImportOrder implements IAction {
-    @Config(key = "orderFile")
+    @MyInject(key = "orderFile")
     private String path = null;
 
     @Override

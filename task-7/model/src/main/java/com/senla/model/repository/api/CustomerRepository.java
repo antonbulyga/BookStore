@@ -1,13 +1,10 @@
-package main.java.com.senla.model.service.api;
+package main.java.com.senla.model.repository.api;
 
 import main.java.com.senla.model.entity.Customer;
 
 import java.util.List;
 
-public interface OrderService {
-    List<Customer> getListOfCustomers();
-
-    void setListOfCustomers(List<Customer> customers);
+public interface CustomerRepository {
 
     void addCustomerToListOfCustomers(Customer customer);
 
@@ -18,5 +15,9 @@ public interface OrderService {
     void deleteCustomer(Customer customer);
 
     Customer getCustomerById(int id);
+
+    List<Customer> getListOfCustomers();
+
+    void setListOfCustomers(List<Customer> listOfCustomers);
 
 }

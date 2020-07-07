@@ -1,7 +1,7 @@
 package main.java.com.senla.model.service;
 
 import main.java.com.senla.model.entity.Customer;
-import main.java.com.senla.model.repository.CustomerRepository;
+import main.java.com.senla.model.repository.CustomerRepositoryImpl;
 import main.java.com.senla.model.service.api.CustomerService;
 
 import java.util.List;
@@ -21,34 +21,34 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     public List<Customer> getListOfCustomers() {
-        List<Customer> customers = CustomerRepository.getInstance().getListOfCustomers();
+        List<Customer> customers = CustomerRepositoryImpl.getInstance().getListOfCustomers();
         return customers;
     }
 
     public void setListOfCustomers(List<Customer> customers) {
-        CustomerRepository.getInstance().setListOfCustomers(customers);
+        CustomerRepositoryImpl.getInstance().setListOfCustomers(customers);
     }
 
     public void addCustomerToListOfCustomers(Customer customer) {
-        CustomerRepository.getInstance().addCustomerToListOfCustomers(customer);
+        CustomerRepositoryImpl.getInstance().addCustomerToListOfCustomers(customer);
     }
 
 
     public Customer createCustomer(int id, int age, String name) {
-        Customer customer = CustomerRepository.getInstance().createCustomer(id, age, name);
+        Customer customer = CustomerRepositoryImpl.getInstance().createCustomer(id, age, name);
         return customer;
     }
 
     public void updateCustomer(Customer customer) {
-        CustomerRepository.getInstance().updateCustomer(customer);
+        CustomerRepositoryImpl.getInstance().updateCustomer(customer);
     }
 
     public void deleteCustomer(Customer customer) {
-        CustomerRepository.getInstance().deleteCustomer(customer);
+        CustomerRepositoryImpl.getInstance().deleteCustomer(customer);
     }
 
     public Customer getCustomerById(int id) {
-        Customer customer = CustomerRepository.getInstance().getCustomerById(id);
+        Customer customer = CustomerRepositoryImpl.getInstance().getCustomerById(id);
         return customer;
     }
 

@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD, ElementType.LOCAL_VARIABLE})
-public @interface Config {
+public @interface MyInject {
     String key();
     String path() default "C:/Users/Anton/Documents/bulyha_anton/task-7/model/src/main/resources/config.properties";
 }

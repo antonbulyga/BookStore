@@ -1,14 +1,13 @@
 package main.java.com.senla.model.service;
 
-import annotation.Config;
+import annotation.MyInject;
 import main.java.com.senla.model.entity.*;
 import main.java.com.senla.model.enumeration.BookStatus;
-import main.java.com.senla.model.repository.BookRepository;
-import main.java.com.senla.model.repository.OrderRepository;
-import main.java.com.senla.model.repository.RequestForBookRepository;
-import main.java.com.senla.model.repository.StockLevelRepository;
+import main.java.com.senla.model.repository.BookRepositoryImpl;
+import main.java.com.senla.model.repository.OrderRepositoryImpl;
+import main.java.com.senla.model.repository.RequestForBookRepositoryImpl;
+import main.java.com.senla.model.repository.StockLevelRepositoryImpl;
 import main.java.com.senla.model.service.api.BookService;
-import main.java.com.senla.model.utils.PropertyData;
 import main.java.com.senla.model.utils.generators.StockLevelIdGenerator;
 import main.java.com.senla.model.сomparators.*;
 
@@ -33,28 +32,28 @@ public class BookServiceImpl implements BookService {
     }
 
     public Book createBook(int id, String title, String author, double price, LocalDate publicationDate){
-       Book book = BookRepository.getInstance().createBook(id, title, author, price, publicationDate);
+       Book book = BookRepositoryImpl.getInstance().createBook(id, title, author, price, publicationDate);
         RequestForBookServiceImpl.getInstance().closerRequestForBooksAfterArrivingBook(book);
         //BookService.getInstance().arriveBookToStock(book);
         //BookService.getInstance().completingRequestAfterArrivingNewBook(book);
        return book;
     }
     public List<Book> getListOfBooksInStoreHouse(){
-       List<Book> books = BookRepository.getInstance().getListOfBooksInStorehouse();
+       List<Book> books = BookRepositoryImpl.getInstance().getListOfBooksInStorehouse();
        return books;
     }
 
     public void addBookToListOfBookInTheStorehouse(Book book){
-        BookRepository.getInstance().addBookToListOfBookInTheStorehouse(book);
+        BookRepositoryImpl.getInstance().addBookToListOfBookInTheStorehouse(book);
     }
 
     public void bookUpdate(Book book) {
-        BookRepository.getInstance().bookUpdate(book);
+        BookRepositoryImpl.getInstance().bookUpdate(book);
     }
 
     public List<Book> setStaleBookStatus(){
         int countOfMonthToMarkBookAsStale = getCountOfMonthToMarkBookAsStale();
-        List<Book> books = BookRepository.getInstance().getListOfBooksInStorehouse();
+        List<Book> books = BookRepositoryImpl.getInstance().getListOfBooksInStorehouse();
         List<Book> listOfStaleBooks = new ArrayList<>();
         LocalDate arriveDate = null;
         LocalDate nowDate = arriveDate.now();
@@ -78,7 +77,7 @@ public class BookServiceImpl implements BookService {
 
     public int getCountOfMonthToMarkBookAsStale(){
         int countOfMonthToMarkBookAsStale = 0;
-        @Config(key = "maxCountOfMonth")
+        @MyInject(key = "maxCountOfMonth")
         String maxCountOfMonthString = null;
         String countOfMonthToMarkBookAsStaleString = maxCountOfMonthString;
         try {
@@ -91,10 +90,10 @@ public class BookServiceImpl implements BookService {
     }
 
     public void completingRequestAfterArrivingNewBook(Book book) {
-        List<RequestForBook> requestForBooks = RequestForBookRepository.getInstance().getListOfRequestForBooks();
+        List<RequestForBook> requestForBooks = RequestForBookRepositoryImpl.getInstance().getListOfRequestForBooks();
         List<RequestForBook> requestForBooksLocal;
         Order order;
-        List<Order> arraysOfOrders = OrderRepository.getInstance().getListOfOrders();
+        List<Order> arraysOfOrders = OrderRepositoryImpl.getInstance().getListOfOrders();
         for (int i = 0; i < requestForBooks.size(); i++) {
             if(requestForBooks.get(i).getRequestStatus() == RequestForBookStatus.ACTIVE){
                 order = requestForBooks.get(i).getOrder();
@@ -103,7 +102,7 @@ public class BookServiceImpl implements BookService {
                     if(requestForBooksLocal.get(j).getBook().getId() == book.getId()){
                         requestForBooks.get(i).setRequestStatus(RequestForBookStatus.COMPLETED);
                         requestForBooksLocal.remove(requestForBooksLocal.get(j));
-                        OrderRepository.getInstance().setListOfOrders(arraysOfOrders);
+                        OrderRepositoryImpl.getInstance().setListOfOrders(arraysOfOrders);
                         if(requestForBooksLocal.size() == 0) {
                             OrderServiceImpl.getInstance().executeOrder(order);
                         }
@@ -116,7 +115,7 @@ public class BookServiceImpl implements BookService {
 
     public void showUnsoldBooksMoreThanSixMonth() {
         LocalDate date = LocalDate.now();
-        List<Book> books = BookRepository.getInstance().getListOfBooksInStorehouse();
+        List<Book> books = BookRepositoryImpl.getInstance().getListOfBooksInStorehouse();
         List<Book> arrayOfUnsoldBooksMoreThanSixMonth = new ArrayList<>();
         System.out.println("Books unsold for more than 6 month : ");
         for (int i = 0; i < books.size(); i++) {
@@ -136,11 +135,11 @@ public class BookServiceImpl implements BookService {
 
     public void arriveBookToStock(Book book) {
         int countOfBooksInStock;
-        List<StockLevel> stockLevels = StockLevelRepository.getInstance().getListOfStockLevels();
+        List<StockLevel> stockLevels = StockLevelRepositoryImpl.getInstance().getListOfStockLevels();
         if(stockLevels.size() == 0){
             StockLevel stockLevel = new StockLevel(StockLevelIdGenerator.getStockLevelId(), book, 0);
             stockLevels.add(stockLevel);
-            StockLevelRepository.getInstance().setListOfStockLevels(stockLevels);
+            StockLevelRepositoryImpl.getInstance().setListOfStockLevels(stockLevels);
         }
         else {
             for (int i = 0; i < stockLevels.size(); i++) {
@@ -151,20 +150,20 @@ public class BookServiceImpl implements BookService {
                     stockLevels.get(i).setCount(countOfBooksInStock);
                 }
             }
-            StockLevelRepository.getInstance().setListOfStockLevels(stockLevels);
+            StockLevelRepositoryImpl.getInstance().setListOfStockLevels(stockLevels);
         }
     }
 
     public void setListOfBooksInStoreHouse(List<Book> books){
-        BookRepository.getInstance().setListOfBooksInStorehouse(books);
+        BookRepositoryImpl.getInstance().setListOfBooksInStorehouse(books);
     }
 
     public void deleteBook(Book book){
-        BookRepository.getInstance().deleteBook(book);
+        BookRepositoryImpl.getInstance().deleteBook(book);
     }
 
     public void showBooksInStock(){
-        List<Book> books = BookRepository.getInstance().getListOfBooksInStorehouse();
+        List<Book> books = BookRepositoryImpl.getInstance().getListOfBooksInStorehouse();
         System.out.println("List of the books in stock");
         for (int i = 0; i < books.size(); i++) {
             System.out.println(books.get(i).getTitle() + " " + i);
@@ -174,7 +173,7 @@ public class BookServiceImpl implements BookService {
 
     public void sortBookByPrice() {
         BookPriceComparator bookPriceComparator = new BookPriceComparator();
-        List<Book> books = BookRepository.getInstance().getListOfBooksInStorehouse();
+        List<Book> books = BookRepositoryImpl.getInstance().getListOfBooksInStorehouse();
         Collections.sort(books, bookPriceComparator);
         System.out.println("List of books sorted by price: ");
         for (int i = 0; i < books.size(); i++) {
@@ -184,7 +183,7 @@ public class BookServiceImpl implements BookService {
 
     public void sortBookByAuthor() {
         BookAlphabeticalComparator bookAlphabeticalComparator = new BookAlphabeticalComparator();
-        List<Book> books = BookRepository.getInstance().getListOfBooksInStorehouse();
+        List<Book> books = BookRepositoryImpl.getInstance().getListOfBooksInStorehouse();
         Collections.sort(books, bookAlphabeticalComparator);
         System.out.println("List of books sorted by author: ");
         for (int i = 0; i < books.size(); i++) {
@@ -194,7 +193,7 @@ public class BookServiceImpl implements BookService {
 
     public void sortBookByDateArrive() {
         BookArriveDataComparator bookDataComparator = new BookArriveDataComparator();
-        List<Book> books = BookRepository.getInstance().getListOfBooksInStorehouse();
+        List<Book> books = BookRepositoryImpl.getInstance().getListOfBooksInStorehouse();
         Collections.sort(books, bookDataComparator);
         System.out.println("List of books sorted by date of arrive: ");
         for (int i = 0; i < books.size(); i++) {
@@ -203,7 +202,7 @@ public class BookServiceImpl implements BookService {
     }
     public void sortBookByAvailabilityInStock() {
         BookAvailabilityComparator bookAvailabilityComparator = new BookAvailabilityComparator();
-        List<Book> books = BookRepository.getInstance().getListOfBooksInStorehouse();
+        List<Book> books = BookRepositoryImpl.getInstance().getListOfBooksInStorehouse();
         Collections.sort(books, bookAvailabilityComparator);
         System.out.println("List of books sorted by availability in stock: ");
         for (int i = 0; i < books.size(); i++) {
@@ -213,7 +212,7 @@ public class BookServiceImpl implements BookService {
 
     public void sortBookByPublicationDate() {
         BookPublicationDataComparator bookAvailabilityComparator = new BookPublicationDataComparator();
-        List<Book> books = BookRepository.getInstance().getListOfBooksInStorehouse();
+        List<Book> books = BookRepositoryImpl.getInstance().getListOfBooksInStorehouse();
         Collections.sort(books, bookAvailabilityComparator);
         System.out.println("List of books sorted by date of publication: ");
         for (int i = 0; i < books.size(); i++) {
@@ -222,7 +221,7 @@ public class BookServiceImpl implements BookService {
     }
 
     public Book getBookById(int id){
-        Book book = BookRepository.getInstance().getBookById(id);
+        Book book = BookRepositoryImpl.getInstance().getBookById(id);
         return book;
     }
 

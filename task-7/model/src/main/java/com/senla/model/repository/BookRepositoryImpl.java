@@ -8,16 +8,16 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookRepository {
-    private static BookRepository instance;
+public class BookRepositoryImpl {
+    private static BookRepositoryImpl instance;
     private List<Book> listOfBooksInStorehouse = new ArrayList<>();
 
-    private BookRepository(){
+    private BookRepositoryImpl(){
 
     }
-    public static BookRepository getInstance(){
+    public static BookRepositoryImpl getInstance(){
         if(instance == null){
-            instance = new BookRepository();
+            instance = new BookRepositoryImpl();
         }
         return instance;
     }
@@ -31,9 +31,9 @@ public class BookRepository {
     }
 
     public void addBookToListOfBookInTheStorehouse(Book book){
-        List<Book> books = BookRepository.getInstance().getListOfBooksInStorehouse();
+        List<Book> books = BookRepositoryImpl.getInstance().getListOfBooksInStorehouse();
         books.add(book);
-        BookRepository.getInstance().setListOfBooksInStorehouse(books);
+        BookRepositoryImpl.getInstance().setListOfBooksInStorehouse(books);
     }
 
     public void bookUpdate(Book book) {
@@ -58,7 +58,7 @@ public class BookRepository {
     }
 
     public Book getBookById(int id){
-        List<Book> books = BookRepository.getInstance().getListOfBooksInStorehouse();
+        List<Book> books = BookRepositoryImpl.getInstance().getListOfBooksInStorehouse();
         Book book = null;
         for (int i = 0; i < books.size(); i++) {
             if(books.get(i).getId() == id){

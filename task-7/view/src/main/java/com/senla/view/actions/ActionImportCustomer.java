@@ -1,6 +1,6 @@
 package main.java.com.senla.view.actions;
 
-import annotation.Config;
+import annotation.MyInject;
 import main.java.com.senla.model.entity.Customer;
 import main.java.com.senla.model.utils.PropertyData;
 import main.java.com.senla.model.сontrollers.CustomerController;
@@ -10,7 +10,7 @@ import java.io.*;
 import java.util.List;
 
 public class ActionImportCustomer implements IAction {
-    @Config(key = "customerFile")
+    @MyInject(key = "customerFile")
     private String path = null;
 
     @Override

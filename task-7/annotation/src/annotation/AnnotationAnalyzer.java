@@ -5,16 +5,16 @@ import main.java.com.senla.model.service.RequestForBookServiceImpl;
 import main.java.com.senla.model.utils.PropertyData;
 import main.java.com.senla.view.actions.*;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Type;
 
 public class AnnotationAnalyzer {
     public static void setKeyFromAnnotation(Object object) throws IllegalAccessException {
         Class clazz = object.getClass();
         Field[] fields = clazz.getDeclaredFields();
         for (Field field : fields) {
-            if (field.isAnnotationPresent(Config.class)) {
-                Config config = field.getAnnotation(Config.class);
+            if (field.isAnnotationPresent(MyInject.class)) {
+                MyInject config = field.getAnnotation(MyInject.class);
                 String key = config.key();
                 String pathOfProperty = config.path();
                 String pathByKey = PropertyData.getProperty(key, pathOfProperty);
@@ -45,6 +45,24 @@ public class AnnotationAnalyzer {
         setKeyFromAnnotation(actionImportRequestForBook);
         setKeyFromAnnotation(BookServiceImpl.getInstance());
         setKeyFromAnnotation(RequestForBookServiceImpl.getInstance());
+    }
+
+    public static Object createNewInstance(Object object) throws IllegalAccessException, InstantiationException {
+
+        Field[] declaredFields = Object.class.getDeclaredFields();
+        for (Field declaredField : declaredFields) {
+            if (declaredField.getAnnotations() != null ) {
+                if (declaredField.isAnnotationPresent(MyAutoWired.class)) {
+                    Type type = declaredField.getType();
+                    ///????
+                    type.class.newInstance();
+                    declaredField.setAccessible(true);
+                    declaredField.set(object, Object.class.newInstance());
+                    declaredField.setAccessible(false);
+                }
+            }
+        }
+        return object;
     }
 
 }

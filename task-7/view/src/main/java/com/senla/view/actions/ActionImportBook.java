@@ -1,8 +1,7 @@
 package main.java.com.senla.view.actions;
 
-import annotation.Config;
+import annotation.MyInject;
 import main.java.com.senla.model.entity.Book;
-import main.java.com.senla.model.utils.PropertyData;
 import main.java.com.senla.model.сontrollers.BookController;
 import main.java.com.senla.model.сontrollers.StockLevelController;
 import main.java.com.senla.view.api.IAction;
@@ -13,7 +12,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class ActionImportBook implements IAction {
-    @Config(key = "bookFile")
+    @MyInject(key = "bookFile")
     private String path = null;
 
     @Override
