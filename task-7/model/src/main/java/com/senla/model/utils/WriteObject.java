@@ -1,12 +1,12 @@
 package main.java.com.senla.model.utils;
 
-import annotation.Config;
+import annotation.MyInject;
 import main.java.com.senla.model.entity.*;
 
 import java.io.*;
 
 public class WriteObject {
-    @Config(key = "bookStoreData")
+    @MyInject(key = "bookStoreData")
     private static String path = null;
 
     public static void write(){

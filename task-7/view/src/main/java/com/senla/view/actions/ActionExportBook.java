@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ActionExportBook implements IAction {
     @MyInject(key = "bookFile")
-    private String path = null;
+    private String path;
 
     @Override
     public void execute() throws IllegalAccessException {

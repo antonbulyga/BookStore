@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ActionImportCustomer implements IAction {
     @MyInject(key = "customerFile")
-    private String path = null;
+    private String path;
 
     @Override
     public void execute(){

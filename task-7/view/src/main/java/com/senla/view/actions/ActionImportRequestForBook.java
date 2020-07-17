@@ -16,7 +16,7 @@ import java.util.List;
 
 public class ActionImportRequestForBook implements IAction {
     @MyInject(key = "requestForBookFile")
-    private String path = null;
+    private String path;
 
     @Override
     public void execute(){

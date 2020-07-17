@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ActionExportRequestForBook implements IAction {
     @MyInject(key = "requestForBookFile")
-    private String path = null;
+    private String path;
     @Override
     public void execute(){
         List<RequestForBook> requestForBookList = RequestForBookController.getInstance().getListOfRequestForBook();

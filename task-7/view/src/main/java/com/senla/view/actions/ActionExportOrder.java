@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ActionExportOrder implements IAction {
     @MyInject(key = "orderFile")
-    private String path = null;
+    private String path;
 
     @Override
     public void execute() {

@@ -1,13 +1,7 @@
 package main.java.com.senla.model.utils;
 
-import annotation.AnnotationAnalyzer;
-import annotation.Config;
-
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.InputStream;
-import java.text.ParseException;
 import java.util.Properties;
 
 public class PropertyData {

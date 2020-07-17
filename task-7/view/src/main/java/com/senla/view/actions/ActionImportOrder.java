@@ -19,7 +19,7 @@ import java.util.List;
 
 public class ActionImportOrder implements IAction {
     @MyInject(key = "orderFile")
-    private String path = null;
+    private String path;
 
     @Override
     public void execute() throws IOException {
