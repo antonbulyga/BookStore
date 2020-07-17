@@ -1,15 +1,19 @@
 package main.java.com.senla.model.сontrollers;
 
+import annotation.MyAutoWired;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.entity.Customer;
 import main.java.com.senla.model.entity.Order;
 import main.java.com.senla.model.service.OrderServiceImpl;
+import main.java.com.senla.model.service.api.OrderService;
 
 import java.time.LocalDate;
 import java.util.List;
 
 public class OrderController {
     private static OrderController instance;
+    @MyAutoWired
+    private OrderService orderService;
 
     private OrderController(){
 
@@ -23,75 +27,75 @@ public class OrderController {
     }
 
     public void sumOfMoneyPerPeriodOfTime(List<Order> orders , LocalDate date1, LocalDate date2) {
-        OrderServiceImpl.getInstance().sumOfMoneyPerPeriodOfTime(orders, date1, date2);
+        orderService.sumOfMoneyPerPeriodOfTime(orders, date1, date2);
     }
 
     public void addOrderToStore(Order order){
-        OrderServiceImpl.getInstance().addOrderToStore(order);
+        orderService.addOrderToStore(order);
     }
 
     public void executeOrder(Order order){
-        OrderServiceImpl.getInstance().executeOrder(order);
+        orderService.executeOrder(order);
     }
 
 
     public List<Order> getListOfOrders() {
-        List<Order> orders = OrderServiceImpl.getInstance().getListOfOrders();
+        List<Order> orders = orderService.getListOfOrders();
         return orders;
     }
 
     public void setListOfOrders(List<Order> orders){
-        OrderServiceImpl.getInstance().setListOfOrders(orders);
+        orderService.setListOfOrders(orders);
     }
 
     public Order createOrder(List<Book> books, Customer customer, LocalDate dateOfDoneOrder){
-      Order order =  OrderServiceImpl.getInstance().createOrder(books, customer, dateOfDoneOrder);
+      Order order =  orderService.createOrder(books, customer, dateOfDoneOrder);
       return order;
     }
 
     public Order getOrderById(int id){
-        Order order = OrderServiceImpl.getInstance().getOrderById(id);
+        Order order = orderService.getOrderById(id);
         return order;
     }
 
     public void updateOrder(Order order) {
-        OrderServiceImpl.getInstance().updateOrder(order);
+        orderService.updateOrder(order);
     }
 
     public void addOrderToListOfOrders(Order order){
-        OrderServiceImpl.getInstance().addOrderToListOfOrders(order);
+        orderService.addOrderToListOfOrders(order);
     }
 
     public void showListOfOrders(){
-        OrderServiceImpl.getInstance().showListOfOrders();
+        orderService.showListOfOrders();
     }
 
     public void sortOrdersByDateOfDone(){
-        OrderServiceImpl.getInstance().sortOrdersByDateOfDone();
+        orderService.sortOrdersByDateOfDone();
     }
 
     public void sortOrdersByPrice(){
-        OrderServiceImpl.getInstance().sortOrdersByPrice();
+        orderService.sortOrdersByPrice();
     }
 
     public void sortOrdersByStatus(){
-        OrderServiceImpl.getInstance().sortOrdersByStatus();
+        orderService.sortOrdersByStatus();
     }
 
     public void showDetailsOfOrder(Order order){
-        OrderServiceImpl.getInstance().showDetailsOfOrder(order);
+        orderService.showDetailsOfOrder(order);
     }
 
     public void deleteOrder(Order order){
-        OrderServiceImpl.getInstance().deleteOrder(order);
+        orderService.deleteOrder(order);
     }
 
     public void changeOrderStatusToCancelled(Order order){
-        OrderServiceImpl.getInstance().changeOrderStatusToCancelled(order);
+        orderService.changeOrderStatusToCancelled(order);
     }
 
     public  void countOfDoneOrdersByPeriodOfTime(List<Order> orders, LocalDate date1, LocalDate date2){
-        OrderServiceImpl.getInstance().countOfDoneOrdersByPeriodOfTime(orders, date1, date2);
+        orderService.countOfDoneOrdersByPeriodOfTime(orders, date1, date2);
     }
 
 

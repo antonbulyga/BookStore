@@ -1,54 +1,48 @@
 package main.java.com.senla.model.service;
 
+import annotation.Component;
+import annotation.MyAutoWired;
 import main.java.com.senla.model.entity.Customer;
 import main.java.com.senla.model.repository.CustomerRepositoryImpl;
+import main.java.com.senla.model.repository.api.CustomerRepository;
 import main.java.com.senla.model.service.api.CustomerService;
 
 import java.util.List;
 
+@Component
 public class CustomerServiceImpl implements CustomerService {
-    private static CustomerServiceImpl instance;
-
-    private CustomerServiceImpl() {
-
-    }
-
-    public static CustomerServiceImpl getInstance() {
-        if (instance == null) {
-            instance = new CustomerServiceImpl();
-        }
-        return instance;
-    }
+    @MyAutoWired
+    private CustomerRepository customerRepository;
 
     public List<Customer> getListOfCustomers() {
-        List<Customer> customers = CustomerRepositoryImpl.getInstance().getListOfCustomers();
+        List<Customer> customers = customerRepository.getListOfCustomers();
         return customers;
     }
 
     public void setListOfCustomers(List<Customer> customers) {
-        CustomerRepositoryImpl.getInstance().setListOfCustomers(customers);
+        customerRepository.setListOfCustomers(customers);
     }
 
     public void addCustomerToListOfCustomers(Customer customer) {
-        CustomerRepositoryImpl.getInstance().addCustomerToListOfCustomers(customer);
+        customerRepository.addCustomerToListOfCustomers(customer);
     }
 
 
     public Customer createCustomer(int id, int age, String name) {
-        Customer customer = CustomerRepositoryImpl.getInstance().createCustomer(id, age, name);
+        Customer customer = customerRepository.createCustomer(id, age, name);
         return customer;
     }
 
     public void updateCustomer(Customer customer) {
-        CustomerRepositoryImpl.getInstance().updateCustomer(customer);
+        customerRepository.updateCustomer(customer);
     }
 
     public void deleteCustomer(Customer customer) {
-        CustomerRepositoryImpl.getInstance().deleteCustomer(customer);
+        customerRepository.deleteCustomer(customer);
     }
 
     public Customer getCustomerById(int id) {
-        Customer customer = CustomerRepositoryImpl.getInstance().getCustomerById(id);
+        Customer customer = customerRepository.getCustomerById(id);
         return customer;
     }
 

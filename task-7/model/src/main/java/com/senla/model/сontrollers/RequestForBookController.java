@@ -1,14 +1,18 @@
 package main.java.com.senla.model.сontrollers;
 
+import annotation.MyAutoWired;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.entity.Order;
 import main.java.com.senla.model.entity.RequestForBook;
 import main.java.com.senla.model.service.RequestForBookServiceImpl;
+import main.java.com.senla.model.service.api.RequestForBookService;
 
 import java.util.List;
 
 public class RequestForBookController {
     private static RequestForBookController instance;
+    @MyAutoWired
+    private RequestForBookService requestForBookService;
 
     private RequestForBookController(){
 
@@ -22,44 +26,44 @@ public class RequestForBookController {
     }
 
     public void closerRequestForBooksAfterArrivingBook(Book book){
-        RequestForBookServiceImpl.getInstance().closerRequestForBooksAfterArrivingBook(book);
+        requestForBookService.closerRequestForBooksAfterArrivingBook(book);
     }
 
     public RequestForBook getRequestForBookById(int id){
-        RequestForBook requestForBook = RequestForBookServiceImpl.getInstance().getRequestForBookById(id);
+        RequestForBook requestForBook = requestForBookService.getRequestForBookById(id);
         return requestForBook;
     }
 
     public void addRequestForBookToList(RequestForBook requestForBook){
-        RequestForBookServiceImpl.getInstance().addRequestForBookToList(requestForBook);
+        requestForBookService.addRequestForBookToList(requestForBook);
     }
 
     public void updateRequestForBook(RequestForBook requestForBook){
-        RequestForBookServiceImpl.getInstance().updateRequestForBook(requestForBook);
+        requestForBookService.updateRequestForBook(requestForBook);
     }
 
     public void showListOfRequestsForBooks() {
-        RequestForBookServiceImpl.getInstance().showListOfRequestsForBooks();
+        requestForBookService.showListOfRequestsForBooks();
     }
 
     public void sortRequestByCount(){
-        RequestForBookServiceImpl.getInstance().sortRequestByCount();
+        requestForBookService.sortRequestByCount();
     }
 
     public void sortRequestByAlphabet(){
-        RequestForBookServiceImpl.getInstance().sortRequestByCount();
+        requestForBookService.sortRequestByCount();
     }
 
     public RequestForBook createRequestForBook(Book book, Order order) {
-       RequestForBook requestForBook = RequestForBookServiceImpl.getInstance().createRequestForBook(book, order);
+       RequestForBook requestForBook = requestForBookService.createRequestForBook(book, order);
        return requestForBook;
     }
     public List<RequestForBook> getListOfRequestForBook(){
-        List<RequestForBook> requestForBookList = RequestForBookServiceImpl.getInstance().getListOfRequestForBook();
+        List<RequestForBook> requestForBookList = requestForBookService.getListOfRequestForBook();
         return  requestForBookList;
     }
 
     public void setListOfRequestForBook(List<RequestForBook> requestForBooks){
-        RequestForBookServiceImpl.getInstance().setListOfRequestForBook(requestForBooks);
+        requestForBookService.setListOfRequestForBook(requestForBooks);
     }
 }

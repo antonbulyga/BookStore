@@ -1,46 +1,43 @@
 package main.java.com.senla.model.service;
 
+import annotation.Component;
+import annotation.MyAutoWired;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.entity.StockLevel;
 import main.java.com.senla.model.repository.StockLevelRepositoryImpl;
+import main.java.com.senla.model.repository.api.StockLevelRepository;
+import main.java.com.senla.model.service.api.BookService;
+import main.java.com.senla.model.service.api.StockLevelService;
 
 import java.util.List;
 
-public class StockLevelServiceImpl {
-    private static StockLevelServiceImpl instance;
-
-
-    private StockLevelServiceImpl() {
-
-    }
-
-    public static StockLevelServiceImpl getInstance(){
-        if(instance == null){
-            instance = new StockLevelServiceImpl();
-        }
-        return instance;
-    }
+@Component
+public class StockLevelServiceImpl implements StockLevelService {
+    @MyAutoWired
+    private StockLevelRepository stockLevelRepository;
+    @MyAutoWired
+    private BookService bookService;
 
     public List<StockLevel> getListOfStockLevels(){
-        List<StockLevel> stockLevels = StockLevelRepositoryImpl.getInstance().getListOfStockLevels();
+        List<StockLevel> stockLevels = stockLevelRepository.getListOfStockLevels();
         return stockLevels;
     }
 
     public void stockLevelsUpdate(Book book) {
-        List<StockLevel> stockLevels = StockLevelRepositoryImpl.getInstance().getListOfStockLevels();
+        List<StockLevel> stockLevels = stockLevelRepository.getListOfStockLevels();
         for (int i = 0; i < stockLevels.size(); i++) {
             if (stockLevels.get(i).getBook().getId() == book.getId()) {
-                BookServiceImpl.getInstance().arriveBookToStock(book);
+                bookService.arriveBookToStock(book);
             }
         }
     }
 
     public void setListOfStockLevels(List<StockLevel> stockLevels){
-        StockLevelRepositoryImpl.getInstance().setListOfStockLevels(stockLevels);
+        stockLevelRepository.setListOfStockLevels(stockLevels);
     }
 
     public void setArrayOfStockLevels(List<StockLevel> stockLevels){
-        StockLevelRepositoryImpl.getInstance().setListOfStockLevels(stockLevels);
+        stockLevelRepository.setListOfStockLevels(stockLevels);
     }
 
 }

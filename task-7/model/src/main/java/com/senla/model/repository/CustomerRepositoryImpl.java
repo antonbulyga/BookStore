@@ -1,29 +1,19 @@
 package main.java.com.senla.model.repository;
 
+import annotation.Component;
+import annotation.MyAutoWired;
 import main.java.com.senla.model.entity.Customer;
+import main.java.com.senla.model.repository.api.CustomerRepository;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class CustomerRepositoryImpl {
-    private static CustomerRepositoryImpl instance;
+@Component
+public class CustomerRepositoryImpl implements CustomerRepository {
     private List<Customer> listOfCustomers = new ArrayList<>();
 
-    private CustomerRepositoryImpl(){
-
-    }
-
-    public static CustomerRepositoryImpl getInstance(){
-        if(instance == null){
-            instance = new CustomerRepositoryImpl();
-        }
-        return instance;
-    }
-
     public void addCustomerToListOfCustomers(Customer customer){
-        List<Customer> customers = CustomerRepositoryImpl.getInstance().getListOfCustomers();
-        customers.add(customer);
-        CustomerRepositoryImpl.getInstance().setListOfCustomers(customers);
+       listOfCustomers.add(customer);
     }
 
     public Customer createCustomer(int id, int age, String name){
@@ -32,7 +22,7 @@ public class CustomerRepositoryImpl {
     }
 
     public void updateCustomer(Customer customer){
-        List<Customer> customerList = CustomerRepositoryImpl.getInstance().getListOfCustomers();
+        List<Customer> customerList = getListOfCustomers();
         for (int i = 0; i < customerList.size(); i++) {
             if(customer.getId() == customerList.get(i).getId()){
                 deleteCustomer(customerList.get(i));
@@ -43,17 +33,17 @@ public class CustomerRepositoryImpl {
     }
 
     public void deleteCustomer(Customer customer){
-        List<Customer> customerList = CustomerRepositoryImpl.getInstance().getListOfCustomers();
+        List<Customer> customerList = getListOfCustomers();
         for (int i = 0; i < customerList.size(); i++) {
             if(customerList.get(i).getId() == customer.getId()){
                 customerList.remove(customerList.get(i));
             }
-            CustomerRepositoryImpl.getInstance().setListOfCustomers(customerList);
+            setListOfCustomers(customerList);
         }
     }
 
     public Customer getCustomerById(int id){
-        List<Customer> customers = CustomerRepositoryImpl.getInstance().getListOfCustomers();
+        List<Customer> customers = getListOfCustomers();
         Customer customer = null;
         for (int i = 0; i < customers.size(); i++) {
             if(customers.get(i).getId() == id){

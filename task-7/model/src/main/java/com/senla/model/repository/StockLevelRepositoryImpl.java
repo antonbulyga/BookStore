@@ -1,24 +1,14 @@
 package main.java.com.senla.model.repository;
 
+import annotation.Component;
 import main.java.com.senla.model.entity.StockLevel;
+import main.java.com.senla.model.repository.api.StockLevelRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-
-public class StockLevelRepositoryImpl {
-    private static StockLevelRepositoryImpl instance;
+@Component
+public class StockLevelRepositoryImpl implements StockLevelRepository {
     private List<StockLevel> listOfStockLevels = new ArrayList<>();
-
-    private StockLevelRepositoryImpl(){
-
-    }
-
-    public static StockLevelRepositoryImpl getInstance(){
-        if(instance == null){
-            instance = new StockLevelRepositoryImpl();
-        }
-        return instance;
-    }
 
     public List<StockLevel> getListOfStockLevels() {
         return listOfStockLevels;
