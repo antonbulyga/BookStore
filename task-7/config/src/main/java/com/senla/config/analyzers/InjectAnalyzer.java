@@ -16,7 +16,7 @@ import java.util.Set;
 public class InjectAnalyzer {
     public void setKeyFromAnnotation() throws IllegalAccessException, InstantiationException {
         Reflections reflections = new Reflections(Main.class.getPackage().getName());
-        Set<Class<? extends Object>> allClasses = reflections.getSubTypesOf(Object.class);
+        Set<Class<?>> allClasses = reflections.getTypesAnnotatedWith(Component.class);
         List<Object> listOfInstance = new ArrayList<>();
         for (Class cla : allClasses ) {
             listOfInstance.add(cla.newInstance());
