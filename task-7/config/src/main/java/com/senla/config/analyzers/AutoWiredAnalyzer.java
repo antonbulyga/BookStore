@@ -25,8 +25,8 @@ import java.util.Set;
                     for (Field declaredField : fields) {
                         if (declaredField.getAnnotations() != null) {
                             if (declaredField.isAnnotationPresent(MyAutoWired.class)) {
+                                Type type = declaredField.getType();
                                 for (int i = 0; i < listOfInstance.size(); i++) {
-                                    Type type = declaredField.getType();
                                     Object newObject = listOfInstance.get(i);
                                     for (Type implementationOfInterface : newObject.getClass().getInterfaces()){
                                         if(type.equals(implementationOfInterface)){

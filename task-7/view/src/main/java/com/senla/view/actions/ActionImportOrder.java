@@ -1,5 +1,6 @@
 package main.java.com.senla.view.actions;
 
+import main.java.com.senla.config.annotations.Component;
 import main.java.com.senla.config.annotations.MyInject;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.entity.Customer;
@@ -16,7 +17,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-
+@Component
 public class ActionImportOrder implements IAction {
     @MyInject(key = "orderFile")
     private String path;

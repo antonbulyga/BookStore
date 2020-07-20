@@ -1,5 +1,6 @@
 package main.java.com.senla.view.actions;
 
+import main.java.com.senla.config.annotations.Component;
 import main.java.com.senla.config.annotations.MyInject;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.entity.Order;
@@ -13,7 +14,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
-
+@Component
 public class ActionImportRequestForBook implements IAction {
     @MyInject(key = "requestForBookFile")
     private String path;
