@@ -1,9 +1,8 @@
 package main.java.com.senla.config.analyzers;
 
-
-
 import main.java.com.senla.config.annotations.Component;
 import main.java.com.senla.config.annotations.MyInject;
+import main.java.com.senla.config.enumeration.AnnotationEnums;
 import main.java.com.senla.model.Main;
 import main.java.com.senla.model.utils.PropertyData;
 import org.reflections.Reflections;
@@ -14,6 +13,7 @@ import java.util.List;
 import java.util.Set;
 
 public class InjectAnalyzer {
+
     public void setKeyFromAnnotation() throws IllegalAccessException, InstantiationException {
         Reflections reflections = new Reflections(Main.class.getPackage().getName());
         Set<Class<?>> allClasses = reflections.getTypesAnnotatedWith(Component.class);
@@ -31,8 +31,19 @@ public class InjectAnalyzer {
                     String pathOfProperty = config.path();
                     String pathByKey = PropertyData.getProperty(key, pathOfProperty);
                     field.setAccessible(true);
-                    field.set(field, pathByKey);
-                    field.setAccessible(false);
+                    AnnotationEnums type = config.type();
+                    switch(type) {
+                        case STRING:
+                            field.set(field, pathByKey);
+                            break;
+                        case INT:
+                            field.set(field, Integer.parseInt(pathByKey));
+                            break;
+                        case BOOLEAN:
+                            field.set(field, Boolean.parseBoolean(pathByKey));
+                            break;
+                    }
+
                 }
             }
 

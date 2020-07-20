@@ -16,7 +16,6 @@ import java.util.Set;
             List<Object> listOfInstance = new ArrayList<>();
             Reflections reflections = new Reflections(Main.class.getPackage().getName());
             Set<Class<?>> allClassesWithComponentAnn = reflections.getTypesAnnotatedWith(Component.class);
-            Set<Class<?>> allClasses = reflections.getSubTypesOf(Object.class);
             for (Class cla : allClassesWithComponentAnn) {
                 listOfInstance.add(cla.newInstance());
             }
