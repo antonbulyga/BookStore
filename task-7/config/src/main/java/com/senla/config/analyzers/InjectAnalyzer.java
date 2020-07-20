@@ -1,5 +1,9 @@
-package annotation;
+package main.java.com.senla.config.analyzers;
 
+
+
+import main.java.com.senla.config.annotations.Component;
+import main.java.com.senla.config.annotations.MyInject;
 import main.java.com.senla.model.Main;
 import main.java.com.senla.model.utils.PropertyData;
 import org.reflections.Reflections;
@@ -10,17 +14,15 @@ import java.util.List;
 import java.util.Set;
 
 public class InjectAnalyzer {
-    public static void setKeyFromAnnotation() throws IllegalAccessException, InstantiationException {
+    public void setKeyFromAnnotation() throws IllegalAccessException, InstantiationException {
         Reflections reflections = new Reflections(Main.class.getPackage().getName());
-        Set<Class<? extends Object>> allClassesWithComponentAnn = reflections.getSubTypesOf(Object.class);
-        Class[] allClassesWithComponentAnnotationArray = (Class[]) allClassesWithComponentAnn.toArray();
-        List<Object> listOfObjects = new ArrayList<>();
-        for (int i = 0; i < allClassesWithComponentAnnotationArray.length; i++) {
-            Object object = allClassesWithComponentAnnotationArray[i].newInstance();
-            listOfObjects.add(object);
+        Set<Class<?>> allClassesWithComponentAnn = reflections.getTypesAnnotatedWith(Component.class);
+        List<Object> listOfInstance = new ArrayList<>();
+        for (Class cla : allClassesWithComponentAnn ) {
+            listOfInstance.add(cla.newInstance());
         }
-        for (int i = 0; i < listOfObjects.size(); i++) {
-            Class clazz = listOfObjects.get(i).getClass();
+        for (int i = 0; i < listOfInstance.size(); i++) {
+            Class clazz = listOfInstance.get(i).getClass();
             Field[] fields = clazz.getDeclaredFields();
             for (Field field : fields) {
                 if (field.isAnnotationPresent(MyInject.class)) {

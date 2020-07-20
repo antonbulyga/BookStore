@@ -52,7 +52,7 @@ public class ActionSumOfMoneyPerPeriodOfTime implements IAction {
             System.out.println("Incorrect input date");
         }
 
-        List<Order> listOfOrdersInStore = OrderRepositoryImpl.getInstance().getListOfOrders();
+        List<Order> listOfOrdersInStore = OrderController.getInstance().getListOfOrders();
         OrderController.getInstance().sumOfMoneyPerPeriodOfTime(listOfOrdersInStore, firstDate, secondDate);
 
     }

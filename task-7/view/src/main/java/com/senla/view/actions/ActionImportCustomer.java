@@ -1,8 +1,7 @@
 package main.java.com.senla.view.actions;
 
-import annotation.MyInject;
+import main.java.com.senla.config.annotations.MyInject;
 import main.java.com.senla.model.entity.Customer;
-import main.java.com.senla.model.utils.PropertyData;
 import main.java.com.senla.model.сontrollers.CustomerController;
 import main.java.com.senla.view.api.IAction;
 

@@ -1,7 +1,7 @@
 package main.java.com.senla.model.repository;
 
-import annotation.Component;
-import annotation.MyAutoWired;
+import main.java.com.senla.config.annotations.Component;
+import main.java.com.senla.config.annotations.MyAutoWired;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.entity.Customer;
 import main.java.com.senla.model.entity.Order;

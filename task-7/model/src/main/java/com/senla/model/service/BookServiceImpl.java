@@ -1,14 +1,10 @@
 package main.java.com.senla.model.service;
 
-import annotation.Component;
-import annotation.MyAutoWired;
-import annotation.MyInject;
+import main.java.com.senla.config.annotations.Component;
+import main.java.com.senla.config.annotations.MyAutoWired;
+import main.java.com.senla.config.annotations.MyInject;
 import main.java.com.senla.model.entity.*;
 import main.java.com.senla.model.enumeration.BookStatus;
-import main.java.com.senla.model.repository.BookRepositoryImpl;
-import main.java.com.senla.model.repository.OrderRepositoryImpl;
-import main.java.com.senla.model.repository.RequestForBookRepositoryImpl;
-import main.java.com.senla.model.repository.StockLevelRepositoryImpl;
 import main.java.com.senla.model.repository.api.BookRepository;
 import main.java.com.senla.model.repository.api.OrderRepository;
 import main.java.com.senla.model.repository.api.StockLevelRepository;
@@ -23,7 +19,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 @Component
 public class BookServiceImpl implements BookService {
     @MyAutoWired

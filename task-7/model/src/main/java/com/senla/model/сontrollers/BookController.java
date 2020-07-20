@@ -1,8 +1,7 @@
 package main.java.com.senla.model.сontrollers;
 
-import annotation.MyAutoWired;
+import main.java.com.senla.config.annotations.MyAutoWired;
 import main.java.com.senla.model.entity.Book;
-import main.java.com.senla.model.service.BookServiceImpl;
 import main.java.com.senla.model.service.api.BookService;
 
 import java.time.LocalDate;

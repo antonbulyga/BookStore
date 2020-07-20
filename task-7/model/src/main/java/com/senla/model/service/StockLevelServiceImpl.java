@@ -1,16 +1,14 @@
 package main.java.com.senla.model.service;
 
-import annotation.Component;
-import annotation.MyAutoWired;
+import main.java.com.senla.config.annotations.Component;
+import main.java.com.senla.config.annotations.MyAutoWired;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.entity.StockLevel;
-import main.java.com.senla.model.repository.StockLevelRepositoryImpl;
 import main.java.com.senla.model.repository.api.StockLevelRepository;
 import main.java.com.senla.model.service.api.BookService;
 import main.java.com.senla.model.service.api.StockLevelService;
 
 import java.util.List;
-
 @Component
 public class StockLevelServiceImpl implements StockLevelService {
     @MyAutoWired

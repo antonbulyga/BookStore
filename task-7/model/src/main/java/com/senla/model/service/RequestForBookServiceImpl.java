@@ -1,9 +1,8 @@
 package main.java.com.senla.model.service;
 
-import annotation.Component;
-
-import annotation.MyAutoWired;
-import annotation.MyInject;
+import main.java.com.senla.config.annotations.Component;
+import main.java.com.senla.config.annotations.MyAutoWired;
+import main.java.com.senla.config.annotations.MyInject;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.repository.api.RequestForBookRepository;
 import main.java.com.senla.model.service.api.BookService;
@@ -15,7 +14,6 @@ import main.java.com.senla.model.entity.RequestForBook;
 
 import java.util.Collections;
 import java.util.List;
-
 @Component
 public class RequestForBookServiceImpl implements RequestForBookService {
     @MyAutoWired

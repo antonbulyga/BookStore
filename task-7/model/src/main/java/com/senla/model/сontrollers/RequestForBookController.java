@@ -1,10 +1,9 @@
 package main.java.com.senla.model.сontrollers;
 
-import annotation.MyAutoWired;
+import main.java.com.senla.config.annotations.MyAutoWired;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.entity.Order;
 import main.java.com.senla.model.entity.RequestForBook;
-import main.java.com.senla.model.service.RequestForBookServiceImpl;
 import main.java.com.senla.model.service.api.RequestForBookService;
 
 import java.util.List;

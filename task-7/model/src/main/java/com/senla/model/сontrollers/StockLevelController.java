@@ -1,9 +1,8 @@
 package main.java.com.senla.model.сontrollers;
 
-import annotation.MyAutoWired;
+import main.java.com.senla.config.annotations.MyAutoWired;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.entity.StockLevel;
-import main.java.com.senla.model.service.StockLevelServiceImpl;
 import main.java.com.senla.model.service.api.StockLevelService;
 
 import java.util.List;

@@ -1,17 +1,13 @@
 package main.java.com.senla.model.service;
 
-import annotation.Component;
-import annotation.MyAutoWired;
+import main.java.com.senla.config.annotations.Component;
+import main.java.com.senla.config.annotations.MyAutoWired;
 import main.java.com.senla.model.entity.*;
 import main.java.com.senla.model.enumeration.BookStatus;
-import main.java.com.senla.model.repository.OrderRepositoryImpl;
-import main.java.com.senla.model.repository.RequestForBookRepositoryImpl;
-import main.java.com.senla.model.repository.StockLevelRepositoryImpl;
 import main.java.com.senla.model.repository.api.OrderRepository;
 import main.java.com.senla.model.repository.api.RequestForBookRepository;
 import main.java.com.senla.model.repository.api.StockLevelRepository;
 import main.java.com.senla.model.service.api.OrderService;
-import main.java.com.senla.model.service.api.RequestForBookService;
 import main.java.com.senla.model.utils.generators.RequestForBookIdGenerator;
 import main.java.com.senla.model.сomparators.OrderDataOfDoneComparator;
 import main.java.com.senla.model.сomparators.OrderPriceComparator;
@@ -23,9 +19,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 @Component
-public class OrderServiceImpl {
+public class OrderServiceImpl implements OrderService {
     @MyAutoWired
     private OrderRepository orderRepository;
     @MyAutoWired

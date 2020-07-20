@@ -1,6 +1,5 @@
 package main.java.com.senla.model.repository;
 
-import annotation.Component;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.entity.Order;
 import main.java.com.senla.model.entity.RequestForBook;
@@ -10,7 +9,6 @@ import main.java.com.senla.model.сomparators.RequestForBookStatus;
 
 import java.util.ArrayList;
 import java.util.List;
-@Component
 public class RequestForBookRepositoryImpl implements RequestForBookRepository {
     private List<RequestForBook> listOfRequestForBooks = new ArrayList<>();
 

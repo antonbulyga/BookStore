@@ -1,9 +1,7 @@
 package main.java.com.senla.model.сontrollers;
 
-import annotation.MyAutoWired;
+import main.java.com.senla.config.annotations.MyAutoWired;
 import main.java.com.senla.model.entity.Customer;
-import main.java.com.senla.model.repository.api.CustomerRepository;
-import main.java.com.senla.model.service.CustomerServiceImpl;
 import main.java.com.senla.model.service.api.CustomerService;
 
 import java.util.List;

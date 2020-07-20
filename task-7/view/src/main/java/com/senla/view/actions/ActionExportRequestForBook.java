@@ -1,6 +1,6 @@
 package main.java.com.senla.view.actions;
 
-import annotation.MyInject;
+import main.java.com.senla.config.annotations.MyInject;
 import main.java.com.senla.model.entity.RequestForBook;
 import main.java.com.senla.model.utils.ExportHelper;
 import main.java.com.senla.model.сontrollers.RequestForBookController;

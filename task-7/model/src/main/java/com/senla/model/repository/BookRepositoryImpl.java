@@ -1,7 +1,5 @@
 package main.java.com.senla.model.repository;
 
-import annotation.Component;
-import annotation.MyAutoWired;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.entity.RequestForBook;
 import main.java.com.senla.model.enumeration.BookStatus;
@@ -10,7 +8,6 @@ import main.java.com.senla.model.repository.api.BookRepository;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-@Component
 public class BookRepositoryImpl implements BookRepository {
     private List<Book> listOfBooksInStorehouse = new ArrayList<>();
 
