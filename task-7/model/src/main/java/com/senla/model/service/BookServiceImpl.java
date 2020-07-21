@@ -79,7 +79,7 @@ public class BookServiceImpl implements BookService {
     }
 
     public void exportBook(){
-        List<Book> bookList = BookController.getInstance().getListOfBooksInStoreHouse();
+        List<Book> bookList = getListOfBooksInStoreHouse();
         ExportHelper.write(null, bookList, null, null, path);
     }
 

@@ -1,12 +1,16 @@
 package main.java.com.senla.model.сontrollers;
 
+import main.java.com.senla.config.annotations.Component;
+import main.java.com.senla.config.annotations.MyAutoWired;
 import main.java.com.senla.model.entity.Customer;
-import main.java.com.senla.model.service.CustomerServiceImpl;
+import main.java.com.senla.model.service.api.CustomerService;
 
 import java.util.List;
 
 public class CustomerController {
     private static CustomerController instance;
+    @MyAutoWired
+    private CustomerService customerService;
 
     private CustomerController(){
 
@@ -19,31 +23,38 @@ public class CustomerController {
         return instance;
     }
 
+    public void importCustomer(){
+        customerService.importCustomer();
+    }
+
+    public void exportCustomer(){
+        customerService.exportCustomer();
+    }
 
     public List<Customer> getListOfCustomers(){
-       List<Customer> customers = CustomerServiceImpl.getInstance().getListOfCustomers();
+       List<Customer> customers = customerService.getListOfCustomers();
         return customers;
     }
 
     public void setListOfCustomers(List<Customer> customers){
-        CustomerServiceImpl.getInstance().setListOfCustomers(customers);
+        customerService.setListOfCustomers(customers);
     }
 
     public void addCustomerToListOfCustomers(Customer customer){
-        CustomerServiceImpl.getInstance().addCustomerToListOfCustomers(customer);
+        customerService.addCustomerToListOfCustomers(customer);
     }
 
     public Customer createCustomer(int id, int age, String name){
-       Customer customer = CustomerServiceImpl.getInstance().createCustomer(id, age, name);
+       Customer customer = customerService.createCustomer(id, age, name);
         return customer;
     }
 
     public Customer getCustomerById(int id){
-        Customer customer = CustomerServiceImpl.getInstance().getCustomerById(id);
+        Customer customer = customerService.getCustomerById(id);
         return customer;
     }
 
     public void updateCustomer(Customer customer){
-        CustomerServiceImpl.getInstance().updateCustomer(customer);
+        customerService.updateCustomer(customer);
     }
 }

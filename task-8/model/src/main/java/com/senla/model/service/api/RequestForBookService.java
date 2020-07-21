@@ -31,4 +31,8 @@ public interface RequestForBookService {
 
     RequestForBook getRequestForBookById(int id);
 
+    void importRequestForBook();
+
+    void exportRequestForBook();
+
 }

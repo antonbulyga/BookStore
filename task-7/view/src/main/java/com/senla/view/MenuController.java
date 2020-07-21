@@ -10,7 +10,7 @@ public class MenuController {
     private Builder builder = Builder.getInstance();
     private Navigator navigator = Navigator.getInstance();
 
-    public void run(){
+    public void run() throws IOException {
         builder.buildMenu();
         navigator.setCurrentMenu(builder.getRootMenu());
         try{
@@ -21,8 +21,10 @@ public class MenuController {
                 int index = Integer.parseInt(reader.readLine());
                 navigator.navigate(index);
             }
-        } catch (IOException | NumberFormatException | IllegalAccessException e) {
+        } catch (IOException | NumberFormatException e) {
             System.out.println("Incorrect index, please try again");
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
         }
 
     }
