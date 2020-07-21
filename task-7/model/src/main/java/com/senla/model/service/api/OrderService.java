@@ -26,4 +26,6 @@ public interface OrderService {
     void showDetailsOfOrder(Order order);
     void changeOrderStatusToCancelled(Order order);
     void countOfDoneOrdersByPeriodOfTime(List<Order> orders, LocalDate date1, LocalDate date2);
+    void importOrder();
+    void exportOrder();
 }

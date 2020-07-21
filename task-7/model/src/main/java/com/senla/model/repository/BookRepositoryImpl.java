@@ -1,5 +1,6 @@
 package main.java.com.senla.model.repository;
 
+import main.java.com.senla.config.annotations.MyInject;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.entity.RequestForBook;
 import main.java.com.senla.model.enumeration.BookStatus;

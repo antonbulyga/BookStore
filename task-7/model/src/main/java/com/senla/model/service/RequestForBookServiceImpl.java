@@ -7,11 +7,18 @@ import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.repository.api.RequestForBookRepository;
 import main.java.com.senla.model.service.api.BookService;
 import main.java.com.senla.model.service.api.RequestForBookService;
+import main.java.com.senla.model.utils.ExportHelper;
 import main.java.com.senla.model.сomparators.RequestForBookAlphabeticalComparator;
 import main.java.com.senla.model.сomparators.RequestForBookCountComparator;
 import main.java.com.senla.model.entity.Order;
 import main.java.com.senla.model.entity.RequestForBook;
+import main.java.com.senla.model.сontrollers.BookController;
+import main.java.com.senla.model.сontrollers.OrderController;
+import main.java.com.senla.model.сontrollers.RequestForBookController;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 @Component
@@ -21,8 +28,42 @@ public class RequestForBookServiceImpl implements RequestForBookService {
     @MyAutoWired
     private BookService bookService;
     @MyInject(key = "ableOfChange")
-    private static String flag;
+    private String flag;
+    @MyInject(key = "requestForBookFile")
+    private String path;
 
+    public void importRequestForBook(){
+        List<Order> orders = OrderController.getInstance().getListOfOrders();
+        List<Book> books = BookController.getInstance().getListOfBooksInStoreHouse();
+        List<RequestForBook> requestForBooks = RequestForBookController.getInstance().getListOfRequestForBook();
+        try(BufferedReader reader = new BufferedReader(new FileReader(path))){
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] strings = line.split(",");
+                int id = Integer.parseInt(strings[0]);
+                int bookId = Integer.parseInt(strings[1]);
+                String requestForBookStatus = strings[2];
+                int orderId = Integer.parseInt(strings[3]);
+                RequestForBook requestForBook = RequestForBookController.getInstance().createRequestForBook(books.get(bookId),orders.get(orderId));
+                for (int i = 0; i < requestForBooks.size(); i++) {
+                    if(requestForBook.getId() == requestForBooks.get(i).getId()){
+                        RequestForBookController.getInstance().updateRequestForBook(requestForBook);
+                    }
+                    else {
+                        RequestForBookController.getInstance().addRequestForBookToList(requestForBook);
+                    }
+                }
+
+            }
+        } catch (IOException e) {
+            System.err.println("We have no file");
+        }
+    }
+
+    public void exportRequestForBook(){
+        List<RequestForBook> requestForBookList = RequestForBookController.getInstance().getListOfRequestForBook();
+        ExportHelper.write(null, null, null, requestForBookList, path);
+    }
 
     public void closerRequestForBooksAfterArrivingBook(Book book){
         boolean ableToChange = getAbleToChangeRequestForBookStatusFromProperty();

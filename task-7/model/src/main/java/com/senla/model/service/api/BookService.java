@@ -26,6 +26,8 @@ public interface BookService {
     void sortBookByPublicationDate();
     Book getBookById(int id);
     void bookSort();
+    void importBook();
+    void exportBook();
 }
 
 

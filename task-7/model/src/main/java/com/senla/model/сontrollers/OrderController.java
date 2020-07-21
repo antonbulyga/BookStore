@@ -26,6 +26,14 @@ public class OrderController {
         return instance;
     }
 
+    public void importOrder(){
+        orderService.importOrder();
+    }
+
+    public void exportOrder(){
+        orderService.exportOrder();
+    }
+
     public void sumOfMoneyPerPeriodOfTime(List<Order> orders , LocalDate date1, LocalDate date2) {
         orderService.sumOfMoneyPerPeriodOfTime(orders, date1, date2);
     }

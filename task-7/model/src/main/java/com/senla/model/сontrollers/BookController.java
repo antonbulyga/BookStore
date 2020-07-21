@@ -23,6 +23,13 @@ public class BookController {
         }
         return instance;
     }
+    public void exportBook(){
+        bookService.exportBook();
+    }
+
+    public void importBook(){
+        bookService.importBook();
+    }
 
     public void deleteBook(Book book){
        bookService.deleteBook(book);

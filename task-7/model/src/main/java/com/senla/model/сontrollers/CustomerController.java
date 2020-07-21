@@ -23,6 +23,13 @@ public class CustomerController {
         return instance;
     }
 
+    public void importCustomer(){
+        customerService.importCustomer();
+    }
+
+    public void exportCustomer(){
+        customerService.exportCustomer();
+    }
 
     public List<Customer> getListOfCustomers(){
        List<Customer> customers = customerService.getListOfCustomers();

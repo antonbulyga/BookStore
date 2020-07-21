@@ -8,14 +8,11 @@ import main.java.com.senla.model.сontrollers.OrderController;
 import main.java.com.senla.view.api.IAction;
 
 import java.util.List;
-@Component
+
 public class ActionExportOrder implements IAction {
-    @MyInject(key = "orderFile")
-    private String path;
 
     @Override
     public void execute() {
-        List<Order> orderList = OrderController.getInstance().getListOfOrders();
-        ExportHelper.write(orderList, null, null, null, path);
+        OrderController.getInstance().exportOrder();
     }
 }

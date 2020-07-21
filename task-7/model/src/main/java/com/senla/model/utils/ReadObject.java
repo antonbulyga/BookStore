@@ -1,5 +1,6 @@
 package main.java.com.senla.model.utils;
 
+import main.java.com.senla.config.annotations.Component;
 import main.java.com.senla.config.annotations.MyInject;
 import main.java.com.senla.model.entity.*;
 import main.java.com.senla.model.сontrollers.*;
@@ -7,6 +8,7 @@ import main.java.com.senla.model.сontrollers.*;
 import java.io.*;
 import java.util.List;
 
+@Component
 public class ReadObject {
     @MyInject(key = "bookStoreData")
     private static String path;

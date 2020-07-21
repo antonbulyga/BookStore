@@ -6,6 +6,7 @@ import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.entity.Order;
 import main.java.com.senla.model.entity.RequestForBook;
 import main.java.com.senla.model.service.api.RequestForBookService;
+import main.java.com.senla.model.utils.ExportHelper;
 
 import java.util.List;
 
@@ -16,6 +17,14 @@ public class RequestForBookController {
 
     private RequestForBookController(){
 
+    }
+
+    public void importRequestForBook(){
+        requestForBookService.importRequestForBook();
+    }
+
+    public void exportRequestForBook(){
+        requestForBookService.exportRequestForBook();
     }
 
     public static  RequestForBookController getInstance() {

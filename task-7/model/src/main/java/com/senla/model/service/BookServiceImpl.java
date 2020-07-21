@@ -11,10 +11,18 @@ import main.java.com.senla.model.repository.api.StockLevelRepository;
 import main.java.com.senla.model.service.api.BookService;
 import main.java.com.senla.model.service.api.OrderService;
 import main.java.com.senla.model.service.api.RequestForBookService;
+import main.java.com.senla.model.service.api.StockLevelService;
+import main.java.com.senla.model.utils.ExportHelper;
 import main.java.com.senla.model.utils.generators.StockLevelIdGenerator;
 import main.java.com.senla.model.сomparators.*;
+import main.java.com.senla.model.сontrollers.BookController;
+import main.java.com.senla.model.сontrollers.StockLevelController;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,12 +39,53 @@ public class BookServiceImpl implements BookService {
     private RequestForBookService requestForBookService;
     @MyAutoWired
     private OrderService orderService;
+    @MyAutoWired
+    private StockLevelService stockLevelService;
+    @MyInject(key = "bookFile")
+    private String path;
+    @MyInject(key = "maxCountOfMonth")
+    private String maxCountOfMonthString;
+
+
+    public void importBook(){
+        List<Book> bookList = getListOfBooksInStoreHouse();
+        try{
+            BufferedReader reader = new BufferedReader(new FileReader(path));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] strings = line.split(",");
+                int id = Integer.parseInt(strings[0]);
+                String author = strings[1];
+                String title = strings[2];
+                double price = Double.parseDouble(strings[3]);
+                String bookStatus = strings[4];
+                String publicationDateString = strings[5];
+                DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd,MM,yyyy");
+                LocalDate publicationDate = LocalDate.parse(publicationDateString, dateTimeFormatter);
+                Book book = createBook(id, title, author, price, publicationDate);
+                if (bookList.get(id).getId() == book.getId()) {
+                    bookUpdate(book);
+                    stockLevelService.stockLevelsUpdate(book);
+
+                } else {
+                    addBookToListOfBookInTheStorehouse(book);
+                }
+            }
+        } catch (IOException e) {
+            System.err.println("We have no file");
+        }
+    }
+
+    public void exportBook(){
+        List<Book> bookList = BookController.getInstance().getListOfBooksInStoreHouse();
+        ExportHelper.write(null, bookList, null, null, path);
+    }
 
     public Book createBook(int id, String title, String author, double price, LocalDate publicationDate){
         Book book = bookRepository.createBook(id, title, author, price, publicationDate);
-        requestForBookService.closerRequestForBooksAfterArrivingBook(book);
-        //BookService.getInstance().arriveBookToStock(book);
-        //BookService.getInstance().completingRequestAfterArrivingNewBook(book);
+        //requestForBookService.closerRequestForBooksAfterArrivingBook(book);
+        arriveBookToStock(book);
+        completingRequestAfterArrivingNewBook(book);
        return book;
     }
     public List<Book> getListOfBooksInStoreHouse(){
@@ -78,8 +127,6 @@ public class BookServiceImpl implements BookService {
 
     public int getCountOfMonthToMarkBookAsStale(){
         int countOfMonthToMarkBookAsStale = 0;
-        @MyInject(key = "maxCountOfMonth")
-        String maxCountOfMonthString = null;
         String countOfMonthToMarkBookAsStaleString = maxCountOfMonthString;
         try {
             countOfMonthToMarkBookAsStale = Integer.parseInt(countOfMonthToMarkBookAsStaleString);
