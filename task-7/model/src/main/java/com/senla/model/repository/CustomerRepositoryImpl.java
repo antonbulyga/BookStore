@@ -1,11 +1,12 @@
 package main.java.com.senla.model.repository;
 
+import main.java.com.senla.config.annotations.Component;
 import main.java.com.senla.model.entity.Customer;
 import main.java.com.senla.model.repository.api.CustomerRepository;
 
 import java.util.ArrayList;
 import java.util.List;
-
+@Component
 public class CustomerRepositoryImpl implements CustomerRepository {
     private List<Customer> listOfCustomers = new ArrayList<>();
 

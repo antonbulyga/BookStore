@@ -31,8 +31,6 @@ public class DIContainer {
         }
         for (int i = 0; i < listOfInstance.size(); i++) {
             autoWiredAnalyzer.createNewInstance(listOfInstance.get(i), listOfInstance);
-        }
-        for (int i = 0; i < listOfInstance.size(); i++) {
             injectAnalyzer.setKeyFromAnnotation(listOfInstance.get(i));
         }
 

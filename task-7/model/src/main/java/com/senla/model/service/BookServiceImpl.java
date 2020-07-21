@@ -3,7 +3,10 @@ package main.java.com.senla.model.service;
 import main.java.com.senla.config.annotations.Component;
 import main.java.com.senla.config.annotations.MyAutoWired;
 import main.java.com.senla.config.annotations.MyInject;
-import main.java.com.senla.model.entity.*;
+import main.java.com.senla.model.entity.Book;
+import main.java.com.senla.model.entity.Order;
+import main.java.com.senla.model.entity.RequestForBook;
+import main.java.com.senla.model.entity.StockLevel;
 import main.java.com.senla.model.enumeration.BookStatus;
 import main.java.com.senla.model.repository.api.BookRepository;
 import main.java.com.senla.model.repository.api.OrderRepository;
@@ -16,7 +19,6 @@ import main.java.com.senla.model.utils.ExportHelper;
 import main.java.com.senla.model.utils.generators.StockLevelIdGenerator;
 import main.java.com.senla.model.сomparators.*;
 import main.java.com.senla.model.сontrollers.BookController;
-import main.java.com.senla.model.сontrollers.StockLevelController;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -86,7 +88,7 @@ public class BookServiceImpl implements BookService {
         //requestForBookService.closerRequestForBooksAfterArrivingBook(book);
         arriveBookToStock(book);
         completingRequestAfterArrivingNewBook(book);
-       return book;
+        return book;
     }
     public List<Book> getListOfBooksInStoreHouse(){
        List<Book> books = bookRepository.getListOfBooksInStorehouse();
