@@ -70,7 +70,7 @@ public class OrderServiceImpl implements OrderService {
                 }
                 DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd,MM,yyyy");
                 LocalDate dateOfDoneOrder = LocalDate.parse(dateOfDoneOrderString, dateTimeFormatter);
-                Order order = OrderController.getInstance().createOrder(listOfBookInOrder, customers.get(customerId), dateOfDoneOrder);
+                Order order = createOrder(listOfBookInOrder, customers.get(customerId), dateOfDoneOrder);
                 for (int i = 0; i < listOfOrders.size(); i++) {
                     if(order.getId() == listOfOrders.get(i).getId()){
                         updateOrder(order);
@@ -88,7 +88,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public void exportOrder(){
-        List<Order> orderList = OrderController.getInstance().getListOfOrders();
+        List<Order> orderList = getListOfOrders();
         ExportHelper.write(orderList, null, null, null, path);
     }
 

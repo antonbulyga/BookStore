@@ -7,7 +7,7 @@ import java.lang.reflect.Field;
 
 public class InjectAnalyzer {
 
-    public void setKeyFromAnnotation(Object object) throws IllegalAccessException, InstantiationException {
+    public void setKeyFromAnnotation(Object object) throws IllegalAccessException {
             Class clazz = object.getClass();
             Field[] fields = clazz.getDeclaredFields();
             for (Field field : fields) {
