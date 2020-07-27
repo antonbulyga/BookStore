@@ -38,4 +38,5 @@ public class StockLevelServiceImpl implements StockLevelService {
         stockLevelRepository.setListOfStockLevels(stockLevels);
     }
 
+    
 }
