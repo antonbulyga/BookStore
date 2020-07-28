@@ -1,19 +1,26 @@
 package main.java.com.senla.model.utils;
 
+import main.java.com.senla.config.annotations.Component;
+import main.java.com.senla.config.annotations.MyInject;
 import main.java.com.senla.model.entity.*;
 import main.java.com.senla.model.сontrollers.*;
 
 import java.io.*;
 import java.util.List;
 
+@Component
 public class ReadObject {
+    @MyInject(key = "bookStoreData")
+    private static String path;
+
     public static void read(){
         List<Book> books;
         List<Order> orders;
         List<RequestForBook> requestForBooks;
         List<Customer> customers;
         List<StockLevel> stockLevels;
-            try(ObjectInputStream ois = new ObjectInputStream(new FileInputStream(PropertyData.getProperty("bookStoreData")))){
+            try{
+                ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path));
                 Store store = (Store) ois.readObject();
                 books = store.getBooks();
                 BookController.getInstance().setListOfBooksInStoreHouse(books);
