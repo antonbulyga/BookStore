@@ -11,20 +11,23 @@ class Producer implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
-            try {
-                System.out.println("Produced: " + produce());
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        synchronized (sharedQueue) {
+            while (true) {
+                if (sharedQueue.size() == SIZE) {
+                    try {
+                        sharedQueue.wait();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    System.out.println("Produced: " + produce());
+                }
             }
         }
     }
 
-    private double produce() throws InterruptedException {
+    private double produce() {
         synchronized (sharedQueue) {
-            if (sharedQueue.size() == SIZE) {
-                sharedQueue.wait();
-            }
             double newValue = Math.random();
             sharedQueue.add(newValue);
             sharedQueue.notifyAll();
