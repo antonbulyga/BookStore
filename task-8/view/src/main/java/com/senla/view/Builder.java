@@ -45,6 +45,7 @@ import java.util.List;
             listOfMenuItemsOfBook.add(new MenuItem(TitleOfMenuItem.SHOW_STALE_BOOK, new ActionShowStaleBooks(), booksMenu));
             listOfMenuItemsOfBook.add(new MenuItem(TitleOfMenuItem.BACK_TO_THE_MAIN_MENU, null, rootMenu));
             listOfMenuItemsOfBook.add(new MenuItem(TitleOfMenuItem.EXIT, new ActionExit(), null));
+            listOfMenuItemsOfBook.add(new MenuItem(TitleOfMenuItem.CUSTOM_SEARCH, new ActionCustomSearch(), booksMenu));
             booksMenu.setMenuItems(listOfMenuItemsOfBook);
             return booksMenu;
         }

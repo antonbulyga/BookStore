@@ -18,7 +18,6 @@ import main.java.com.senla.model.service.api.StockLevelService;
 import main.java.com.senla.model.utils.ExportHelper;
 import main.java.com.senla.model.utils.generators.StockLevelIdGenerator;
 import main.java.com.senla.model.сomparators.*;
-import main.java.com.senla.model.сontrollers.BookController;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -29,6 +28,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 @Component
 public class BookServiceImpl implements BookService {
     @MyAutoWired
@@ -48,6 +48,14 @@ public class BookServiceImpl implements BookService {
     @MyInject(key = "maxCountOfMonth")
     private String maxCountOfMonthString;
 
+    public void customSearch(String author, LocalDate endDate) {
+        List<Book> bookList = getListOfBooksInStoreHouse();
+        bookList.stream()
+                .filter(x -> x.getAuthor().contains(author))
+                .filter(x -> x.getPublicationDate().isBefore(endDate))
+                .sorted()
+                .forEach(x -> System.out.println(x));
+    }
 
     public void importBook(){
         List<Book> bookList = getListOfBooksInStoreHouse();

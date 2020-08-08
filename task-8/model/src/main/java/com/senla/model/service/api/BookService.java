@@ -28,6 +28,7 @@ public interface BookService {
     void bookSort();
     void importBook();
     void exportBook();
+    void customSearch(String author, LocalDate endDate);
 }
 
 

@@ -36,5 +36,6 @@ public enum TitleOfMenuItem {
     IMPORT_ORDER,
     EXIT,
     INITIALIZE_STORE,
-    SHOW_STALE_BOOK
+    SHOW_STALE_BOOK,
+    CUSTOM_SEARCH
 }

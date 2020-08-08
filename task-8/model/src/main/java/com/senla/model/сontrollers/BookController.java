@@ -27,6 +27,10 @@ public class BookController {
         bookService.exportBook();
     }
 
+    public void customSearch(String author, LocalDate endDate){
+        bookService.customSearch(author, endDate);
+    }
+
     public void importBook(){
         bookService.importBook();
     }
