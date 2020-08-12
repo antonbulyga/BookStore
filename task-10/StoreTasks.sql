@@ -1,5 +1,5 @@
 -- Задание 1
-select model, speed, hd from pc where price > 500; 
+select model, speed, hd from pc where price < 500; 
 
 -- Задание 2
 select maker from Product where type = 'Printer' group by maker;
@@ -28,7 +28,7 @@ select distinct product.model,printer.price from printer join product on product
  (select distinct maker formproduct where type = 'laptop');
  
  -- Задание 9
-select distinct product.maker from product join pc on product.model = pc.model where speed > 450;  
+select distinct product.maker from product join pc on product.model = pc.model where speed >= 450;  
 
 -- Задание 10
 select model, price from printer
@@ -61,7 +61,7 @@ where laptop.speed < (select min(speed) from pc);
 
 -- Задание 18
 select distinct product.maker, printer.price from printer join product on printer.model = product.model              
-where price = (select min(printer.price) from printer where color = 'y');
+where printer.color = 'y' and printer.price = (select min(printer.price) from printer where color = 'y');
 
 -- Задание 19
 select product.maker, AVG(laptop.screen) from laptop
