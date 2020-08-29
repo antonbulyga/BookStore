@@ -7,27 +7,31 @@ import java.io.Serializable;
 public class RequestForBook implements Serializable {
     private static final long serialVersionUID = -4009735170071392702L;
     private int id;
-    private Book book;
+    private String titleOfBook;
+    private String authorOfBook;
     private RequestForBookStatus requestStatus;
     private Order order;
 
-    public RequestForBook(int id, Book book, RequestForBookStatus requestStatus, Order order) {
+    public RequestForBook(int id, String titleOfBook, String authorOfBook, RequestForBookStatus requestStatus, Order order) {
         this.id = id;
-        this.book = book;
+        this.titleOfBook = titleOfBook;
+        this.authorOfBook = authorOfBook;
         this.requestStatus = requestStatus;
         this.order = order;
+
     }
 
     public RequestForBook(){
 
     }
 
-    public Book getBook() {
-        return book;
+
+    public String getTitleOfBook() {
+        return titleOfBook;
     }
 
-    public void setBook(Book book) {
-        this.book = book;
+    public void setTitleOfBook(String titleOfBook) {
+        this.titleOfBook = titleOfBook;
     }
 
     public RequestForBookStatus getRequestStatus() {
@@ -52,5 +56,13 @@ public class RequestForBook implements Serializable {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getAuthorOfBook() {
+        return authorOfBook;
+    }
+
+    public void setAuthorOfBook(String authorOfBook) {
+        this.authorOfBook = authorOfBook;
     }
 }

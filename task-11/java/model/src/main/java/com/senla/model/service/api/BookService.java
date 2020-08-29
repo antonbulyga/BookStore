@@ -11,9 +11,6 @@ public interface BookService {
     List<Book> getListOfBooksInStoreHouse();
     void addBookToListOfBookInTheStorehouse(Book book) throws SQLException;
     void bookUpdate(Book book);
-    List<Book> setStaleBookStatus();
-    void showStaleBooks();
-    int getCountOfMonthToMarkBookAsStale();
     void completingRequestAfterArrivingNewBook(Book book);
     void showUnsoldBooksMoreThanSixMonth();
     void deleteBook(Book book);
@@ -21,14 +18,13 @@ public interface BookService {
     void sortBookByPrice();
     void sortBookByAuthor();
     void sortBookByDateArrive();
-    void sortBookByAvailabilityInStock();
     void sortBookByPublicationDate();
     Book getBookById(int id);
-    void bookSort();
     void importBook();
     void exportBook();
     void customSearch(String author, LocalDate endDate);
-
+    boolean bookInStockChecker(String titleBook, String authorBook);
+    Book getBookByAuthorAndTitle(String titleBook, String authorBook);
 }
 
 

@@ -3,6 +3,7 @@ package main.java.com.senla.config;
 import main.java.com.senla.config.analyzers.AutoWiredAnalyzer;
 import main.java.com.senla.config.analyzers.InjectAnalyzer;
 import main.java.com.senla.config.annotations.Component;
+import main.java.com.senla.model.DAO.MysqlConnect;
 import main.java.com.senla.model.Main;
 import main.java.com.senla.model.сontrollers.*;
 import org.reflections.Reflections;
@@ -15,6 +16,7 @@ public class DIContainer {
     private List<Object> listOfInstance;
     public DIContainer(){
         listOfInstance = new ArrayList<>();
+        listOfInstance.add(MysqlConnect.getInstance());
         listOfInstance.add(BookController.getInstance());
         listOfInstance.add(CustomerController.getInstance());
         listOfInstance.add(OrderController.getInstance());

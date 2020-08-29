@@ -7,14 +7,13 @@ import java.util.List;
 
 public interface OrderService {
     void addOrderToListOfOrders(Order order);
-    Order createOrder(List<Book> books , Customer customer, LocalDate dateOfDoneOrder);
+    Order createOrder(List<Book> books, List<RequestForBook> requestForBooks, Customer customer, LocalDate dateOfDoneOrder);
     void updateOrder(Order order);
     void deleteOrder(Order order);
     Order getOrderById(int id);
     List<Order> getListOfOrders();
     void executeOrder(Order order);
     void sumOfMoneyPerPeriodOfTime(List<Order> orders, LocalDate date1, LocalDate date2);
-    void addOrderToStore(Order order);
     void showListOfOrders();
     void sortOrdersByDateOfDone();
     void sortOrdersByPrice();

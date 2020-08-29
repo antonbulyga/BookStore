@@ -5,6 +5,7 @@ import main.java.com.senla.config.annotations.MyAutoWired;
 import main.java.com.senla.config.annotations.MyInject;
 import main.java.com.senla.model.entity.Customer;
 import main.java.com.senla.model.DAO.Dao;
+import main.java.com.senla.model.repository.api.CustomerRepository;
 import main.java.com.senla.model.service.api.CustomerService;
 import main.java.com.senla.model.utils.ExportHelper;
 
@@ -16,7 +17,7 @@ import java.util.List;
 @Component
 public class CustomerServiceImpl implements CustomerService {
     @MyAutoWired
-    private Dao<Customer, Integer> customerDao;
+    private CustomerRepository customerRepository;
     @MyInject(key = "customerFile")
     private String path;
 
@@ -30,13 +31,13 @@ public class CustomerServiceImpl implements CustomerService {
                 String name = strings[1];
                 int age = Integer.parseInt(strings[2]);
                 Customer customer = new Customer(id, age, name);
-                customerDao.create(customer);
+                customerRepository.create(customer);
                 for (int i = 0; i < customerList.size(); i++) {
                     if(customer.getId() == customerList.get(i).getId()){
-                        customerDao.update(customer);
+                        customerRepository.update(customer);
                     }
                     else {
-                        customerDao.create(customer);
+                        customerRepository.create(customer);
                     }
                 }
             }
@@ -52,32 +53,32 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     public List<Customer> getListOfCustomers() {
-        List<Customer> customers = customerDao.getAll();
+        List<Customer> customers = customerRepository.getAll();
         return customers;
     }
 
 
     public void addCustomerToListOfCustomers(Customer customer) throws SQLException {
-        customerDao.create(customer);
+        customerRepository.create(customer);
     }
 
 
     public Customer createCustomer(int id, int age, String name) throws SQLException {
         Customer customer = new Customer(id, age, name);
-        customerDao.create(customer);
+        customerRepository.create(customer);
         return customer;
     }
 
     public void updateCustomer(Customer customer) {
-        customerDao.update(customer);
+        customerRepository.update(customer);
     }
 
     public void deleteCustomer(Customer customer) {
-        customerDao.delete(customer);
+        customerRepository.delete(customer);
     }
 
     public Customer getCustomerById(int id) {
-        Customer customer =  customerDao.read(id);
+        Customer customer =  customerRepository.read(id);
         return customer;
     }
 

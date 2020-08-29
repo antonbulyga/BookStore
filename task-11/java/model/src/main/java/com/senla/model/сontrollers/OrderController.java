@@ -5,6 +5,7 @@ import main.java.com.senla.config.annotations.MyAutoWired;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.entity.Customer;
 import main.java.com.senla.model.entity.Order;
+import main.java.com.senla.model.entity.RequestForBook;
 import main.java.com.senla.model.service.OrderServiceImpl;
 import main.java.com.senla.model.service.api.OrderService;
 
@@ -39,10 +40,6 @@ public class OrderController {
         orderService.sumOfMoneyPerPeriodOfTime(orders, date1, date2);
     }
 
-    public void addOrderToStore(Order order){
-        orderService.addOrderToStore(order);
-    }
-
     public void executeOrder(Order order){
         orderService.executeOrder(order);
     }
@@ -53,8 +50,8 @@ public class OrderController {
         return orders;
     }
 
-    public Order createOrder(List<Book> books, Customer customer, LocalDate dateOfDoneOrder){
-      Order order =  orderService.createOrder(books, customer, dateOfDoneOrder);
+    public Order createOrder(List<Book> books, List<RequestForBook> requestForBooks, Customer customer, LocalDate dateOfDoneOrder){
+      Order order =  orderService.createOrder(books, requestForBooks, customer, dateOfDoneOrder);
       return order;
     }
 

@@ -1,14 +1,12 @@
 package main.java.com.senla.view.actions;
 
 import main.java.com.senla.model.entity.Book;
-import main.java.com.senla.model.enumeration.BookStatus;
 import main.java.com.senla.model.utils.generators.BookIdGenerator;
 import main.java.com.senla.model.utils.input.DoubleInput;
 import main.java.com.senla.model.utils.input.StringInput;
 import main.java.com.senla.model.сontrollers.BookController;
 import main.java.com.senla.view.api.IAction;
 
-import java.io.IOException;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -66,6 +64,6 @@ public class ActionCreateBook implements IAction {
         }
         LocalDate arriveDate = LocalDate.now();
 
-        Book book = BookController.getInstance().createBook(new Book(BookIdGenerator.getBookId(), author, title, price, BookStatus.IN_STOCK,null, arriveDate, publicationDate));
+        Book book = BookController.getInstance().createBook(new Book(BookIdGenerator.getBookId(), title, author, price, arriveDate, publicationDate));
     }
 }

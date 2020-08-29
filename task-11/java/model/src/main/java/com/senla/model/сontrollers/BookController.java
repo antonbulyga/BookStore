@@ -1,6 +1,5 @@
 package main.java.com.senla.model.сontrollers;
 
-import main.java.com.senla.config.annotations.Component;
 import main.java.com.senla.config.annotations.MyAutoWired;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.service.api.BookService;
@@ -40,8 +39,14 @@ public class BookController {
        bookService.deleteBook(book);
     }
 
-    public void showStaleBooks(){
-        bookService.showStaleBooks();
+    public boolean bookInStockChecker(String titleBook, String authorBook){
+        boolean flag = bookService.bookInStockChecker(titleBook, authorBook);
+        return flag;
+    }
+
+    public Book getBookByAuthorAndTitle(String titleBook, String authorBook){
+        Book book = bookService.getBookByAuthorAndTitle(titleBook, authorBook);
+        return book;
     }
 
     public void showUnsoldBooksMoreThanSixMonth(){
@@ -85,10 +90,6 @@ public class BookController {
 
    public void sortBookByDateArrive(){
         bookService.sortBookByDateArrive();
-   }
-
-   public void sortBookByAvailabilityInStock(){
-        bookService.sortBookByAvailabilityInStock();
    }
 
    public void sortBookByPublicationDate(){

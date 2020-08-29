@@ -7,8 +7,8 @@ public enum SQLCustomer {
     UPDATE_CUSTOMER("UPDATE customer SET age = (?), name = (?) WHERE id = (?)"),
     GET_ALL_CUSTOMERS("SELECT * FROM customer");
 
-    public String QUERY;
-    SQLCustomer(String QUERY) {
-        this.QUERY = QUERY;
+    public String query;
+    SQLCustomer(String query) {
+        this.query = query;
     }
 }

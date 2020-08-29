@@ -1,39 +1,30 @@
 package main.java.com.senla.model.repository;
 
+import com.sun.jdi.Value;
 import main.java.com.senla.config.annotations.Component;
 import main.java.com.senla.model.DAO.MysqlConnect;
+import main.java.com.senla.model.entity.Order;
 import main.java.com.senla.model.entity.RequestForBook;
+import main.java.com.senla.model.enumeration.OrderStatus;
 import main.java.com.senla.model.enumeration.RequestForBookStatus;
 import main.java.com.senla.model.enumeration.SQLOrder;
 import main.java.com.senla.model.enumeration.SQLRequestForBook;
 import main.java.com.senla.model.repository.api.RequestForBookRepository;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 @Component
 public class RequestForBookRepositoryImpl implements RequestForBookRepository {
-    private static RequestForBookRepositoryImpl instance;
-
-    private RequestForBookRepositoryImpl(){
-
-    }
-    public static RequestForBookRepositoryImpl getInstance(){
-        if(instance == null){
-            instance = new RequestForBookRepositoryImpl();
-        }
-        return instance;
-    }
 
     @Override
     public boolean create(RequestForBook requestForBook) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLRequestForBook.INSERT_REQUEST_FOR_BOOK.QUERY)) {
-            statement.setInt(1, requestForBook.getBook().getId());
-            statement.setString(2, requestForBook.getRequestStatus().toString());
-            statement.setInt(3, requestForBook.getOrder().getId());
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLRequestForBook.INSERT_REQUEST_FOR_BOOK.query)) {
+            statement.setString(1, requestForBook.getTitleOfBook());
+            statement.setString(2, requestForBook.getAuthorOfBook());
+            statement.setString(3, requestForBook.getRequestStatus().toString());
+            statement.setInt(4, requestForBook.getOrder().getId());
             int i = statement.executeUpdate();
             if (i >= 1) {
                 return true;
@@ -46,11 +37,13 @@ public class RequestForBookRepositoryImpl implements RequestForBookRepository {
 
     @Override
     public boolean update(RequestForBook requestForBook) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLRequestForBook.UPDATE_REQUEST_FOR_BOOK.QUERY)) {
-            statement.setInt(1, requestForBook.getBook().getId());
-            statement.setString(2, requestForBook.getRequestStatus().toString());
-            statement.setDouble(3, requestForBook.getOrder().getId());
-            statement.setInt(4, requestForBook.getId());
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLRequestForBook.UPDATE_REQUEST_FOR_BOOK.query)) {
+            statement.setString(1, requestForBook.getTitleOfBook());
+            statement.setString(2, requestForBook.getAuthorOfBook());
+            statement.setString(3, requestForBook.getRequestStatus().toString());
+            statement.setInt(4, requestForBook.getOrder().getId());
+            statement.setInt(5, requestForBook.getId());
+
             int i = statement.executeUpdate();
             if (i >= 1) {
                 return true;
@@ -64,7 +57,7 @@ public class RequestForBookRepositoryImpl implements RequestForBookRepository {
 
     @Override
     public boolean delete(RequestForBook requestForBook) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLRequestForBook.DELETE_REQUEST_FOR_BOOK.QUERY)) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLRequestForBook.DELETE_REQUEST_FOR_BOOK.query)) {
             statement.setInt(1, requestForBook.getId());
             int i = statement.executeUpdate();
             if (i >= 1) {
@@ -80,14 +73,17 @@ public class RequestForBookRepositoryImpl implements RequestForBookRepository {
     @Override
     public RequestForBook read(Integer requestForBookId) {
         final RequestForBook result = new RequestForBook();
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLRequestForBook.GET_REQUEST_FOR_BOOK.QUERY)) {
+        Order order = new Order();
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLRequestForBook.GET_REQUEST_FOR_BOOK.query)) {
             statement.setInt(1, requestForBookId);
             final ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 result.setId(resultSet.getInt("id"));
-                result.setBook(BookRepositoryImpl.getInstance().read(resultSet.getInt("id_book")));
-                result.setRequestStatus(RequestForBookStatus.valueOf(resultSet.getString("requestForBook_status")));
-                result.setOrder(OrderRepositoryImpl.getInstance().read(resultSet.getInt("id_order")));
+                result.setTitleOfBook(resultSet.getString("request_for_book.title"));
+                result.setAuthorOfBook(resultSet.getString("request_for_book.author"));
+                result.setRequestStatus(RequestForBookStatus.valueOf(resultSet.getString("request_for_book_status")));
+                order.setId(resultSet.getInt("order_id"));
+                result.setOrder(order);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -98,14 +94,17 @@ public class RequestForBookRepositoryImpl implements RequestForBookRepository {
     @Override
     public List<RequestForBook> getAll() {
         final List<RequestForBook> requestForBookList = new ArrayList<>();
+        Order order = new Order();
         try (Statement statement = MysqlConnect.getInstance().conn.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(SQLRequestForBook.GET_ALL_REQUEST_FOR_BOOK.QUERY);
+            ResultSet resultSet = statement.executeQuery(SQLRequestForBook.GET_ALL_REQUEST_FOR_BOOK.query);
             while (resultSet.next()) {
                 RequestForBook requestForBook = new RequestForBook();
                 requestForBook.setId(resultSet.getInt("id"));
-                requestForBook.setBook(BookRepositoryImpl.getInstance().read(resultSet.getInt("id_Book")));
-                requestForBook.setRequestStatus(RequestForBookStatus.valueOf(resultSet.getString("requestForBook_status")));
-                requestForBook.setOrder(OrderRepositoryImpl.getInstance().read(resultSet.getInt("id_order")));
+                requestForBook.setTitleOfBook((resultSet.getString("request_for_book.title")));
+                requestForBook.setAuthorOfBook((resultSet.getString("request_for_book.author")));
+                requestForBook.setRequestStatus(RequestForBookStatus.valueOf(resultSet.getString("request_for_book_status")));
+                order.setId(resultSet.getInt("order_id"));
+                requestForBook.setOrder(order);
                 requestForBookList.add(requestForBook);
             }
         } catch (SQLException e) {

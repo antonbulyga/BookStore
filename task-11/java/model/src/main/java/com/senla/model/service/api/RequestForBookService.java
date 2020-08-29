@@ -7,17 +7,19 @@ import main.java.com.senla.model.entity.RequestForBook;
 import java.util.List;
 
 public interface RequestForBookService {
+    RequestForBook read(Integer requestForBookId);
+
+    List<RequestForBook> getAll();
+
     void closerRequestForBooksAfterArrivingBook(Book book);
 
     void showListOfRequestsForBooks();
-
-    void sortRequestByCount();
 
     void requestSort();
 
     void sortRequestByAlphabet();
 
-    RequestForBook createRequestForBook(Book book, Order order);
+    RequestForBook createRequestForBook(String bookTitle, String bookAuthor, Order order);
 
     void addRequestForBookToList(RequestForBook requestForBook);
 
@@ -32,5 +34,7 @@ public interface RequestForBookService {
     void importRequestForBook();
 
     void exportRequestForBook();
+
+    void create(RequestForBook requestForBook);
 
 }

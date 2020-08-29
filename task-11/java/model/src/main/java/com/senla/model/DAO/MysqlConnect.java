@@ -1,29 +1,21 @@
 package main.java.com.senla.model.DAO;
 
 import main.java.com.senla.config.annotations.MyInject;
+import main.java.com.senla.model.utils.PropertyData;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+
 
 public class MysqlConnect {
+    private String url = PropertyData.getProperty("url", "model/src/main/resources/config.properties");
+    private String dbName = PropertyData.getProperty("dbName", "model/src/main/resources/config.properties");
+    private String driver = PropertyData.getProperty("driver", "model/src/main/resources/config.properties");
+    private String userName = PropertyData.getProperty("userName", "model/src/main/resources/config.properties");
+    private String password = PropertyData.getProperty("password", "model/src/main/resources/config.properties");
     public Connection conn;
     private static MysqlConnect instance;
-   /* @MyInject(key = "url")
-    String url;
-    @MyInject(key = "bookstore")
-    String dbName;
-    @MyInject(key = "com.mysql.cj.jdbc.Driver")
-    String driver;
-    @MyInject(key = "root")
-    String userName;
-    @MyInject(key = "405841ab")
-    String password;*/
     private MysqlConnect() {
-        String url= "jdbc:mysql://localhost:3306/";
-        String dbName = "bookstore";
-        String driver = "com.mysql.cj.jdbc.Driver";
-        String userName = "root";
-        String password = "405841ab";
-
         try {
             Class.forName(driver).newInstance();
             this.conn = (Connection)DriverManager.getConnection(url+dbName,userName,password);

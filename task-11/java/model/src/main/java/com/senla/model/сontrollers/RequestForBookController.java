@@ -55,21 +55,21 @@ public class RequestForBookController {
         requestForBookService.showListOfRequestsForBooks();
     }
 
-    public void sortRequestByCount(){
-        requestForBookService.sortRequestByCount();
-    }
-
     public void sortRequestByAlphabet(){
-        requestForBookService.sortRequestByCount();
+        requestForBookService.sortRequestByAlphabet();
     }
 
-    public RequestForBook createRequestForBook(Book book, Order order) {
-       RequestForBook requestForBook = requestForBookService.createRequestForBook(book, order);
+    public RequestForBook createRequestForBook(String bookTitle, String bookAuthor, Order order) {
+       RequestForBook requestForBook = requestForBookService.createRequestForBook(bookTitle,bookAuthor, order);
        return requestForBook;
     }
     public List<RequestForBook> getListOfRequestForBook(){
         List<RequestForBook> requestForBookList = requestForBookService.getListOfRequestForBook();
         return  requestForBookList;
+    }
+
+    public void create(RequestForBook requestForBook){
+        requestForBookService.create(requestForBook);
     }
 
 }

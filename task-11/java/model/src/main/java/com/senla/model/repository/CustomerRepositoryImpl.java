@@ -15,21 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 @Component
 public class CustomerRepositoryImpl implements CustomerRepository {
-    private static CustomerRepositoryImpl instance;
-
-    private CustomerRepositoryImpl(){
-
-    }
-    public static CustomerRepositoryImpl getInstance(){
-        if(instance == null){
-            instance = new CustomerRepositoryImpl();
-        }
-        return instance;
-    }
 
     @Override
     public boolean create(Customer customer) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLCustomer.INSERT_CUSTOMER.QUERY)) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLCustomer.INSERT_CUSTOMER.query)) {
             statement.setInt(1, customer.getAge());
             statement.setString(2, customer.getName());
             int i = statement.executeUpdate();
@@ -44,7 +33,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
     @Override
     public boolean update(Customer customer) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLCustomer.UPDATE_CUSTOMER.QUERY)) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLCustomer.UPDATE_CUSTOMER.query)) {
             statement.setInt(1, customer.getAge());
             statement.setString(2, customer.getName());
             statement.setInt(3, customer.getId());
@@ -61,7 +50,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
     @Override
     public boolean delete(Customer customer) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLCustomer.DELETE_CUSTOMER.QUERY)) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLCustomer.DELETE_CUSTOMER.query)) {
             statement.setInt(1, customer.getId());
             int i = statement.executeUpdate();
             if(i >= 1) {
@@ -78,7 +67,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     @Override
     public Customer read(Integer customerId) {
         final Customer result = new Customer();
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLCustomer.GET_CUSTOMER.QUERY)) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLCustomer.GET_CUSTOMER.query)) {
             statement.setInt(1, customerId);
             final ResultSet resultSet = statement.executeQuery();
             if(resultSet.next()){
@@ -97,7 +86,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     public List<Customer> getAll() {
         final List<Customer> listOfCustomers = new ArrayList<>();
         try (Statement statement = MysqlConnect.getInstance().conn.createStatement()){
-            ResultSet resultSet = statement.executeQuery(SQLCustomer.GET_ALL_CUSTOMERS.QUERY);
+            ResultSet resultSet = statement.executeQuery(SQLCustomer.GET_ALL_CUSTOMERS.query);
             while(resultSet.next()) {
                 Customer customer = new Customer();
                 customer.setId(resultSet.getInt("id"));
@@ -111,72 +100,4 @@ public class CustomerRepositoryImpl implements CustomerRepository {
         return listOfCustomers;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-   /* @MyAutoWired
-    private CustomerRepository customerRepository;
-    public void addCustomerToListOfCustomers(Customer customer){
-       listOfCustomers.add(customer);
-    }
-
-    public Customer createCustomer(int id, int age, String name){
-        Customer customer = new Customer(id, age, name);
-        return customer;
-    }
-
-    public void updateCustomer(Customer customer){
-        List<Customer> customerList = getListOfCustomers();
-        for (int i = 0; i < customerList.size(); i++) {
-            if(customer.getId() == customerList.get(i).getId()){
-                deleteCustomer(customerList.get(i));
-                customerList.set(i, customer);
-                setListOfCustomers(customerList);
-            }
-        }
-    }
-
-    public void deleteCustomer(Customer customer){
-        List<Customer> customerList = getListOfCustomers();
-        for (int i = 0; i < customerList.size(); i++) {
-            if(customerList.get(i).getId() == customer.getId()){
-                customerList.remove(customerList.get(i));
-            }
-            setListOfCustomers(customerList);
-        }
-    }
-
-    public Customer getCustomerById(int id){
-        List<Customer> customers = getListOfCustomers();
-        Customer customer = null;
-        for (int i = 0; i < customers.size(); i++) {
-            if(customers.get(i).getId() == id){
-                customer = customers.get(i);
-            }
-        }
-        return customer;
-    }
-
-    public List<Customer> getListOfCustomers() {
-        return listOfCustomers;
-    }
-
-    public void setListOfCustomers(List<Customer> listOfCustomers) {
-        this.listOfCustomers = listOfCustomers;
-    }*/
 }

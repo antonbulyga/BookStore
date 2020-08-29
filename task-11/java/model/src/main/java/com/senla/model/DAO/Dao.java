@@ -11,22 +11,4 @@ public interface Dao<Entity, Key> {
     Entity read(Key id);
     List<Entity> getAll();
 
-
-
-
-
-   /* Book createBook(int id, String title, String author, double price, LocalDate publicationDate);
-
-    void addBookToListOfBookInTheStorehouse(Book book);
-
-    void bookUpdate(Book book);
-
-    void deleteBook(Book book);
-
-    Book getBookById(int id);
-
-    void setListOfBooksInStorehouse(List<Book> listOfBooksInStorehouse);
-
-    List<Book> getListOfBooksInStorehouse();*/
-
 }

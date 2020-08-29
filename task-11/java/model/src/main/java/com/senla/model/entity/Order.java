@@ -17,15 +17,6 @@ public class Order implements Serializable {
     private double priceOfOrder;
     private OrderStatus orderStatus;
     private Customer customer;
-
-    public List<RequestForBook> getListOfRequestForBooks() {
-        return listOfRequestForBooks;
-    }
-
-    public void setListOfRequestForBooks(List<RequestForBook> listOfRequestForBooks) {
-        this.listOfRequestForBooks = listOfRequestForBooks;
-    }
-
     private List<RequestForBook> listOfRequestForBooks = new ArrayList<>();
 
     public Order(int id, LocalDate dateOfOrder, LocalDate dateOfDoneOrder, List<Book> books, OrderStatus orderStatus, Customer customer, int priceOfOrder) {
@@ -40,6 +31,14 @@ public class Order implements Serializable {
 
     public Order(){
 
+    }
+
+    public List<RequestForBook> getListOfRequestForBooks() {
+        return listOfRequestForBooks;
+    }
+
+    public void setListOfRequestForBooks(List<RequestForBook> listOfRequestForBooks) {
+        this.listOfRequestForBooks = listOfRequestForBooks;
     }
 
     public int getId() {

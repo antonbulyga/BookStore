@@ -4,10 +4,7 @@ import main.java.com.senla.config.annotations.Component;
 import main.java.com.senla.config.annotations.MyAutoWired;
 import main.java.com.senla.config.annotations.MyInject;
 import main.java.com.senla.model.entity.*;
-import main.java.com.senla.model.enumeration.BookStatus;
-import main.java.com.senla.model.repository.BookRepositoryImpl;
-import main.java.com.senla.model.repository.OrderRepositoryImpl;
-import main.java.com.senla.model.repository.RequestForBookRepositoryImpl;
+import main.java.com.senla.model.repository.api.BookRepository;
 import main.java.com.senla.model.repository.api.OrderRepository;
 import main.java.com.senla.model.repository.api.RequestForBookRepository;
 import main.java.com.senla.model.service.api.BookService;
@@ -25,6 +22,7 @@ import main.java.com.senla.model.enumeration.OrderStatus;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -32,6 +30,12 @@ import java.util.Collections;
 import java.util.List;
 @Component
 public class OrderServiceImpl implements OrderService {
+    @MyAutoWired
+    private OrderRepository orderRepository;
+    @MyAutoWired
+    private BookRepository bookRepository;
+    @MyAutoWired
+    private RequestForBookRepository requestForBookRepository;
     @MyAutoWired
     private OrderService orderService;
     @MyAutoWired
@@ -64,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
                 }
                 DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd,MM,yyyy");
                 LocalDate dateOfDoneOrder = LocalDate.parse(dateOfDoneOrderString, dateTimeFormatter);
-                Order order = createOrder(listOfBookInOrder, customers.get(customerId), dateOfDoneOrder);
+                Order order = createOrder(listOfBookInOrder, null, customers.get(customerId), dateOfDoneOrder);
                 for (int i = 0; i < listOfOrders.size(); i++) {
                     if(order.getId() == listOfOrders.get(i).getId()){
                         updateOrder(order);
@@ -87,57 +91,64 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public List<Order> getListOfOrders() {
-        List<Order> orders = OrderRepositoryImpl.getInstance().getAll();
+        List<Order> orders = orderRepository.getAll();
         return orders;
     }
 
     public void addOrderToListOfOrders(Order order){
-        OrderRepositoryImpl.getInstance().create(order);
+        try {
+            orderRepository.create(order);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    public Order createOrder(List<Book> books , Customer customer, LocalDate dateOfDoneOrder){
+    public Order createOrder(List<Book> books , List<RequestForBook> requestForBooks, Customer customer, LocalDate dateOfDoneOrder){
         int sumPriceOfOrder = 0;
         for (int i = 0; i < books.size(); i++) {
            sumPriceOfOrder += books.get(i).getPrice();
         }
         LocalDate date = LocalDate.now();
         Order order = new Order(OrderIdGenerator.getOrderId(), date, dateOfDoneOrder, books, OrderStatus.NEW, customer, sumPriceOfOrder);
-        OrderRepositoryImpl.getInstance().create(order);
+        order.setListOfRequestForBooks(requestForBooks);
+        for (int i = 0; i < requestForBooks.size(); i++) {
+            requestForBooks.get(i).setOrder(order);
+        }
+
+        try {
+            orderRepository.create(order);
+            for (int i = 0; i < requestForBooks.size(); i++) {
+               requestForBookRepository.create(requestForBooks.get(i));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return order;
     }
 
-    public void addOrderToStore(Order order) {
-        List<RequestForBook> listOfRequestsInOrder = new ArrayList<>();
-        List<Book> books = order.getBooks();
-        List<Book> listOfBookInStock = new ArrayList<>();
-        RequestForBook requestForBook;
-        for (int i = 0; i < books.size(); i++) {
-            if(books.get(i).getBookStatus().equals(BookStatus.IN_STOCK)) {
-                listOfBookInStock.add(books.get(i));
-            }
-            else {
-                requestForBook = new RequestForBook(RequestForBookIdGenerator.getRequestForBookId(), books.get(i), RequestForBookStatus.ACTIVE, order);
-                listOfRequestsInOrder.add(requestForBook);
-                books.get(i).setRequestForBooks(listOfRequestsInOrder);
-                order.setListOfRequestForBooks(listOfRequestsInOrder);
-                RequestForBookRepositoryImpl.getInstance().create(requestForBook);
-            }
-        }
-
-    }
-
-    public void executeOrder(Order order){
+    public void executeOrder(Order order) {
         LocalDate date = LocalDate.now();
-        List<Book> booksInOrder = order.getBooks();
+        List<Book> listBookInOrder = order.getBooks();
         List<RequestForBook> requestForBooksInOrder = order.getListOfRequestForBooks();
-        List<Book> bookList = BookRepositoryImpl.getInstance().getAll();
-        int tmp;
-        if (requestForBooksInOrder.size() == 0) {
+        int tmp = 0;
+        if(requestForBooksInOrder.size() == 0){
             order.setOrderStatus(OrderStatus.DONE);
             order.setDateOfDoneOrder(date);
+            orderRepository.update(order);
         }
-        else {
-            System.out.println("The order was not completed because there are outstanding requests");
+        for (int i = 0; i < requestForBooksInOrder.size(); i++) {
+            if (requestForBooksInOrder.get(i).getRequestStatus() == RequestForBookStatus.COMPLETED) {
+                tmp++;
+            }
+            if (tmp == requestForBooksInOrder.size()) {
+                order.setOrderStatus(OrderStatus.DONE);
+                order.setDateOfDoneOrder(date);
+                orderRepository.update(order);
+            }
+
+        }
+        for (int i = 0; i < listBookInOrder.size(); i++) {
+            bookRepository.delete(listBookInOrder.get(i));
         }
     }
 
@@ -173,11 +184,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public void updateOrder(Order order) {
-      OrderRepositoryImpl.getInstance().update(order);
+      orderRepository.update(order);
     }
 
     public void showListOfOrders(){
-        List<Order> orders = OrderRepositoryImpl.getInstance().getAll();
+        List<Order> orders = orderRepository.getAll();
         System.out.println("List of orders: ");
         for (int i = 0; i < orders.size(); i++) {
             System.out.println(orders.get(i).getId() + i);
@@ -186,7 +197,7 @@ public class OrderServiceImpl implements OrderService {
 
     public void sortOrdersByDateOfDone() {
         OrderDataOfDoneComparator orderDataOfDoneComparator = new OrderDataOfDoneComparator();
-        List<Order> orders = OrderRepositoryImpl.getInstance().getAll();
+        List<Order> orders = orderRepository.getAll();
         Collections.sort(orders, orderDataOfDoneComparator);
         System.out.println("List of orders sorted by date of done: ");
         for (int i = 0; i < orders.size(); i++) {
@@ -196,7 +207,7 @@ public class OrderServiceImpl implements OrderService {
 
     public void sortOrdersByPrice() {
         OrderPriceComparator orderPriceComparator = new OrderPriceComparator();
-        List<Order> orders = OrderRepositoryImpl.getInstance().getAll();
+        List<Order> orders = orderRepository.getAll();
         Collections.sort(orders, orderPriceComparator);
         System.out.println("List of orders sorted by price: ");
         for (int i = 0; i < orders.size(); i++) {
@@ -206,7 +217,7 @@ public class OrderServiceImpl implements OrderService {
 
     public void sortOrdersByStatus() {
         OrderStatusComparator orderStatusComparator = new OrderStatusComparator();
-        List<Order> orders = OrderRepositoryImpl.getInstance().getAll();
+        List<Order> orders = orderRepository.getAll();
         Collections.sort(orders, orderStatusComparator);
         System.out.println("List of orders sorted by status: ");
         for (int i = 0; i < orders.size(); i++) {
@@ -220,7 +231,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public void deleteOrder(Order order){
-        OrderRepositoryImpl.getInstance().delete(order);
+        orderRepository.delete(order);
     }
 
     public void changeOrderStatusToCancelled(Order order){
@@ -241,15 +252,8 @@ public class OrderServiceImpl implements OrderService {
         System.out.println("Count of orders by period of time " + " from " + date1 + " to " + date2 + " is " + sum);
     }
 
-
-    public void orderSort() {
-        sortOrdersByDateOfDone();
-        sortOrdersByPrice();
-        sortOrdersByStatus();
-    }
-
     public Order getOrderById(int id){
-      Order order = OrderRepositoryImpl.getInstance().read(id);
+      Order order = orderRepository.read(id);
         return order;
     }
 

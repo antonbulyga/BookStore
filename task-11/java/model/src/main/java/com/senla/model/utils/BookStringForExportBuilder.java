@@ -8,7 +8,7 @@ public class BookStringForExportBuilder {
         String string = null;
         StringBuilder stringOfOrder = new StringBuilder(string);
         stringOfOrder.append(book.getId() + " " + book.getAuthor() + " " + book.getTitle()+ " " +
-                book.getPrice() + " " +  book.getBookStatus() + " " + book.getPublicationDate());
+                book.getPrice() + " " + book.getPublicationDate());
         return string;
     }
 }
