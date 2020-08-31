@@ -1,20 +1,20 @@
-package main.java.com.senla.model.service;
+package com.senla.model.service;
 
-import main.java.com.senla.config.annotations.Component;
-import main.java.com.senla.config.annotations.MyAutoWired;
-import main.java.com.senla.config.annotations.MyInject;
-import main.java.com.senla.model.entity.Book;
-import main.java.com.senla.model.entity.Order;
-import main.java.com.senla.model.entity.RequestForBook;
-import main.java.com.senla.model.enumeration.RequestForBookStatus;
-import main.java.com.senla.model.repository.api.OrderRepository;
-import main.java.com.senla.model.repository.api.RequestForBookRepository;
-import main.java.com.senla.model.service.api.BookService;
-import main.java.com.senla.model.service.api.OrderService;
-import main.java.com.senla.model.service.api.RequestForBookService;
-import main.java.com.senla.model.utils.ExportHelper;
-import main.java.com.senla.model.utils.generators.RequestForBookIdGenerator;
-import main.java.com.senla.model.сomparators.RequestForBookAlphabeticalComparator;
+import com.senla.config.annotations.Component;
+import com.senla.config.annotations.MyAutoWired;
+import com.senla.config.annotations.MyInject;
+import com.senla.model.entity.Book;
+import com.senla.model.entity.Order;
+import com.senla.model.entity.RequestForBook;
+import com.senla.model.enumeration.RequestForBookStatus;
+import com.senla.model.repository.api.OrderRepository;
+import com.senla.model.repository.api.RequestForBookRepository;
+import com.senla.model.service.api.BookService;
+import com.senla.model.service.api.OrderService;
+import com.senla.model.service.api.RequestForBookService;
+import com.senla.model.utils.ExportHelper;
+import com.senla.model.utils.generators.RequestForBookIdGenerator;
+import com.senla.model.сomparators.RequestForBookAlphabeticalComparator;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

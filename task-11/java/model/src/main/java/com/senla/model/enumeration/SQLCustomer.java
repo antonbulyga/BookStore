@@ -1,4 +1,4 @@
-package main.java.com.senla.model.enumeration;
+package com.senla.model.enumeration;
 
 public enum SQLCustomer {
     GET_CUSTOMER("SELECT * FROM customer WHERE id = (?)"),

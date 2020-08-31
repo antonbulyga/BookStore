@@ -1,7 +1,7 @@
-package main.java.com.senla.config.analyzers;
+package com.senla.config.analyzers;
 
-import main.java.com.senla.config.annotations.MyInject;
-import main.java.com.senla.model.utils.PropertyData;
+import com.senla.config.annotations.MyInject;
+import com.senla.config.PropertyData;
 
 import java.lang.reflect.Field;
 

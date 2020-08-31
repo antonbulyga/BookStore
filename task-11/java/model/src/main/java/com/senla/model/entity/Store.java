@@ -1,6 +1,6 @@
-package main.java.com.senla.model.entity;
+package com.senla.model.entity;
 
-import main.java.com.senla.model.сontrollers.*;
+import com.senla.model.сontrollers.*;
 
 import java.io.Serializable;
 import java.util.List;

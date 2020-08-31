@@ -1,6 +1,6 @@
-package main.java.com.senla.model.utils;
+package com.senla.model.utils;
 
-import main.java.com.senla.model.entity.Customer;
+import com.senla.model.entity.Customer;
 
 public class CustomerStringExportBuilder {
     public static String customerStringBuilder(Customer customer){

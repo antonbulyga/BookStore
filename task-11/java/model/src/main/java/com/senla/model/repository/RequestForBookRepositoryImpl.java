@@ -1,18 +1,17 @@
-package main.java.com.senla.model.repository;
+package com.senla.model.repository;
 
-import com.sun.jdi.Value;
-import main.java.com.senla.config.annotations.Component;
-import main.java.com.senla.model.DAO.MysqlConnect;
-import main.java.com.senla.model.entity.Order;
-import main.java.com.senla.model.entity.RequestForBook;
-import main.java.com.senla.model.enumeration.OrderStatus;
-import main.java.com.senla.model.enumeration.RequestForBookStatus;
-import main.java.com.senla.model.enumeration.SQLOrder;
-import main.java.com.senla.model.enumeration.SQLRequestForBook;
-import main.java.com.senla.model.repository.api.RequestForBookRepository;
+import com.senla.config.annotations.Component;
+import com.senla.model.DAO.MysqlConnect;
+import com.senla.model.entity.Order;
+import com.senla.model.entity.RequestForBook;
+import com.senla.model.enumeration.RequestForBookStatus;
+import com.senla.model.enumeration.SQLRequestForBook;
+import com.senla.model.repository.api.RequestForBookRepository;
 
-import java.sql.*;
-import java.time.LocalDate;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 @Component

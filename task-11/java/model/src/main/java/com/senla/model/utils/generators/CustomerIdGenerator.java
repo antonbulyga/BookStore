@@ -1,4 +1,4 @@
-package main.java.com.senla.model.utils.generators;
+package com.senla.model.utils.generators;
 
 public class CustomerIdGenerator {
     private static int customerId = 0;

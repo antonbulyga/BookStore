@@ -1,4 +1,4 @@
-package main.java.com.senla.model.enumeration;
+package com.senla.model.enumeration;
 
 public enum SQLRequestForBook {
     GET_REQUEST_FOR_BOOK("SELECT * FROM request_for_book join `order` on request_for_book.order_id = `order`.id WHERE request_for_book.id = (?)"),

@@ -1,4 +1,4 @@
-package main.java.com.senla.config.annotations;
+package com.senla.config.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
     @Target({ElementType.FIELD, ElementType.LOCAL_VARIABLE})
     public @interface MyInject {
         String key();
-        String path() default "C:/Users/Anton/Documents/bulyha_anton/task-11/java/model/src/main/resources/config.properties";
+        String path() default "config/src/main/java/com/senla/config/resources/config.properties";
     }
 
 

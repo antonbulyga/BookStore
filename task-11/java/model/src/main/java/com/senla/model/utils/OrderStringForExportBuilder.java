@@ -1,7 +1,7 @@
-package main.java.com.senla.model.utils;
+package com.senla.model.utils;
 
-import main.java.com.senla.model.entity.Book;
-import main.java.com.senla.model.entity.Order;
+import com.senla.model.entity.Book;
+import com.senla.model.entity.Order;
 
 import java.util.List;
 

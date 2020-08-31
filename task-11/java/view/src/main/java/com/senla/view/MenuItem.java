@@ -1,7 +1,7 @@
-package main.java.com.senla.view;
+package com.senla.view;
 
-import main.java.com.senla.view.api.IAction;
-import main.java.com.senla.view.enumeration.TitleOfMenuItem;
+import com.senla.view.api.IAction;
+import com.senla.view.enumeration.TitleOfMenuItem;
 
 import java.io.IOException;
 import java.sql.SQLException;

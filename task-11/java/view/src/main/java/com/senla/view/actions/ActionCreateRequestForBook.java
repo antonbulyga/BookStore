@@ -1,32 +1,35 @@
-package main.java.com.senla.view.actions;
+package com.senla.view.actions;
 
-import main.java.com.senla.model.entity.Book;
-import main.java.com.senla.model.entity.Order;
-import main.java.com.senla.model.utils.input.IntegerInput;
-import main.java.com.senla.model.utils.input.StringInput;
-import main.java.com.senla.model.сontrollers.BookController;
-import main.java.com.senla.model.сontrollers.OrderController;
-import main.java.com.senla.model.сontrollers.RequestForBookController;
-import main.java.com.senla.view.api.IAction;
+import com.senla.model.entity.Order;
+import com.senla.model.utils.input.IntegerInput;
+import com.senla.model.utils.input.StringInput;
+import com.senla.model.сontrollers.BookController;
+import com.senla.model.сontrollers.OrderController;
+import com.senla.model.сontrollers.RequestForBookController;
+import com.senla.view.api.IAction;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 import java.util.List;
 
 public class ActionCreateRequestForBook implements IAction {
+    static final Logger logger = Logger.getLogger(ActionCreateRequestForBook.class);
     @Override
     public void execute(){
+        BasicConfigurator.configure();
         int indexOfOrder = 0;
         List<Order> orders = OrderController.getInstance().getListOfOrders();
         BookController.getInstance().showBooksInStock();
-        System.out.println("Input the title of the book that you want to buy");
+        logger.debug("Input the title of the book that you want to buy");
         String bookTitle = StringInput.getStringInput();
-        System.out.println("Input the author of book that you want to buy");
+        logger.debug("Input the author of book that you want to buy");
         String bookAuthor = StringInput.getStringInput();
         OrderController.getInstance().showListOfOrders();
         while (indexOfOrder == 0){
-            System.out.println("Fill in index of order");
+            logger.debug("Fill in index of order");
             indexOfOrder = IntegerInput.getInputInteger();
             if(indexOfOrder < 0){
-                System.out.println("Incorrect input, try again");
+                logger.error("Incorrect input, try again");
                 indexOfOrder = 0;
             }
         }

@@ -1,6 +1,6 @@
-package main.java.com.senla.view;
+package com.senla.view;
 
-import main.java.com.senla.view.enumeration.MenuNames;
+import com.senla.view.enumeration.MenuNames;
 
 import java.util.ArrayList;
 import java.util.List;

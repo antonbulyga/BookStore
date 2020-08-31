@@ -1,4 +1,4 @@
-package main.java.com.senla.model.enumeration;
+package com.senla.model.enumeration;
 
 public enum SQLBook {
     GET_BOOK("SELECT * FROM book WHERE id = (?)"),

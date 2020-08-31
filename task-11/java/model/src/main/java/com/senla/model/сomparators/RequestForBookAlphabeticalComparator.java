@@ -1,6 +1,6 @@
-package main.java.com.senla.model.сomparators;
+package com.senla.model.сomparators;
 
-import main.java.com.senla.model.entity.RequestForBook;
+import com.senla.model.entity.RequestForBook;
 
 import java.util.Comparator;
 

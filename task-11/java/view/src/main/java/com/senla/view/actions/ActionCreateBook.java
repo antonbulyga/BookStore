@@ -1,11 +1,13 @@
-package main.java.com.senla.view.actions;
+package com.senla.view.actions;
 
-import main.java.com.senla.model.entity.Book;
-import main.java.com.senla.model.utils.generators.BookIdGenerator;
-import main.java.com.senla.model.utils.input.DoubleInput;
-import main.java.com.senla.model.utils.input.StringInput;
-import main.java.com.senla.model.сontrollers.BookController;
-import main.java.com.senla.view.api.IAction;
+import com.senla.model.entity.Book;
+import com.senla.model.utils.generators.BookIdGenerator;
+import com.senla.model.utils.input.DoubleInput;
+import com.senla.model.utils.input.StringInput;
+import com.senla.model.сontrollers.BookController;
+import com.senla.view.api.IAction;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -13,8 +15,9 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 
-public class ActionCreateBook implements IAction {
 
+public class ActionCreateBook implements IAction {
+    static final Logger logger = Logger.getLogger(ActionCreateBook.class);
     @Override
     public void execute() throws SQLException {
         String title = null;
@@ -23,34 +26,35 @@ public class ActionCreateBook implements IAction {
         String publicationDateString = null;
         LocalDate publicationDate = null;
         while (title == null) {
-            System.out.println("Fill in the title of the book");
+            BasicConfigurator.configure();
+            logger.debug("Fill in the title of the book");
             title = StringInput.getStringInput();
             if(title.equals(" ")){
-                System.out.println("Incorrect input, try again");
+                logger.error("Incorrect input, try again");
                 title = null;
             }
         }
         while (author == null){
-            System.out.println("Fill in the author of the book");
+            logger.debug("Fill in the author of the book");
             author = StringInput.getStringInput();
             if(author.equals(" ")){
-                System.out.println("Incorrect input, try again");
+                logger.error("Incorrect input, try again");
                 author = null;
             }
         }
         while (price == 0){
-            System.out.println("Fill in the price of the book");
+            logger.debug("Fill in the price of the book");
             price = DoubleInput.getDoubleInput();
             if(price < 0){
-                System.out.println("Incorrect input, try again");
+                logger.error("Incorrect input, try again");
                 price = 0;
             }
         }
         while (publicationDateString == null){
-            System.out.println("Fill in the publication date (dd,MM,yyyy):");
+            logger.debug("Fill in the publication date (dd,MM,yyyy):");
             publicationDateString = StringInput.getStringInput();
             if(publicationDateString.equals(" ")){
-                System.out.println("Incorrect input, try again");
+                logger.error("Incorrect input, try again");
                 publicationDateString = null;
             }
         }
@@ -60,7 +64,7 @@ public class ActionCreateBook implements IAction {
             publicationDate = LocalDate.parse(publicationDateString, dateTimeFormatter);
         }
         catch(DateTimeParseException e){
-            System.out.println("Incorrect input date");
+            logger.error("Incorrect input date");
         }
         LocalDate arriveDate = LocalDate.now();
 

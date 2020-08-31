@@ -1,8 +1,8 @@
-package main.java.com.senla.view.actions;
+package com.senla.view.actions;
 
-import main.java.com.senla.model.DAO.MysqlConnect;
-import main.java.com.senla.model.utils.WriteObject;
-import main.java.com.senla.view.api.IAction;
+import com.senla.model.DAO.MysqlConnect;
+import com.senla.model.utils.WriteObject;
+import com.senla.view.api.IAction;
 
 import java.io.IOException;
 import java.sql.SQLException;

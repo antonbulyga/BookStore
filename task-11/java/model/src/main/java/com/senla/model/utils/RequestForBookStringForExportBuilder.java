@@ -1,6 +1,6 @@
-package main.java.com.senla.model.utils;
+package com.senla.model.utils;
 
-import main.java.com.senla.model.entity.RequestForBook;
+import com.senla.model.entity.RequestForBook;
 
 public class RequestForBookStringForExportBuilder {
     public static String requestForBookStringBuilder(RequestForBook requestForBook) {

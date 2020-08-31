@@ -1,6 +1,6 @@
-package main.java.com.senla.model.entity;
+package com.senla.model.entity;
 
-import main.java.com.senla.model.enumeration.RequestForBookStatus;
+import com.senla.model.enumeration.RequestForBookStatus;
 
 import java.io.Serializable;
 

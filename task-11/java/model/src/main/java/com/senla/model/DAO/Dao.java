@@ -1,4 +1,4 @@
-package main.java.com.senla.model.DAO;
+package com.senla.model.DAO;
 
 import java.sql.SQLException;
 import java.util.List;

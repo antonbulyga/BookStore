@@ -1,4 +1,4 @@
-package main.java.com.senla.view.enumeration;
+package com.senla.view.enumeration;
 
 public enum TitleOfMenuItem {
     SHOW_BOOK_SORTED_BY_AUTHOR,

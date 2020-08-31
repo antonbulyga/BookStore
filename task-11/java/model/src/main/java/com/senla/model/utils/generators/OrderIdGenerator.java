@@ -1,4 +1,4 @@
-package main.java.com.senla.model.utils.generators;
+package com.senla.model.utils.generators;
 
 public class OrderIdGenerator {
         private static int orderId = 0;

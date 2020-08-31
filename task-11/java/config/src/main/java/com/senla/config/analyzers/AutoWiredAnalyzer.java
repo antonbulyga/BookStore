@@ -1,6 +1,6 @@
-package main.java.com.senla.config.analyzers;
+package com.senla.config.analyzers;
 
-import main.java.com.senla.config.annotations.MyAutoWired;
+import com.senla.config.annotations.MyAutoWired;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Type;

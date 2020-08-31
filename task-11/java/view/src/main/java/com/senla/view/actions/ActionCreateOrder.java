@@ -1,25 +1,24 @@
-package main.java.com.senla.view.actions;
+package com.senla.view.actions;
 
-import main.java.com.senla.model.entity.Book;
-import main.java.com.senla.model.entity.Customer;
-import main.java.com.senla.model.entity.Order;
-import main.java.com.senla.model.entity.RequestForBook;
-import main.java.com.senla.model.enumeration.RequestForBookStatus;
-import main.java.com.senla.model.utils.generators.OrderIdGenerator;
-import main.java.com.senla.model.utils.generators.RequestForBookIdGenerator;
-import main.java.com.senla.model.utils.input.IntegerInput;
-import main.java.com.senla.model.utils.input.StringInput;
-import main.java.com.senla.model.сontrollers.BookController;
-import main.java.com.senla.model.сontrollers.CustomerController;
-import main.java.com.senla.model.сontrollers.OrderController;
-import main.java.com.senla.model.сontrollers.RequestForBookController;
-import main.java.com.senla.view.api.IAction;
+import com.senla.model.entity.Book;
+import com.senla.model.entity.Customer;
+import com.senla.model.entity.Order;
+import com.senla.model.entity.RequestForBook;
+import com.senla.model.enumeration.RequestForBookStatus;
+import com.senla.model.utils.generators.RequestForBookIdGenerator;
+import com.senla.model.utils.input.StringInput;
+import com.senla.model.сontrollers.BookController;
+import com.senla.model.сontrollers.CustomerController;
+import com.senla.model.сontrollers.OrderController;
+import com.senla.view.api.IAction;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ActionCreateOrder implements IAction {
-
+    static final Logger logger = Logger.getLogger(ActionCreateOrder.class);
     @Override
     public void execute() {
         List<Book> listOfBooksForOrder = new ArrayList<>();
@@ -29,10 +28,11 @@ public class ActionCreateOrder implements IAction {
         String author = null;
         String title = null;
         BookController.getInstance().showBooksInStock();
+        BasicConfigurator.configure();
         while (true) {
-            System.out.println("Fill in the title of the book for your order from the list of books");
+            logger.debug("Fill in the title of the book for your order from the list of books");
             title = StringInput.getStringInput();
-            System.out.println("Fill in the author of the book for your order from the list of books");
+            logger.debug("Fill in the author of the book for your order from the list of books");
             author = StringInput.getStringInput();
             boolean flag = BookController.getInstance().bookInStockChecker(title, author);
             if (flag == true) {
@@ -43,7 +43,7 @@ public class ActionCreateOrder implements IAction {
                 RequestForBook requestForBook = new RequestForBook(RequestForBookIdGenerator.getRequestForBookId(), title, author, RequestForBookStatus.ACTIVE,null);
                 requestForBooksForOrder.add(requestForBook);
             }
-            System.out.println("And than fill in \"e\" if you want to stop. If you don't want to stop fill in another letter ");
+            logger.debug("And than fill in \"e\" if you want to stop. If you don't want to stop fill in another letter ");
             letter = StringInput.getStringInput();
             if(letter.equals("e")){
                 break;

@@ -1,11 +1,8 @@
-package main.java.com.senla.config;
+package com.senla.config;
 
-import main.java.com.senla.config.analyzers.AutoWiredAnalyzer;
-import main.java.com.senla.config.analyzers.InjectAnalyzer;
-import main.java.com.senla.config.annotations.Component;
-import main.java.com.senla.model.DAO.MysqlConnect;
-import main.java.com.senla.model.Main;
-import main.java.com.senla.model.сontrollers.*;
+import com.senla.config.analyzers.AutoWiredAnalyzer;
+import com.senla.config.analyzers.InjectAnalyzer;
+import com.senla.config.annotations.Component;
 import org.reflections.Reflections;
 
 import java.util.ArrayList;
@@ -13,17 +10,10 @@ import java.util.List;
 import java.util.Set;
 
 public class DIContainer {
-    private List<Object> listOfInstance;
-    public DIContainer(){
-        listOfInstance = new ArrayList<>();
-        listOfInstance.add(MysqlConnect.getInstance());
-        listOfInstance.add(BookController.getInstance());
-        listOfInstance.add(CustomerController.getInstance());
-        listOfInstance.add(OrderController.getInstance());
-        listOfInstance.add(RequestForBookController.getInstance());
-    }
+    private List<Object> listOfInstance = new ArrayList<>();
+
     public void configure() throws IllegalAccessException, InstantiationException {
-        Reflections reflections = new Reflections(Main.class.getPackage().getName());
+        Reflections reflections = new Reflections("com.senla.model");
         Set<Class<?>> allClassesWithComponentAnn = reflections.getTypesAnnotatedWith(Component.class);
         AutoWiredAnalyzer autoWiredAnalyzer = new AutoWiredAnalyzer();
         InjectAnalyzer injectAnalyzer = new InjectAnalyzer();
@@ -35,5 +25,13 @@ public class DIContainer {
             injectAnalyzer.setKeyFromAnnotation(listOfInstance.get(i));
         }
 
+    }
+
+    public List<Object> getListOfInstance() {
+        return listOfInstance;
+    }
+
+    public void setListOfInstance(List<Object> listOfInstance) {
+        this.listOfInstance = listOfInstance;
     }
 }

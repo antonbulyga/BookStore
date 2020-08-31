@@ -1,8 +1,8 @@
-package main.java.com.senla.model.сontrollers;
+package com.senla.model.сontrollers;
 
-import main.java.com.senla.config.annotations.MyAutoWired;
-import main.java.com.senla.model.entity.Customer;
-import main.java.com.senla.model.service.api.CustomerService;
+import com.senla.config.annotations.MyAutoWired;
+import com.senla.model.entity.Customer;
+import com.senla.model.service.api.CustomerService;
 
 import java.sql.SQLException;
 import java.util.List;

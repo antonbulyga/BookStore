@@ -1,12 +1,11 @@
-package main.java.com.senla.model.utils;
+package com.senla.model.utils;
 
-import main.java.com.senla.config.annotations.Component;
-import main.java.com.senla.config.annotations.MyInject;
-import main.java.com.senla.model.entity.*;
-import main.java.com.senla.model.сontrollers.*;
-
-
-import java.io.*;
+import com.senla.config.annotations.Component;
+import com.senla.config.annotations.MyInject;
+import com.senla.model.entity.*;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.List;
 
 @Component

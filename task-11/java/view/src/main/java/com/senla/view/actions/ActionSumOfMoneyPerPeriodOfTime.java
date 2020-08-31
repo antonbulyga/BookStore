@@ -1,10 +1,9 @@
-package main.java.com.senla.view.actions;
+package com.senla.view.actions;
 
-import main.java.com.senla.model.entity.Order;
-import main.java.com.senla.model.repository.OrderRepositoryImpl;
-import main.java.com.senla.model.utils.input.StringInput;
-import main.java.com.senla.model.сontrollers.OrderController;
-import main.java.com.senla.view.api.IAction;
+import com.senla.model.entity.Order;
+import com.senla.model.utils.input.StringInput;
+import com.senla.model.сontrollers.OrderController;
+import com.senla.view.api.IAction;
 
 import java.io.IOException;
 import java.time.LocalDate;

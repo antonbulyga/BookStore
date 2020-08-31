@@ -1,6 +1,4 @@
-package main.java.com.senla.view;
-
-import main.java.com.senla.model.utils.ReadObject;
+package com.senla.view;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,7 +9,7 @@ public class MenuController {
     private Builder builder = Builder.getInstance();
     private Navigator navigator = Navigator.getInstance();
 
-    public void run() throws IOException {
+    public void run() {
         builder.buildMenu();
         navigator.setCurrentMenu(builder.getRootMenu());
         try{

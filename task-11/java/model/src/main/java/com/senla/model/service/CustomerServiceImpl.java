@@ -1,13 +1,13 @@
-package main.java.com.senla.model.service;
+package com.senla.model.service;
 
-import main.java.com.senla.config.annotations.Component;
-import main.java.com.senla.config.annotations.MyAutoWired;
-import main.java.com.senla.config.annotations.MyInject;
-import main.java.com.senla.model.entity.Customer;
-import main.java.com.senla.model.DAO.Dao;
-import main.java.com.senla.model.repository.api.CustomerRepository;
-import main.java.com.senla.model.service.api.CustomerService;
-import main.java.com.senla.model.utils.ExportHelper;
+import com.senla.config.annotations.Component;
+import com.senla.config.annotations.MyAutoWired;
+import com.senla.config.annotations.MyInject;
+import com.senla.model.entity.Customer;
+import com.senla.model.DAO.Dao;
+import com.senla.model.repository.api.CustomerRepository;
+import com.senla.model.service.api.CustomerService;
+import com.senla.model.utils.ExportHelper;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

@@ -1,4 +1,4 @@
-package main.java.com.senla.view;
+package com.senla.view;
 
 import java.io.IOException;
 import java.sql.SQLException;

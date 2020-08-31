@@ -1,4 +1,4 @@
-package main.java.com.senla.model.utils;
+package com.senla.config;
 
 import java.io.FileInputStream;
 import java.io.IOException;

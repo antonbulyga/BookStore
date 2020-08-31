@@ -1,9 +1,11 @@
-package main.java.com.senla.view.actions;
+package com.senla.view.actions;
 
-import main.java.com.senla.model.entity.Order;
-import main.java.com.senla.model.utils.input.StringInput;
-import main.java.com.senla.model.сontrollers.OrderController;
-import main.java.com.senla.view.api.IAction;
+import com.senla.model.entity.Order;
+import com.senla.model.utils.input.StringInput;
+import com.senla.model.сontrollers.OrderController;
+import com.senla.view.api.IAction;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -11,7 +13,7 @@ import java.time.format.DateTimeParseException;
 import java.util.List;
 
 public class ActionCountOfDoneOrdersByPeriodOfTime implements IAction {
-
+    static final Logger logger = Logger.getLogger(com.senla.view.actions.ActionCountOfDoneOrdersByPeriodOfTime.class);
     @Override
     public void execute(){
         String firstDateString = null;
@@ -19,10 +21,10 @@ public class ActionCountOfDoneOrdersByPeriodOfTime implements IAction {
         LocalDate firstDate = null;
         LocalDate secondDate = null;
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd,MM,yyyy");
-
-        System.out.println("Please enter the first date (dd,MM,yyyy): ");
+        BasicConfigurator.configure();
+        logger.debug("Please enter the first date (dd,MM,yyyy): ");
         while (firstDateString == null){
-            System.out.println("Fill in the publication date");
+            logger.debug("Fill in the publication date");
             firstDateString = StringInput.getStringInput();
             if(firstDateString.equals(" ")){
                 firstDateString = null;
@@ -33,12 +35,12 @@ public class ActionCountOfDoneOrdersByPeriodOfTime implements IAction {
             firstDate = LocalDate.parse(firstDateString, dateTimeFormatter);
         }
         catch(DateTimeParseException e){
-            System.out.println("Incorrect input date");
+            logger.error("Incorrect input date");
         }
 
-        System.out.println("Please enter the second date (dd,MM,yyyy): ");
+        logger.debug("Please enter the second date (dd,MM,yyyy): ");
         while (secondDateString == null){
-            System.out.println("Fill in the publication date");
+            logger.debug("Fill in the publication date");
             secondDateString = StringInput.getStringInput();
             if(secondDateString.equals(" ")){
                 secondDateString = null;
@@ -48,7 +50,7 @@ public class ActionCountOfDoneOrdersByPeriodOfTime implements IAction {
             secondDate = LocalDate.parse(secondDateString, dateTimeFormatter);
         }
         catch(DateTimeParseException e){
-            System.out.println("Incorrect input date");
+            logger.error("Incorrect input date");
         }
 
 

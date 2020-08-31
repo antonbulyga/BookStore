@@ -1,16 +1,15 @@
-package main.java.com.senla.model.сontrollers;
+package com.senla.model.сontrollers;
 
-import main.java.com.senla.config.annotations.Component;
-import main.java.com.senla.config.annotations.MyAutoWired;
-import main.java.com.senla.model.entity.Book;
-import main.java.com.senla.model.entity.Customer;
-import main.java.com.senla.model.entity.Order;
-import main.java.com.senla.model.entity.RequestForBook;
-import main.java.com.senla.model.service.OrderServiceImpl;
-import main.java.com.senla.model.service.api.OrderService;
+import com.senla.config.annotations.MyAutoWired;
+import com.senla.model.entity.Book;
+import com.senla.model.entity.Customer;
+import com.senla.model.entity.Order;
+import com.senla.model.entity.RequestForBook;
+import com.senla.model.service.api.OrderService;
 
 import java.time.LocalDate;
 import java.util.List;
+
 
 public class OrderController {
     private static OrderController instance;

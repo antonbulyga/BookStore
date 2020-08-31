@@ -1,7 +1,7 @@
-package main.java.com.senla.view.actions;
+package com.senla.view.actions;
 
-import main.java.com.senla.model.utils.ReadObject;
-import main.java.com.senla.view.api.IAction;
+import com.senla.model.utils.ReadObject;
+import com.senla.view.api.IAction;
 
 import java.io.IOException;
 

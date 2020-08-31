@@ -1,7 +1,7 @@
-package main.java.com.senla.view.actions;
+package com.senla.view.actions;
 
-import main.java.com.senla.model.сontrollers.OrderController;
-import main.java.com.senla.view.api.IAction;
+import com.senla.model.сontrollers.OrderController;
+import com.senla.view.api.IAction;
 
 public class ActionSortOrdersByStatus implements IAction {
 

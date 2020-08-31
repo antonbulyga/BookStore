@@ -1,8 +1,8 @@
-package main.java.com.senla.model.service.api;
+package com.senla.model.service.api;
 
-import main.java.com.senla.model.entity.Book;
-import main.java.com.senla.model.entity.Order;
-import main.java.com.senla.model.entity.RequestForBook;
+import com.senla.model.entity.Book;
+import com.senla.model.entity.Order;
+import com.senla.model.entity.RequestForBook;
 
 import java.util.List;
 

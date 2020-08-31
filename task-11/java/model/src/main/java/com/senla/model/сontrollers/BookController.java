@@ -1,12 +1,13 @@
-package main.java.com.senla.model.сontrollers;
+package com.senla.model.сontrollers;
 
-import main.java.com.senla.config.annotations.MyAutoWired;
-import main.java.com.senla.model.entity.Book;
-import main.java.com.senla.model.service.api.BookService;
+import com.senla.config.annotations.MyAutoWired;
+import com.senla.model.entity.Book;
+import com.senla.model.service.api.BookService;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
+
 
 public class BookController {
     private static BookController instance;

@@ -1,8 +1,7 @@
-package main.java.com.senla.model.entity;
+package com.senla.model.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.List;
 
 
 public class Book implements Serializable {

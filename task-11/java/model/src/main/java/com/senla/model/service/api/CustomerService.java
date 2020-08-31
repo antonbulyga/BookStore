@@ -1,6 +1,6 @@
-package main.java.com.senla.model.service.api;
+package com.senla.model.service.api;
 
-import main.java.com.senla.model.entity.Customer;
+import com.senla.model.entity.Customer;
 
 import java.sql.SQLException;
 import java.util.List;

@@ -1,9 +1,9 @@
-package main.java.com.senla.model.utils;
+package com.senla.model.utils;
 
-import main.java.com.senla.model.entity.Book;
-import main.java.com.senla.model.entity.Customer;
-import main.java.com.senla.model.entity.Order;
-import main.java.com.senla.model.entity.RequestForBook;
+import com.senla.model.entity.Book;
+import com.senla.model.entity.Customer;
+import com.senla.model.entity.Order;
+import com.senla.model.entity.RequestForBook;
 
 import java.io.BufferedWriter;
 import java.io.FileWriter;

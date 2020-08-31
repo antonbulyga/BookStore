@@ -1,8 +1,12 @@
-package main.java.com.senla.view;
+package com.senla.view;
 
-import main.java.com.senla.view.actions.*;
-import main.java.com.senla.view.enumeration.MenuNames;
-import main.java.com.senla.view.enumeration.TitleOfMenuItem;
+import com.senla.view.actions.*;
+import com.senla.view.actions.ActionCountOfDoneOrdersByPeriodOfTime;
+import com.senla.view.actions.ActionCreateBook;
+import com.senla.view.actions.ActionCreateOrder;
+import com.senla.view.actions.ActionShowListOfOrders;
+import com.senla.view.enumeration.MenuNames;
+import com.senla.view.enumeration.TitleOfMenuItem;
 
 import java.util.ArrayList;
 import java.util.List;

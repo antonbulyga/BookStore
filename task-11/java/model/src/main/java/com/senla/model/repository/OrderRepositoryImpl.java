@@ -1,16 +1,16 @@
-package main.java.com.senla.model.repository;
+package com.senla.model.repository;
 
-import main.java.com.senla.config.annotations.Component;
-import main.java.com.senla.model.DAO.MysqlConnect;
-import main.java.com.senla.model.entity.Book;
-import main.java.com.senla.model.entity.Customer;
-import main.java.com.senla.model.entity.Order;
-import main.java.com.senla.model.entity.RequestForBook;
-import main.java.com.senla.model.enumeration.OrderStatus;
-import main.java.com.senla.model.enumeration.RequestForBookStatus;
-import main.java.com.senla.model.enumeration.SQLOrder;
-import main.java.com.senla.model.enumeration.SQLRequestForBook;
-import main.java.com.senla.model.repository.api.OrderRepository;
+import com.senla.config.annotations.Component;
+import com.senla.model.DAO.MysqlConnect;
+import com.senla.model.entity.Book;
+import com.senla.model.entity.Customer;
+import com.senla.model.entity.Order;
+import com.senla.model.entity.RequestForBook;
+import com.senla.model.enumeration.OrderStatus;
+import com.senla.model.enumeration.RequestForBookStatus;
+import com.senla.model.enumeration.SQLOrder;
+import com.senla.model.enumeration.SQLRequestForBook;
+import com.senla.model.repository.api.OrderRepository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;

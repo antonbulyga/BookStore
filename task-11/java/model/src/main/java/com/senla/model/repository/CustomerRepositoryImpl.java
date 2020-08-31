@@ -1,11 +1,10 @@
-package main.java.com.senla.model.repository;
+package com.senla.model.repository;
 
-import main.java.com.senla.config.annotations.Component;
-import main.java.com.senla.model.DAO.MysqlConnect;
-import main.java.com.senla.model.entity.Customer;
-import main.java.com.senla.model.enumeration.SQLCustomer;
-import main.java.com.senla.model.DAO.Dao;
-import main.java.com.senla.model.repository.api.CustomerRepository;
+import com.senla.config.annotations.Component;
+import com.senla.model.DAO.MysqlConnect;
+import com.senla.model.entity.Customer;
+import com.senla.model.enumeration.SQLCustomer;
+import com.senla.model.repository.api.CustomerRepository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
