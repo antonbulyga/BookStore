@@ -12,4 +12,8 @@ public enum SQLRequestForBook {
     SQLRequestForBook(String query) {
         this.query = query;
     }
+
+    public String getQuery() {
+        return query;
+    }
 }

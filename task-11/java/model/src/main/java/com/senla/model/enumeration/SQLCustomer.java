@@ -11,4 +11,8 @@ public enum SQLCustomer {
     SQLCustomer(String query) {
         this.query = query;
     }
+
+    public String getQuery() {
+        return query;
+    }
 }

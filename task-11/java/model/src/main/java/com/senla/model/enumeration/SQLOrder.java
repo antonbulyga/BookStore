@@ -14,4 +14,8 @@ public enum SQLOrder {
     SQLOrder(String query) {
         this.query = query;
     }
+
+    public String getQuery() {
+        return query;
+    }
 }

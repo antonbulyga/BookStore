@@ -11,6 +11,8 @@ import com.senla.model.enumeration.RequestForBookStatus;
 import com.senla.model.enumeration.SQLOrder;
 import com.senla.model.enumeration.SQLRequestForBook;
 import com.senla.model.repository.api.OrderRepository;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -21,10 +23,10 @@ import java.util.ArrayList;
 import java.util.List;
 @Component
 public class OrderRepositoryImpl implements OrderRepository {
-
+    static final Logger logger = Logger.getLogger(OrderRepositoryImpl.class);
     @Override
     public boolean create(Order order) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLOrder.INSERT_ORDER.query)) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLOrder.INSERT_ORDER.getQuery())) {
             statement.setString(1, order.getDateOfOrder().toString());
             if (order.getDateOfDoneOrder() == null) {
                 statement.setDate(2, null);
@@ -39,14 +41,15 @@ public class OrderRepositoryImpl implements OrderRepository {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BasicConfigurator.configure();
+            logger.error(e);
         }
         return false;
     }
 
     @Override
     public boolean update(Order order) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLOrder.UPDATE_ORDER.query)) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLOrder.UPDATE_ORDER.getQuery())) {
             statement.setString(1, order.getDateOfOrder().toString());
             if (order.getDateOfDoneOrder() == null) {
                 statement.setDate(2, null);
@@ -63,14 +66,14 @@ public class OrderRepositoryImpl implements OrderRepository {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         return false;
     }
 
     @Override
     public boolean delete(Order order) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLOrder.DELETE_ORDER.query)) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLOrder.DELETE_ORDER.getQuery())) {
             statement.setInt(1, order.getId());
             int i = statement.executeUpdate();
             if (i >= 1) {
@@ -78,7 +81,7 @@ public class OrderRepositoryImpl implements OrderRepository {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         return false;
     }
@@ -86,7 +89,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public Order read(Integer orderId) {
         final Order result = new Order();
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLOrder.GET_ORDER.query)) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLOrder.GET_ORDER.getQuery())) {
             statement.setInt(1, orderId);
             final ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -101,7 +104,7 @@ public class OrderRepositoryImpl implements OrderRepository {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         return result;
     }
@@ -110,7 +113,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     public List<Order> getAll() {
        final List<Order> orderList = new ArrayList<>();
         try (Statement statement = MysqlConnect.getInstance().conn.createStatement()) {
-            ResultSet resultSet = statement.executeQuery(SQLOrder.GET_ALL_ORDER.query);
+            ResultSet resultSet = statement.executeQuery(SQLOrder.GET_ALL_ORDER.getQuery());
             while (resultSet.next()) {
                 Order order = new Order();
                 order.setId(resultSet.getInt("order.id"));
@@ -124,7 +127,7 @@ public class OrderRepositoryImpl implements OrderRepository {
                 orderList.add(order);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         return orderList;
     }
@@ -132,7 +135,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     public List<Book> getBooksFromOrder(int orderId) {
         final List<Book> books = new ArrayList<>();
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLOrder.GET_BOOK_FROM_ORDER.query)) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLOrder.GET_BOOK_FROM_ORDER.getQuery())) {
             statement.setInt(1, orderId);
             final ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -146,14 +149,14 @@ public class OrderRepositoryImpl implements OrderRepository {
                 books.add(book);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         return books;
     }
 
     public Customer getCustomer(int orderId) throws SQLException {
         Customer customer = new Customer();
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLOrder.GET_CUSTOMER_FROM_ORDER.query)) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLOrder.GET_CUSTOMER_FROM_ORDER.getQuery())) {
             statement.setInt(1, orderId);
             final ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -162,7 +165,7 @@ public class OrderRepositoryImpl implements OrderRepository {
                 customer.setId(resultSet.getInt("customer.id"));
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
 
         return customer;
@@ -170,7 +173,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     public List<RequestForBook> getListOfRequestForBookFromOrder(int orderId) {
         final List<RequestForBook> requestForBooks = new ArrayList<>();
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLRequestForBook.GET_REQUEST_FROM_BOOK_FROM_ORDER.query)) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLRequestForBook.GET_REQUEST_FROM_BOOK_FROM_ORDER.getQuery())) {
             statement.setInt(1, orderId);
             final ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -183,7 +186,7 @@ public class OrderRepositoryImpl implements OrderRepository {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         return requestForBooks;
     }

@@ -6,7 +6,6 @@ import com.senla.view.api.IAction;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -14,7 +13,7 @@ import java.time.format.DateTimeParseException;
 public class ActionCustomSearch implements IAction {
     static final Logger logger = Logger.getLogger(ActionCustomSearch.class);
     @Override
-    public void execute() throws IOException, IllegalAccessException {
+    public void execute() {
         BasicConfigurator.configure();
         String firstDateString = null;
         LocalDate date = null;

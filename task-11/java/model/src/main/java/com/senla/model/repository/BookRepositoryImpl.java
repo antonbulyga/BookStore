@@ -5,6 +5,8 @@ import com.senla.model.DAO.MysqlConnect;
 import com.senla.model.entity.Book;
 import com.senla.model.enumeration.SQLBook;
 import com.senla.model.repository.api.BookRepository;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -15,10 +17,11 @@ import java.util.ArrayList;
 import java.util.List;
 @Component
 public class BookRepositoryImpl implements BookRepository {
+    static final Logger logger = Logger.getLogger(BookRepositoryImpl.class);
 
     @Override
     public boolean create(Book book) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLBook.INSERT_BOOK.query)) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLBook.INSERT_BOOK.getQuery())) {
             statement.setString(1, book.getTitle());
             statement.setString(2, book.getAuthor());
             statement.setDouble(3,book.getPrice());
@@ -29,14 +32,15 @@ public class BookRepositoryImpl implements BookRepository {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BasicConfigurator.configure();
+            logger.error(e);
         }
         return false;
     }
 
     @Override
     public boolean update(Book book) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLBook.UPDATE_BOOK.query)) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLBook.UPDATE_BOOK.getQuery())) {
             statement.setString(1, book.getTitle());
             statement.setString(2, book.getAuthor());
             statement.setDouble(3,book.getPrice());
@@ -49,14 +53,14 @@ public class BookRepositoryImpl implements BookRepository {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         return false;
     }
 
     @Override
     public boolean delete(Book book) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLBook.DELETE_BOOK.query)) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLBook.DELETE_BOOK.getQuery())) {
             statement.setInt(1, book.getId());
             int i = statement.executeUpdate();
             if(i >= 1) {
@@ -64,7 +68,7 @@ public class BookRepositoryImpl implements BookRepository {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         return false;
     }
@@ -73,7 +77,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public Book read(Integer bookId) {
         final Book result = new Book();
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLBook.GET_BOOK.query)) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLBook.GET_BOOK.getQuery())) {
             statement.setInt(1, bookId);
             final ResultSet resultSet = statement.executeQuery();
             if(resultSet.next()){
@@ -86,7 +90,7 @@ public class BookRepositoryImpl implements BookRepository {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         return result;
     }
@@ -95,7 +99,7 @@ public class BookRepositoryImpl implements BookRepository {
     public List<Book> getAll() {
         final List<Book> bookList = new ArrayList<>();
         try (Statement statement = MysqlConnect.getInstance().conn.createStatement()){
-            ResultSet resultSet = statement.executeQuery(SQLBook.GET_ALL_BOOKS.query);
+            ResultSet resultSet = statement.executeQuery(SQLBook.GET_ALL_BOOKS.getQuery());
             while(resultSet.next()) {
                 Book book = new Book();
                 book.setId(resultSet.getInt("id"));
@@ -107,7 +111,7 @@ public class BookRepositoryImpl implements BookRepository {
                 bookList.add(book);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         return bookList;
     }

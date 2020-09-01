@@ -5,7 +5,6 @@ import com.senla.model.entity.Customer;
 import com.senla.model.entity.Order;
 import com.senla.model.entity.RequestForBook;
 import com.senla.model.enumeration.RequestForBookStatus;
-import com.senla.model.utils.generators.RequestForBookIdGenerator;
 import com.senla.model.utils.input.StringInput;
 import com.senla.model.сontrollers.BookController;
 import com.senla.model.сontrollers.CustomerController;
@@ -40,7 +39,7 @@ public class ActionCreateOrder implements IAction {
                 listOfBooksForOrder.add(book);
             }
             else {
-                RequestForBook requestForBook = new RequestForBook(RequestForBookIdGenerator.getRequestForBookId(), title, author, RequestForBookStatus.ACTIVE,null);
+                RequestForBook requestForBook = new RequestForBook(title, author, RequestForBookStatus.ACTIVE,null);
                 requestForBooksForOrder.add(requestForBook);
             }
             logger.debug("And than fill in \"e\" if you want to stop. If you don't want to stop fill in another letter ");

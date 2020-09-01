@@ -1,7 +1,6 @@
 package com.senla.view.actions;
 
 import com.senla.model.entity.Book;
-import com.senla.model.utils.generators.BookIdGenerator;
 import com.senla.model.utils.input.DoubleInput;
 import com.senla.model.utils.input.StringInput;
 import com.senla.model.сontrollers.BookController;
@@ -68,6 +67,6 @@ public class ActionCreateBook implements IAction {
         }
         LocalDate arriveDate = LocalDate.now();
 
-        Book book = BookController.getInstance().createBook(new Book(BookIdGenerator.getBookId(), title, author, price, arriveDate, publicationDate));
+        Book book = BookController.getInstance().createBook(new Book(title, author, price, arriveDate, publicationDate));
     }
 }

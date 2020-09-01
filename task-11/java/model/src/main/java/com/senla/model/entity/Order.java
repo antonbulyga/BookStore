@@ -29,6 +29,15 @@ public class Order implements Serializable {
         this.priceOfOrder = priceOfOrder;
     }
 
+    public Order(LocalDate dateOfOrder, LocalDate dateOfDoneOrder, List<Book> books, OrderStatus orderStatus, Customer customer, int priceOfOrder) {
+        this.dateOfOrder = dateOfOrder;
+        this.dateOfDoneOrder = dateOfDoneOrder;
+        this.books = books;
+        this.orderStatus = orderStatus;
+        this.customer = customer;
+        this.priceOfOrder = priceOfOrder;
+    }
+
     public Order(){
 
     }

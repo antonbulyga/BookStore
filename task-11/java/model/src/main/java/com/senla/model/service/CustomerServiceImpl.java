@@ -4,10 +4,11 @@ import com.senla.config.annotations.Component;
 import com.senla.config.annotations.MyAutoWired;
 import com.senla.config.annotations.MyInject;
 import com.senla.model.entity.Customer;
-import com.senla.model.DAO.Dao;
 import com.senla.model.repository.api.CustomerRepository;
 import com.senla.model.service.api.CustomerService;
 import com.senla.model.utils.ExportHelper;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -20,9 +21,11 @@ public class CustomerServiceImpl implements CustomerService {
     private CustomerRepository customerRepository;
     @MyInject(key = "customerFile")
     private String path;
+    static final Logger logger = Logger.getLogger(CustomerServiceImpl.class);
 
     public void importCustomer(){
         List<Customer> customerList = getListOfCustomers();
+        BasicConfigurator.configure();
         try(BufferedReader reader = new BufferedReader(new FileReader(path))){
             String line;
             while ((line = reader.readLine()) != null) {
@@ -43,7 +46,7 @@ public class CustomerServiceImpl implements CustomerService {
             }
 
         } catch (IOException | SQLException e) {
-            System.err.println("We have no file");
+            logger.error("We have no file");
         }
     }
 

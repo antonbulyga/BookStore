@@ -13,8 +13,15 @@ public class Book implements Serializable {
     private LocalDate arriveDate;
     private LocalDate publicationDate;
 
-    public Book(int id, String title, String author, double price, LocalDate arriveDate, LocalDate publicationDate) {
-        this.id = id;
+    public Book(String title, String author, double price, LocalDate arriveDate, LocalDate publicationDate) {
+        this.author = author;
+        this.title = title;
+        this.price = price;
+        this.arriveDate = arriveDate;
+        this.publicationDate = publicationDate;
+    }
+
+    public Book( int id, String title, String author, double price, LocalDate arriveDate, LocalDate publicationDate) {
         this.author = author;
         this.title = title;
         this.price = price;

@@ -9,13 +9,12 @@ import com.senla.model.сontrollers.OrderController;
 import com.senla.model.сontrollers.RequestForBookController;
 import com.senla.view.MenuController;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 
 public class Main {
-    public static void main(String[] args) throws IOException, InstantiationException, IllegalAccessException {
+    public static void main(String[] args) throws InstantiationException, IllegalAccessException {
         DIContainer diContainer = new DIContainer();
         List<Object> listOfInstance = new ArrayList<>();
         listOfInstance.add(MysqlConnect.getInstance());

@@ -20,6 +20,13 @@ public class RequestForBook implements Serializable {
         this.order = order;
 
     }
+    public RequestForBook(String titleOfBook, String authorOfBook, RequestForBookStatus requestStatus, Order order) {
+        this.titleOfBook = titleOfBook;
+        this.authorOfBook = authorOfBook;
+        this.requestStatus = requestStatus;
+        this.order = order;
+    }
+
 
     public RequestForBook(){
 

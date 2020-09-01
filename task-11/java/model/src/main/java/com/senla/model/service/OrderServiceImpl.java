@@ -3,7 +3,12 @@ package com.senla.model.service;
 import com.senla.config.annotations.Component;
 import com.senla.config.annotations.MyAutoWired;
 import com.senla.config.annotations.MyInject;
-import com.senla.model.entity.*;
+import com.senla.model.entity.Book;
+import com.senla.model.entity.Customer;
+import com.senla.model.entity.Order;
+import com.senla.model.entity.RequestForBook;
+import com.senla.model.enumeration.OrderStatus;
+import com.senla.model.enumeration.RequestForBookStatus;
 import com.senla.model.repository.api.BookRepository;
 import com.senla.model.repository.api.OrderRepository;
 import com.senla.model.repository.api.RequestForBookRepository;
@@ -12,12 +17,11 @@ import com.senla.model.service.api.CustomerService;
 import com.senla.model.service.api.OrderService;
 import com.senla.model.utils.ExportHelper;
 import com.senla.model.utils.generators.OrderIdGenerator;
-import com.senla.model.utils.generators.RequestForBookIdGenerator;
 import com.senla.model.сomparators.OrderDataOfDoneComparator;
 import com.senla.model.сomparators.OrderPriceComparator;
 import com.senla.model.сomparators.OrderStatusComparator;
-import com.senla.model.enumeration.RequestForBookStatus;
-import com.senla.model.enumeration.OrderStatus;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -44,12 +48,14 @@ public class OrderServiceImpl implements OrderService {
     private BookService bookService;
     @MyInject(key = "orderFile")
     private String path;
+    static final Logger logger = Logger.getLogger(OrderServiceImpl.class);
 
     public void importOrder(){
         List<Book> books = bookService.getListOfBooksInStoreHouse();
         List<Book> listOfBookInOrder = new ArrayList<>();
         List<Order> listOfOrders = orderService.getListOfOrders();
         List<Customer> customers = customerService.getListOfCustomers();
+        BasicConfigurator.configure();
         try(BufferedReader reader = new BufferedReader(new FileReader(path))){
             String line;
             while ((line = reader.readLine()) != null) {
@@ -80,7 +86,7 @@ public class OrderServiceImpl implements OrderService {
             }
 
         } catch (IOException e) {
-            System.err.println("We have no file");
+            logger.error("We have no file");
         }
 
     }
@@ -99,7 +105,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             orderRepository.create(order);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
     }
 
@@ -159,7 +165,7 @@ public class OrderServiceImpl implements OrderService {
                 listOfDoneOrdersByPeriodOfTime.add(orders.get(i));
             }
         }
-        System.out.println("List of orders by period of time: ");
+        logger.debug("List of orders by period of time: ");
         for (int i = 0; i < listOfDoneOrdersByPeriodOfTime.size(); i++) {
             listOfDoneOrdersByPeriodOfTime.get(i);
         }
@@ -180,7 +186,7 @@ public class OrderServiceImpl implements OrderService {
                 sum += orders.get(i).getPriceOfOrder();
             }
         }
-        System.out.println("Amount of orders by period of time " + " from " + date1 + " to "+ date2 + " is "+ sum);
+        logger.debug("Amount of orders by period of time " + " from " + date1 + " to "+ date2 + " is "+ sum);
     }
 
     public void updateOrder(Order order) {
@@ -189,9 +195,9 @@ public class OrderServiceImpl implements OrderService {
 
     public void showListOfOrders(){
         List<Order> orders = orderRepository.getAll();
-        System.out.println("List of orders: ");
+        logger.debug("List of orders: ");
         for (int i = 0; i < orders.size(); i++) {
-            System.out.println(orders.get(i).getId() + i);
+            logger.debug(orders.get(i).getId() + i);
         }
     }
 
@@ -199,7 +205,7 @@ public class OrderServiceImpl implements OrderService {
         OrderDataOfDoneComparator orderDataOfDoneComparator = new OrderDataOfDoneComparator();
         List<Order> orders = orderRepository.getAll();
         Collections.sort(orders, orderDataOfDoneComparator);
-        System.out.println("List of orders sorted by date of done: ");
+        logger.debug("List of orders sorted by date of done: ");
         for (int i = 0; i < orders.size(); i++) {
             System.out.println(orders.get(i).getId() + " - " + orders.get(i).getDateOfDoneOrder());
         }
@@ -209,7 +215,7 @@ public class OrderServiceImpl implements OrderService {
         OrderPriceComparator orderPriceComparator = new OrderPriceComparator();
         List<Order> orders = orderRepository.getAll();
         Collections.sort(orders, orderPriceComparator);
-        System.out.println("List of orders sorted by price: ");
+        logger.debug("List of orders sorted by price: ");
         for (int i = 0; i < orders.size(); i++) {
             System.out.println(orders.get(i).getId() + " - " +orders.get(i).getPriceOfOrder());
         }
@@ -219,15 +225,15 @@ public class OrderServiceImpl implements OrderService {
         OrderStatusComparator orderStatusComparator = new OrderStatusComparator();
         List<Order> orders = orderRepository.getAll();
         Collections.sort(orders, orderStatusComparator);
-        System.out.println("List of orders sorted by status: ");
+        logger.debug("List of orders sorted by status: ");
         for (int i = 0; i < orders.size(); i++) {
             System.out.println(orders.get(i).getId() + " - " +orders.get(i).getOrderStatus());
         }
     }
 
     public void showDetailsOfOrder(Order order){
-        System.out.println("Details of the customer: " + "name: " + order.getCustomer().getName() + " age " + order.getCustomer().getAge());
-        System.out.println("Details of the order : " + "price of order is " +  order.getPriceOfOrder() + ", date of done order is: " +order.getDateOfDoneOrder());
+        logger.debug("Details of the customer: " + "name: " + order.getCustomer().getName() + " age " + order.getCustomer().getAge());
+        logger.debug("Details of the order : " + "price of order is " +  order.getPriceOfOrder() + ", date of done order is: " +order.getDateOfDoneOrder());
     }
 
     public void deleteOrder(Order order){
@@ -249,7 +255,7 @@ public class OrderServiceImpl implements OrderService {
                 sum++;
             }
         }
-        System.out.println("Count of orders by period of time " + " from " + date1 + " to " + date2 + " is " + sum);
+        logger.debug("Count of orders by period of time " + " from " + date1 + " to " + date2 + " is " + sum);
     }
 
     public Order getOrderById(int id){

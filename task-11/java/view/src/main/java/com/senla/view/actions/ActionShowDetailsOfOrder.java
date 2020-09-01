@@ -7,13 +7,12 @@ import com.senla.view.api.IAction;
 import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
-import java.io.IOException;
 import java.util.List;
 
 public class ActionShowDetailsOfOrder implements IAction {
     static final Logger logger = Logger.getLogger(ActionShowDetailsOfOrder.class);
     @Override
-    public void execute() throws IOException {
+    public void execute() {
         BasicConfigurator.configure();
         int number = 0;
         OrderController.getInstance().showListOfOrders();

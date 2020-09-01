@@ -18,6 +18,8 @@ import com.senla.model.сomparators.BookAlphabeticalComparator;
 import com.senla.model.сomparators.BookArriveDataComparator;
 import com.senla.model.сomparators.BookPriceComparator;
 import com.senla.model.сomparators.BookPublicationDataComparator;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -45,19 +47,20 @@ public class BookServiceImpl implements BookService {
     private String maxCountOfMonthString;
     @MyAutoWired
     private RequestForBookRepository requestForBookRepository;
+    static final Logger logger = Logger.getLogger(BookServiceImpl.class);
 
     public void customSearch(String author, LocalDate endDate) {
         List<Book> bookList = bookRepository.getAll();
+        BasicConfigurator.configure();
         bookList.stream()
                 .filter(x -> x.getAuthor().contains(author))
                 .filter(x -> x.getPublicationDate().isBefore(endDate))
                 .sorted()
-                .forEach(x -> System.out.println(x));
+                .forEach(x -> logger.debug(x));
     }
 
     public void importBook(){
         List<Book> bookList = bookRepository.getAll();
-        List<RequestForBook> requestForBooks = new ArrayList<>();
         try{
             BufferedReader reader = new BufferedReader(new FileReader(path));
             String line;
@@ -80,7 +83,7 @@ public class BookServiceImpl implements BookService {
                 }
             }
         } catch (IOException | SQLException e) {
-            System.err.println("We have no file");
+            logger.error("We have no file");
         }
     }
 
@@ -147,7 +150,7 @@ public class BookServiceImpl implements BookService {
         LocalDate date = LocalDate.now();
         List<Book> books = bookRepository.getAll();
         List<Book> arrayOfUnsoldBooksMoreThanSixMonth = new ArrayList<>();
-        System.out.println("Books unsold for more than 6 month : ");
+        logger.debug("Books unsold for more than 6 month : ");
         for (int i = 0; i < books.size(); i++) {
                 LocalDate date2 = books.get(i).getArriveDate().plusMonths(6);
                 int compareResult = date2.compareTo(date);
@@ -157,7 +160,7 @@ public class BookServiceImpl implements BookService {
             }
 
         for (int i = 0; i < arrayOfUnsoldBooksMoreThanSixMonth.size(); i++) {
-            System.out.println(arrayOfUnsoldBooksMoreThanSixMonth.get(i).getTitle());
+            logger.error(arrayOfUnsoldBooksMoreThanSixMonth.get(i).getTitle());
         }
     }
 
@@ -167,7 +170,7 @@ public class BookServiceImpl implements BookService {
 
     public void showBooksInStock(){
         List<Book> books = bookRepository.getAll();
-        System.out.println("List of the books in stock");
+        logger.debug("List of the books in stock");
         for (int i = 0; i < books.size(); i++) {
             System.out.println(books.get(i).getTitle() + ";" + books.get(i).getAuthor() + "; " +  i);
         }
@@ -178,7 +181,7 @@ public class BookServiceImpl implements BookService {
         BookPriceComparator bookPriceComparator = new BookPriceComparator();
         List<Book> books = bookRepository.getAll();
         Collections.sort(books, bookPriceComparator);
-        System.out.println("List of books sorted by price: ");
+        logger.debug("List of books sorted by price: ");
         for (int i = 0; i < books.size(); i++) {
             System.out.println(books.get(i).getTitle() + " - " + books.get(i).getPrice());
         }
@@ -188,7 +191,7 @@ public class BookServiceImpl implements BookService {
         BookAlphabeticalComparator bookAlphabeticalComparator = new BookAlphabeticalComparator();
         List<Book> books = bookRepository.getAll();
         Collections.sort(books, bookAlphabeticalComparator);
-        System.out.println("List of books sorted by author: ");
+        logger.debug("List of books sorted by author: ");
         for (int i = 0; i < books.size(); i++) {
             System.out.println(books.get(i).getTitle() + " - " +books.get(i).getAuthor());
         }
@@ -198,7 +201,7 @@ public class BookServiceImpl implements BookService {
         BookArriveDataComparator bookDataComparator = new BookArriveDataComparator();
         List<Book> books = bookRepository.getAll();
         Collections.sort(books, bookDataComparator);
-        System.out.println("List of books sorted by date of arrive: ");
+        logger.debug("List of books sorted by date of arrive: ");
         for (int i = 0; i < books.size(); i++) {
             System.out.println(books.get(i).getTitle() + " - " + books.get(i).getArriveDate());
         }
@@ -208,7 +211,7 @@ public class BookServiceImpl implements BookService {
         BookPublicationDataComparator bookAvailabilityComparator = new BookPublicationDataComparator();
         List<Book> books = bookRepository.getAll();
         Collections.sort(books, bookAvailabilityComparator);
-        System.out.println("List of books sorted by date of publication: ");
+        logger.debug("List of books sorted by date of publication: ");
         for (int i = 0; i < books.size(); i++) {
             System.out.println(books.get(i).getTitle() + " - " + books.get(i).getArriveDate());
         }

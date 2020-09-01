@@ -1,10 +1,10 @@
 package com.senla.model.utils.generators;
 
 public class RequestForBookIdGenerator {
-    private static int RequestForBookId = 0;
+    private static int requestForBookId = 0;
 
     public static int getRequestForBookId(){
-        RequestForBookId++;
-        return RequestForBookId;
+        requestForBookId++;
+        return requestForBookId;
     }
 }

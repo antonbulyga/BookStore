@@ -13,8 +13,9 @@ import com.senla.model.service.api.BookService;
 import com.senla.model.service.api.OrderService;
 import com.senla.model.service.api.RequestForBookService;
 import com.senla.model.utils.ExportHelper;
-import com.senla.model.utils.generators.RequestForBookIdGenerator;
 import com.senla.model.сomparators.RequestForBookAlphabeticalComparator;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -36,6 +37,7 @@ public class RequestForBookServiceImpl implements RequestForBookService {
     private String path;
     @MyAutoWired
     private OrderRepository orderRepository;
+    static final Logger logger = Logger.getLogger(RequestForBookServiceImpl.class);
 
     public RequestForBook read(Integer requestForBookId){
         RequestForBook requestForBook = requestForBookRepository.read(requestForBookId);
@@ -57,6 +59,7 @@ public class RequestForBookServiceImpl implements RequestForBookService {
     public void importRequestForBook(){
         List<Order> orders = orderService.getListOfOrders();
         List<RequestForBook> requestForBooks = getListOfRequestForBook();
+        BasicConfigurator.configure();
         try(BufferedReader reader = new BufferedReader(new FileReader(path))){
             String line;
             while ((line = reader.readLine()) != null) {
@@ -77,7 +80,7 @@ public class RequestForBookServiceImpl implements RequestForBookService {
 
             }
         } catch (IOException e) {
-            System.err.println("We have no file");
+            logger.error("We have no file");
         }
     }
 
@@ -98,7 +101,7 @@ public class RequestForBookServiceImpl implements RequestForBookService {
 
     public void showListOfRequestsForBooks(){
         List<RequestForBook> listOfRequestForBooks = getAll();
-        System.out.println("List of Request for books :");
+        logger.error("List of Request for books :");
         for (int i = 0; i < listOfRequestForBooks.size(); i++) {
              System.out.println(listOfRequestForBooks.get(i).getTitleOfBook());
         }
@@ -113,24 +116,24 @@ public class RequestForBookServiceImpl implements RequestForBookService {
         RequestForBookAlphabeticalComparator requestForBookCountComparator = new RequestForBookAlphabeticalComparator();
         List<RequestForBook> requestForBooks = getAll();
         Collections.sort(requestForBooks, requestForBookCountComparator);
-        System.out.println("Array of requests sorted by Alphabet: ");
+        logger.debug("Array of requests sorted by Alphabet: ");
         if(requestForBooks.size()<0){
-            System.out.println("You have no requests");
+            logger.error("You have no requests");
         }
         else {
             for (int i = 0; i < requestForBooks.size(); i++) {
-                System.out.println(requestForBooks.get(i).getTitleOfBook());
+                logger.debug(requestForBooks.get(i).getTitleOfBook());
             }
         }
 
     }
 
     public RequestForBook createRequestForBook(String bookTitle, String bookAuthor, Order order){
-        RequestForBook requestForBook = new RequestForBook(RequestForBookIdGenerator.getRequestForBookId(), bookTitle, bookAuthor, RequestForBookStatus.ACTIVE, order);
+        RequestForBook requestForBook = new RequestForBook(bookTitle, bookAuthor, RequestForBookStatus.ACTIVE, order);
         try {
             requestForBookRepository.create(requestForBook);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         return requestForBook;
     }
@@ -139,7 +142,7 @@ public class RequestForBookServiceImpl implements RequestForBookService {
         try {
             requestForBookRepository.create(requestForBook);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
     }
 
@@ -147,7 +150,7 @@ public class RequestForBookServiceImpl implements RequestForBookService {
         try {
             requestForBookRepository.create(requestForBook);
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
     }
 

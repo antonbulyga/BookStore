@@ -11,4 +11,7 @@ public enum SQLBook {
     SQLBook(String query) {
         this.query = query;
     }
+    public String getQuery() {
+        return query;
+    }
 }

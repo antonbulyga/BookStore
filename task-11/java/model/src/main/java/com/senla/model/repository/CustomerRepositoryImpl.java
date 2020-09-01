@@ -5,6 +5,8 @@ import com.senla.model.DAO.MysqlConnect;
 import com.senla.model.entity.Customer;
 import com.senla.model.enumeration.SQLCustomer;
 import com.senla.model.repository.api.CustomerRepository;
+import org.apache.log4j.BasicConfigurator;
+import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,10 +16,10 @@ import java.util.ArrayList;
 import java.util.List;
 @Component
 public class CustomerRepositoryImpl implements CustomerRepository {
-
+    static final Logger logger = Logger.getLogger(CustomerRepositoryImpl.class);
     @Override
     public boolean create(Customer customer) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLCustomer.INSERT_CUSTOMER.query)) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLCustomer.INSERT_CUSTOMER.getQuery())) {
             statement.setInt(1, customer.getAge());
             statement.setString(2, customer.getName());
             int i = statement.executeUpdate();
@@ -25,14 +27,15 @@ public class CustomerRepositoryImpl implements CustomerRepository {
                 return true;
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            BasicConfigurator.configure();
+            logger.error(e);
         }
         return false;
     }
 
     @Override
     public boolean update(Customer customer) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLCustomer.UPDATE_CUSTOMER.query)) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLCustomer.UPDATE_CUSTOMER.getQuery())) {
             statement.setInt(1, customer.getAge());
             statement.setString(2, customer.getName());
             statement.setInt(3, customer.getId());
@@ -42,14 +45,14 @@ public class CustomerRepositoryImpl implements CustomerRepository {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         return false;
     }
 
     @Override
     public boolean delete(Customer customer) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLCustomer.DELETE_CUSTOMER.query)) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLCustomer.DELETE_CUSTOMER.getQuery())) {
             statement.setInt(1, customer.getId());
             int i = statement.executeUpdate();
             if(i >= 1) {
@@ -57,7 +60,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         return false;
     }
@@ -66,7 +69,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     @Override
     public Customer read(Integer customerId) {
         final Customer result = new Customer();
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLCustomer.GET_CUSTOMER.query)) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLCustomer.GET_CUSTOMER.getQuery())) {
             statement.setInt(1, customerId);
             final ResultSet resultSet = statement.executeQuery();
             if(resultSet.next()){
@@ -76,7 +79,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
             }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         return result;
     }
@@ -85,7 +88,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     public List<Customer> getAll() {
         final List<Customer> listOfCustomers = new ArrayList<>();
         try (Statement statement = MysqlConnect.getInstance().conn.createStatement()){
-            ResultSet resultSet = statement.executeQuery(SQLCustomer.GET_ALL_CUSTOMERS.query);
+            ResultSet resultSet = statement.executeQuery(SQLCustomer.GET_ALL_CUSTOMERS.getQuery());
             while(resultSet.next()) {
                 Customer customer = new Customer();
                 customer.setId(resultSet.getInt("id"));
@@ -94,7 +97,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
                 listOfCustomers.add(customer);
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
         return listOfCustomers;
     }

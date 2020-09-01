@@ -17,6 +17,9 @@ public class Person implements Serializable {
 
     }
 
+    public Person(int age, String name) {
+    }
+
     public int getId() {
         return id;
     }
