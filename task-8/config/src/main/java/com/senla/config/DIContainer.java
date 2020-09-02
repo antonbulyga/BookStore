@@ -19,7 +19,6 @@ public class DIContainer {
         listOfInstance.add(CustomerController.getInstance());
         listOfInstance.add(OrderController.getInstance());
         listOfInstance.add(RequestForBookController.getInstance());
-        listOfInstance.add(StockLevelController.getInstance());
     }
     public void configure() throws IllegalAccessException, InstantiationException {
         Reflections reflections = new Reflections(Main.class.getPackage().getName());

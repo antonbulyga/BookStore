@@ -5,6 +5,7 @@ import main.java.com.senla.config.annotations.MyAutoWired;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.entity.Customer;
 import main.java.com.senla.model.entity.Order;
+import main.java.com.senla.model.service.OrderServiceImpl;
 import main.java.com.senla.model.service.api.OrderService;
 
 import java.time.LocalDate;
@@ -50,10 +51,6 @@ public class OrderController {
     public List<Order> getListOfOrders() {
         List<Order> orders = orderService.getListOfOrders();
         return orders;
-    }
-
-    public void setListOfOrders(List<Order> orders){
-        orderService.setListOfOrders(orders);
     }
 
     public Order createOrder(List<Book> books, Customer customer, LocalDate dateOfDoneOrder){

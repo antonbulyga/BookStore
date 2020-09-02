@@ -1,24 +1,14 @@
 package main.java.com.senla.model.repository.api;
 
-import main.java.com.senla.model.entity.Book;
-import main.java.com.senla.model.entity.Order;
+import main.java.com.senla.model.DAO.Dao;
 import main.java.com.senla.model.entity.RequestForBook;
 
 import java.util.List;
 
-public interface RequestForBookRepository {
-    RequestForBook createRequestForBook(Book book, Order order);
-
-    void addRequestForBookToList(RequestForBook requestForBook);
-
-    void updateRequestForBook(RequestForBook requestForBook);
-
-    void deleteRequestForBook(RequestForBook requestForBook);
-
-    RequestForBook getRequestForBookById(int id);
-
-    List<RequestForBook> getListOfRequestForBooks();
-
-    void setListOfRequestForBooks(List<RequestForBook> listOfRequestForBooks);
-
+public interface RequestForBookRepository extends Dao<RequestForBook, Integer> {
+    boolean create (RequestForBook requestForBook);
+    boolean update (RequestForBook requestForBook);
+    boolean delete (RequestForBook requestForBook);
+    RequestForBook read(Integer id);
+    List<RequestForBook> getAll();
 }

@@ -7,6 +7,8 @@ import main.java.com.senla.model.utils.input.StringInput;
 import main.java.com.senla.model.сontrollers.CustomerController;
 import main.java.com.senla.view.api.IAction;
 
+import java.sql.SQLException;
+
 public class ActionCreateCustomer implements IAction {
 
     @Override
@@ -31,7 +33,11 @@ public class ActionCreateCustomer implements IAction {
             }
         }
         Customer customer = new Customer(CustomerIdGenerator.getCustomerId(), customerAge, customerName);
-        CustomerController.getInstance().addCustomerToListOfCustomers(customer);
+        try {
+            CustomerController.getInstance().addCustomerToListOfCustomers(customer);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
 

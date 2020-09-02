@@ -5,6 +5,7 @@ import main.java.com.senla.model.utils.ReadObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.SQLException;
 
 public class MenuController {
     private Builder builder = Builder.getInstance();
@@ -24,6 +25,8 @@ public class MenuController {
         } catch (IOException | NumberFormatException e) {
             System.out.println("Incorrect index, please try again");
         } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 

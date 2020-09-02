@@ -1,6 +1,6 @@
 package main.java.com.senla.model.entity;
 
-import main.java.com.senla.model.сomparators.RequestForBookStatus;
+import main.java.com.senla.model.enumeration.RequestForBookStatus;
 
 import java.io.Serializable;
 
@@ -21,7 +21,6 @@ public class RequestForBook implements Serializable {
     public RequestForBook(){
 
     }
-
 
     public Book getBook() {
         return book;

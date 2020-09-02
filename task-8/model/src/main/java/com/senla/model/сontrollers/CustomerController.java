@@ -5,6 +5,7 @@ import main.java.com.senla.config.annotations.MyAutoWired;
 import main.java.com.senla.model.entity.Customer;
 import main.java.com.senla.model.service.api.CustomerService;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public class CustomerController {
@@ -36,15 +37,11 @@ public class CustomerController {
         return customers;
     }
 
-    public void setListOfCustomers(List<Customer> customers){
-        customerService.setListOfCustomers(customers);
-    }
-
-    public void addCustomerToListOfCustomers(Customer customer){
+    public void addCustomerToListOfCustomers(Customer customer) throws SQLException {
         customerService.addCustomerToListOfCustomers(customer);
     }
 
-    public Customer createCustomer(int id, int age, String name){
+    public Customer createCustomer(int id, int age, String name) throws SQLException {
        Customer customer = customerService.createCustomer(id, age, name);
         return customer;
     }

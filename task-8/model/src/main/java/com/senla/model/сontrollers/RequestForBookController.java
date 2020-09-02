@@ -72,7 +72,4 @@ public class RequestForBookController {
         return  requestForBookList;
     }
 
-    public void setListOfRequestForBook(List<RequestForBook> requestForBooks){
-        requestForBookService.setListOfRequestForBook(requestForBooks);
-    }
 }

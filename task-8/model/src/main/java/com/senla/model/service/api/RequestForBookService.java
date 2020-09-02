@@ -27,8 +27,6 @@ public interface RequestForBookService {
 
     List<RequestForBook> getListOfRequestForBook();
 
-    void setListOfRequestForBook(List<RequestForBook> requestForBooks);
-
     RequestForBook getRequestForBookById(int id);
 
     void importRequestForBook();

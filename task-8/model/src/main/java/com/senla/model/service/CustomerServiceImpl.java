@@ -4,19 +4,19 @@ import main.java.com.senla.config.annotations.Component;
 import main.java.com.senla.config.annotations.MyAutoWired;
 import main.java.com.senla.config.annotations.MyInject;
 import main.java.com.senla.model.entity.Customer;
-import main.java.com.senla.model.repository.api.CustomerRepository;
+import main.java.com.senla.model.DAO.Dao;
 import main.java.com.senla.model.service.api.CustomerService;
 import main.java.com.senla.model.utils.ExportHelper;
-import main.java.com.senla.model.сontrollers.CustomerController;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 @Component
 public class CustomerServiceImpl implements CustomerService {
     @MyAutoWired
-    private CustomerRepository customerRepository;
+    private Dao<Customer, Integer> customerDao;
     @MyInject(key = "customerFile")
     private String path;
 
@@ -29,18 +29,19 @@ public class CustomerServiceImpl implements CustomerService {
                 int id = Integer.parseInt(strings[0]);
                 String name = strings[1];
                 int age = Integer.parseInt(strings[2]);
-                Customer customer = customerRepository.createCustomer(id, age, name);
+                Customer customer = new Customer(id, age, name);
+                customerDao.create(customer);
                 for (int i = 0; i < customerList.size(); i++) {
                     if(customer.getId() == customerList.get(i).getId()){
-                        updateCustomer(customer);
+                        customerDao.update(customer);
                     }
                     else {
-                        customerRepository.addCustomerToListOfCustomers(customer);
+                        customerDao.create(customer);
                     }
                 }
             }
 
-        } catch (IOException e) {
+        } catch (IOException | SQLException e) {
             System.err.println("We have no file");
         }
     }
@@ -51,34 +52,32 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     public List<Customer> getListOfCustomers() {
-        List<Customer> customers = customerRepository.getListOfCustomers();
+        List<Customer> customers = customerDao.getAll();
         return customers;
     }
 
-    public void setListOfCustomers(List<Customer> customers) {
-        customerRepository.setListOfCustomers(customers);
-    }
 
-    public void addCustomerToListOfCustomers(Customer customer) {
-        customerRepository.addCustomerToListOfCustomers(customer);
+    public void addCustomerToListOfCustomers(Customer customer) throws SQLException {
+        customerDao.create(customer);
     }
 
 
-    public Customer createCustomer(int id, int age, String name) {
-        Customer customer = customerRepository.createCustomer(id, age, name);
+    public Customer createCustomer(int id, int age, String name) throws SQLException {
+        Customer customer = new Customer(id, age, name);
+        customerDao.create(customer);
         return customer;
     }
 
     public void updateCustomer(Customer customer) {
-        customerRepository.updateCustomer(customer);
+        customerDao.update(customer);
     }
 
     public void deleteCustomer(Customer customer) {
-        customerRepository.deleteCustomer(customer);
+        customerDao.delete(customer);
     }
 
     public Customer getCustomerById(int id) {
-        Customer customer = customerRepository.getCustomerById(id);
+        Customer customer =  customerDao.read(id);
         return customer;
     }
 

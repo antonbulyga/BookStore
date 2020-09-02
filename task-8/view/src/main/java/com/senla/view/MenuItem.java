@@ -4,13 +4,14 @@ import main.java.com.senla.view.api.IAction;
 import main.java.com.senla.view.enumeration.TitleOfMenuItem;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 public class MenuItem  {
     private TitleOfMenuItem titleOfMenuItem;
     private IAction action;
     private Menu nextMenu;
 
-    public void doAction() throws IOException, IllegalAccessException {
+    public void doAction() throws IOException, IllegalAccessException, SQLException {
         action.execute();
     }
 

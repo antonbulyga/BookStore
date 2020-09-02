@@ -13,6 +13,9 @@ public class Person implements Serializable {
         this.age = age;
         this.name = name;
     }
+    public Person(){
+
+    }
 
     public int getId() {
         return id;

@@ -2,21 +2,20 @@ package main.java.com.senla.model.service.api;
 
 import main.java.com.senla.model.entity.Book;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
 public interface BookService {
-    Book createBook(int id, String title, String author, double price, LocalDate publicationDate);
+    Book createBook(Book book) throws SQLException;
     List<Book> getListOfBooksInStoreHouse();
-    void addBookToListOfBookInTheStorehouse(Book book);
+    void addBookToListOfBookInTheStorehouse(Book book) throws SQLException;
     void bookUpdate(Book book);
     List<Book> setStaleBookStatus();
     void showStaleBooks();
     int getCountOfMonthToMarkBookAsStale();
     void completingRequestAfterArrivingNewBook(Book book);
     void showUnsoldBooksMoreThanSixMonth();
-    void arriveBookToStock(Book book);
-    void setListOfBooksInStoreHouse(List<Book> books);
     void deleteBook(Book book);
     void showBooksInStock();
     void sortBookByPrice();
@@ -29,6 +28,7 @@ public interface BookService {
     void importBook();
     void exportBook();
     void customSearch(String author, LocalDate endDate);
+
 }
 
 

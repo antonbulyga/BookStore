@@ -1,6 +1,7 @@
 package main.java.com.senla.view;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
 
 public class Navigator {
@@ -25,7 +26,7 @@ public class Navigator {
             System.out.println(i + " " + currentMenu.getMenuItems().get(i).getTitleOfMenuItems());
         }
     }
-    public void navigate(int index) throws IOException, IllegalAccessException {
+    public void navigate(int index) throws IOException, IllegalAccessException, SQLException {
         List<MenuItem> menuItems = currentMenu.getMenuItems();
         if ((index < menuItems.size()) && (index >= 0)) {
             if (menuItems.get(index).getAction() == null) {

@@ -1,9 +1,6 @@
 package main.java.com.senla.model.service.api;
 
 import main.java.com.senla.model.entity.*;
-import main.java.com.senla.model.enumeration.OrderStatus;
-import main.java.com.senla.model.repository.StockLevelRepositoryImpl;
-import main.java.com.senla.model.utils.generators.OrderIdGenerator;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -14,7 +11,6 @@ public interface OrderService {
     void updateOrder(Order order);
     void deleteOrder(Order order);
     Order getOrderById(int id);
-    void setListOfOrders(List<Order> listOfOrders);
     List<Order> getListOfOrders();
     void executeOrder(Order order);
     void sumOfMoneyPerPeriodOfTime(List<Order> orders, LocalDate date1, LocalDate date2);

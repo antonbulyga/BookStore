@@ -12,7 +12,6 @@ public class Store implements Serializable {
     private List<Order> orders = OrderController.getInstance().getListOfOrders();
     private List<RequestForBook> requestForBooks = RequestForBookController.getInstance().getListOfRequestForBook();
     private List<Customer> customers = CustomerController.getInstance().getListOfCustomers();
-    private List<StockLevel> stockLevels = StockLevelController.getInstance().getArrayOfStockLevels();
 
     private Store(){
 
@@ -62,11 +61,4 @@ public class Store implements Serializable {
         this.customers = customers;
     }
 
-    public List<StockLevel> getStockLevels() {
-        return stockLevels;
-    }
-
-    public void setStockLevels(List<StockLevel> stockLevels) {
-        this.stockLevels = stockLevels;
-    }
 }

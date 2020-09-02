@@ -19,20 +19,16 @@ public class ReadObject {
         List<Order> orders;
         List<RequestForBook> requestForBooks;
         List<Customer> customers;
-        List<StockLevel> stockLevels;
+
             try{
                 ObjectInputStream ois = new ObjectInputStream(new FileInputStream(path));
                 Store store = (Store) ois.readObject();
                 books = store.getBooks();
-                BookController.getInstance().setListOfBooksInStoreHouse(books);
                 orders = store.getOrders();
-                OrderController.getInstance().setListOfOrders(orders);
                 requestForBooks = store.getRequestForBooks();
-                RequestForBookController.getInstance().setListOfRequestForBook(requestForBooks);
                 customers = store.getCustomers();
-                CustomerController.getInstance().setListOfCustomers(customers);
-                stockLevels = store.getStockLevels();
-                StockLevelController.getInstance().setArrayOfStockLevels(stockLevels);
+
+
             }
             catch (IOException e){
                 e.printStackTrace();

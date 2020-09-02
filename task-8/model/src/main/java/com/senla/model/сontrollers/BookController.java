@@ -5,6 +5,7 @@ import main.java.com.senla.config.annotations.MyAutoWired;
 import main.java.com.senla.model.entity.Book;
 import main.java.com.senla.model.service.api.BookService;
 
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -43,10 +44,6 @@ public class BookController {
         bookService.showStaleBooks();
     }
 
-    public void arriveBookToStock(Book book){
-        bookService.arriveBookToStock(book);
-    }
-
     public void showUnsoldBooksMoreThanSixMonth(){
         bookService.showUnsoldBooksMoreThanSixMonth();
     }
@@ -60,12 +57,8 @@ public class BookController {
         return books;
     }
 
-    public void setListOfBooksInStoreHouse(List<Book> books){
-        bookService.setListOfBooksInStoreHouse(books);
-    }
-
-    public Book createBook(int id, String title, String author, double price, LocalDate publicationDate){
-       Book book = bookService.createBook(id, title, author, price, publicationDate);
+    public Book createBook(Book book) throws SQLException {
+       bookService.createBook(book);
        return book;
     }
 
@@ -84,10 +77,6 @@ public class BookController {
 
    public void sortBookByPrice(){
         bookService.sortBookByPrice();
-   }
-
-   public void addBookToListOfBooks(Book book){
-        bookService.addBookToListOfBookInTheStorehouse(book);
    }
 
    public void sortBookByAuthor(){

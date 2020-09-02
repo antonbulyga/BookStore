@@ -2,6 +2,7 @@ package main.java.com.senla.model.service.api;
 
 import main.java.com.senla.model.entity.Customer;
 
+import java.sql.SQLException;
 import java.util.List;
 
 public interface CustomerService {
@@ -11,11 +12,9 @@ public interface CustomerService {
 
     List<Customer> getListOfCustomers();
 
-    void setListOfCustomers(List<Customer> customers);
+    void addCustomerToListOfCustomers(Customer customer) throws SQLException;
 
-    void addCustomerToListOfCustomers(Customer customer);
-
-    Customer createCustomer(int id, int age, String name);
+    Customer createCustomer(int id, int age, String name) throws SQLException;
 
     void updateCustomer(Customer customer);
 

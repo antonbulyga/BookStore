@@ -8,5 +8,8 @@ public class Customer extends Person implements Serializable {
     public Customer(int id, int age, String name) {
         super(id, age, name);
     }
+    public Customer(){
+
+    }
 
 }

@@ -29,6 +29,10 @@ public class Book implements Serializable {
         this.publicationDate = publicationDate;
     }
 
+    public Book(){
+
+    }
+
 
     public int getId() {
         return id;

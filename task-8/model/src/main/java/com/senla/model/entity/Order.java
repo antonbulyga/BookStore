@@ -13,20 +13,33 @@ public class Order implements Serializable {
     private int id;
     private LocalDate dateOfOrder;
     private LocalDate dateOfDoneOrder;
-    private List<Book> books;
+    private List<Book> books = new ArrayList<>();
     private double priceOfOrder;
     private OrderStatus orderStatus;
     private Customer customer;
+
+    public List<RequestForBook> getListOfRequestForBooks() {
+        return listOfRequestForBooks;
+    }
+
+    public void setListOfRequestForBooks(List<RequestForBook> listOfRequestForBooks) {
+        this.listOfRequestForBooks = listOfRequestForBooks;
+    }
+
     private List<RequestForBook> listOfRequestForBooks = new ArrayList<>();
 
     public Order(int id, LocalDate dateOfOrder, LocalDate dateOfDoneOrder, List<Book> books, OrderStatus orderStatus, Customer customer, int priceOfOrder) {
         this.id = id;
         this.dateOfOrder = dateOfOrder;
         this.dateOfDoneOrder = dateOfDoneOrder;
-        this.books = new ArrayList<>();
+        this.books = books;
         this.orderStatus = orderStatus;
         this.customer = customer;
         this.priceOfOrder = priceOfOrder;
+    }
+
+    public Order(){
+
     }
 
     public int getId() {
@@ -85,12 +98,6 @@ public class Order implements Serializable {
         this.customer = customer;
     }
 
-    public List<RequestForBook> getArrayOfRequestForBooks() {
-        return listOfRequestForBooks;
-    }
 
-    public void setArrayOfRequestForBooks(List<RequestForBook> listOfRequestForBooks) {
-        this.listOfRequestForBooks = listOfRequestForBooks;
-    }
 
 }
