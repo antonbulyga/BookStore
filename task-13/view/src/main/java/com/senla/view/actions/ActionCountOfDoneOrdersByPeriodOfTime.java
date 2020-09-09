@@ -4,7 +4,6 @@ import com.senla.model.entity.Order;
 import com.senla.model.utils.input.StringInput;
 import com.senla.model.сontrollers.OrderController;
 import com.senla.view.api.IAction;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 import java.time.LocalDate;
@@ -21,7 +20,6 @@ public class ActionCountOfDoneOrdersByPeriodOfTime implements IAction {
         LocalDate firstDate = null;
         LocalDate secondDate = null;
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd,MM,yyyy");
-        BasicConfigurator.configure();
         logger.debug("Please enter the first date (dd,MM,yyyy): ");
         while (firstDateString == null){
             logger.debug("Fill in the publication date");

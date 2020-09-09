@@ -1,6 +1,8 @@
 package com.senla.model.entity;
 
 import com.senla.model.enumeration.OrderStatus;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 public class Order implements Serializable {
     private static final long serialVersionUID = -8721753150087324417L;
     @Id
@@ -19,16 +21,18 @@ public class Order implements Serializable {
     private LocalDate dateOfOrder;
     @Column (name = "date_of_done_order")
     private LocalDate dateOfDoneOrder;
-    @OneToMany(mappedBy = "order")
+    @OneToMany(mappedBy = "order", fetch = FetchType.EAGER)
     private List<Book> books = new ArrayList<>();
     @Column (name = "price_of_order", nullable = false)
     private double priceOfOrder;
+    @Enumerated(EnumType.STRING)
     @Column (name = "order_status", nullable = false)
     private OrderStatus orderStatus;
-    @ManyToOne(targetEntity = Customer.class,fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Customer.class)
     @JoinColumn(name = "id_customer")
     private Customer customer;
-    @OneToMany(mappedBy = "order", fetch = FetchType.LAZY)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "order")
     private List<RequestForBook> listOfRequestForBooks = new ArrayList<>();
 
     public Order(int id, LocalDate dateOfOrder, LocalDate dateOfDoneOrder, List<Book> books, OrderStatus orderStatus, Customer customer, int priceOfOrder) {

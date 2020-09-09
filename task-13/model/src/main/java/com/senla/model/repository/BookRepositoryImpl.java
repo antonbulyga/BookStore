@@ -4,7 +4,6 @@ import com.senla.model.DAO.MysqlConnect;
 import com.senla.model.entity.Book;
 import com.senla.model.enumeration.SQLBook;
 import com.senla.model.repository.api.BookRepository;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
@@ -31,7 +30,6 @@ public class BookRepositoryImpl implements BookRepository {
                 return true;
             }
         } catch (SQLException e) {
-            BasicConfigurator.configure();
             logger.error(e);
         }
         return false;

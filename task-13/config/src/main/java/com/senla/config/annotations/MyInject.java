@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
     @Target({ElementType.FIELD, ElementType.LOCAL_VARIABLE})
     public @interface MyInject {
         String key();
-        String path() default "config/src/main/java/com/senla/config/resources/config.properties";
+        String path() default "model/src/main/resources/config.properties";
     }
 
 

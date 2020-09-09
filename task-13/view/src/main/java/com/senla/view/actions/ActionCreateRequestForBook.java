@@ -7,7 +7,6 @@ import com.senla.model.сontrollers.BookController;
 import com.senla.model.сontrollers.OrderController;
 import com.senla.model.сontrollers.RequestForBookController;
 import com.senla.view.api.IAction;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 import java.util.List;
@@ -16,7 +15,6 @@ public class ActionCreateRequestForBook implements IAction {
     static final Logger logger = Logger.getLogger(ActionCreateRequestForBook.class);
     @Override
     public void execute(){
-        BasicConfigurator.configure();
         int indexOfOrder = 0;
         List<Order> orders = OrderController.getInstance().getListOfOrders();
         BookController.getInstance().showBooksInStock();

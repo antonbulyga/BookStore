@@ -23,4 +23,5 @@ public interface OrderService {
     void countOfDoneOrdersByPeriodOfTime(List<Order> orders, LocalDate date1, LocalDate date2);
     void importOrder();
     void exportOrder();
+    Order read(Integer orderId);
 }

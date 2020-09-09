@@ -22,6 +22,7 @@ public class MenuController {
             }
         } catch (IOException | NumberFormatException e) {
             System.out.println("Incorrect index, please try again");
+            e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
         } catch (SQLException e) {

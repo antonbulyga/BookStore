@@ -9,18 +9,15 @@ import com.senla.model.entity.Order;
 import com.senla.model.entity.RequestForBook;
 import com.senla.model.enumeration.OrderStatus;
 import com.senla.model.enumeration.RequestForBookStatus;
-import com.senla.model.repository.api.BookRepository;
 import com.senla.model.repository.api.OrderRepository;
-import com.senla.model.repository.api.RequestForBookRepository;
 import com.senla.model.service.api.BookService;
 import com.senla.model.service.api.CustomerService;
 import com.senla.model.service.api.OrderService;
+import com.senla.model.service.api.RequestForBookService;
 import com.senla.model.utils.ExportHelper;
-import com.senla.model.utils.generators.OrderIdGenerator;
 import com.senla.model.сomparators.OrderDataOfDoneComparator;
 import com.senla.model.сomparators.OrderPriceComparator;
 import com.senla.model.сomparators.OrderStatusComparator;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -37,9 +34,7 @@ public class OrderServiceImpl implements OrderService {
     @MyAutoWired
     private OrderRepository orderRepository;
     @MyAutoWired
-    private BookRepository bookRepository;
-    @MyAutoWired
-    private RequestForBookRepository requestForBookRepository;
+    private RequestForBookService requestForBookService;
     @MyAutoWired
     private OrderService orderService;
     @MyAutoWired
@@ -50,12 +45,16 @@ public class OrderServiceImpl implements OrderService {
     private String path;
     static final Logger logger = Logger.getLogger(OrderServiceImpl.class);
 
+    public Order read(Integer orderId) {
+        Order order = orderRepository.read(orderId);
+        return order;
+    }
+
     public void importOrder(){
         List<Book> books = bookService.getListOfBooksInStoreHouse();
         List<Book> listOfBookInOrder = new ArrayList<>();
         List<Order> listOfOrders = orderService.getListOfOrders();
         List<Customer> customers = customerService.getListOfCustomers();
-        BasicConfigurator.configure();
         try(BufferedReader reader = new BufferedReader(new FileReader(path))){
             String line;
             while ((line = reader.readLine()) != null) {
@@ -115,7 +114,7 @@ public class OrderServiceImpl implements OrderService {
            sumPriceOfOrder += books.get(i).getPrice();
         }
         LocalDate date = LocalDate.now();
-        Order order = new Order(OrderIdGenerator.getOrderId(), date, dateOfDoneOrder, books, OrderStatus.NEW, customer, sumPriceOfOrder);
+        Order order = new Order(date, dateOfDoneOrder, books, OrderStatus.NEW, customer, sumPriceOfOrder);
         order.setListOfRequestForBooks(requestForBooks);
         for (int i = 0; i < requestForBooks.size(); i++) {
             requestForBooks.get(i).setOrder(order);
@@ -123,11 +122,14 @@ public class OrderServiceImpl implements OrderService {
         for (int i = 0; i < books.size(); i++) {
             books.get(i).setOrder(order);
         }
-
         try {
             orderRepository.create(order);
+            logger.debug("Order has been created");
             for (int i = 0; i < requestForBooks.size(); i++) {
-               requestForBookRepository.create(requestForBooks.get(i));
+               requestForBookService.create(requestForBooks.get(i));
+            }
+            for (int i = 0; i < books.size(); i++) {
+                bookService.bookUpdate(books.get(i));
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -144,6 +146,7 @@ public class OrderServiceImpl implements OrderService {
             order.setOrderStatus(OrderStatus.DONE);
             order.setDateOfDoneOrder(date);
             orderRepository.update(order);
+            logger.debug("Order has been updated");
         }
         for (int i = 0; i < requestForBooksInOrder.size(); i++) {
             if (requestForBooksInOrder.get(i).getRequestStatus() == RequestForBookStatus.COMPLETED) {
@@ -152,12 +155,16 @@ public class OrderServiceImpl implements OrderService {
             if (tmp == requestForBooksInOrder.size()) {
                 order.setOrderStatus(OrderStatus.DONE);
                 order.setDateOfDoneOrder(date);
+                for (int j = 0; j < listBookInOrder.size(); j++) {
+                    bookService.deleteBook(listBookInOrder.get(j));
+                    System.out.println("Book has been deleted");
+                }
+                for (int j = 0; j < requestForBooksInOrder.size(); j++) {
+                    Book book = bookService.getBookByAuthorAndTitle(requestForBooksInOrder.get(i).getTitleOfBook(),requestForBooksInOrder.get(i).getAuthorOfBook());
+                    bookService.deleteBook(book);
+                }
                 orderRepository.update(order);
             }
-
-        }
-        for (int i = 0; i < listBookInOrder.size(); i++) {
-            bookRepository.delete(listBookInOrder.get(i));
         }
     }
 

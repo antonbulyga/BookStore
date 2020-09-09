@@ -30,7 +30,6 @@ public class RequestForBookRepositoryImpl implements RequestForBookRepository {
                 return true;
             }
         } catch (SQLException e) {
-            BasicConfigurator.configure();
             logger.error(e);
         }
         return false;

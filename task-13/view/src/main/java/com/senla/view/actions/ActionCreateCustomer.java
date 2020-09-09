@@ -5,7 +5,6 @@ import com.senla.model.utils.input.IntegerInput;
 import com.senla.model.utils.input.StringInput;
 import com.senla.model.сontrollers.CustomerController;
 import com.senla.view.api.IAction;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 import java.sql.SQLException;
@@ -16,7 +15,6 @@ public class ActionCreateCustomer implements IAction {
     public void execute(){
         int customerAge = 0;
         String customerName = null;
-        BasicConfigurator.configure();
         while (customerAge == 0){
             logger.debug("Fill in the age of the customer");
             customerAge = IntegerInput.getInputInteger();

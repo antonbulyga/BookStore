@@ -7,21 +7,11 @@ import java.sql.DriverManager;
 
 
 public class MysqlConnect {
-    /*@MyInject( key = "url")
-    private String url;
-    @MyInject( key = "dbName")
-    private String dbName;
-    @MyInject( key = "driver")
-    private String driver;
-    @MyInject( key = "userName")
-    private String userName;
-    @MyInject( key = "password")
-    private String password;*/
-    private String url = PropertyData.getProperty("url", "config/src/main/java/com/senla/config/resources/config.properties");
-    private String dbName = PropertyData.getProperty("dbName", "config/src/main/java/com/senla/config/resources/config.properties");
-    private String driver = PropertyData.getProperty("driver", "config/src/main/java/com/senla/config/resources/config.properties");
-    private String userName = PropertyData.getProperty("userName", "config/src/main/java/com/senla/config/resources/config.properties");
-    private String password = PropertyData.getProperty("password", "config/src/main/java/com/senla/config/resources/config.properties");
+    private String url = PropertyData.getProperty("url", "model/src/main/resources/config.properties");
+    private String dbName = PropertyData.getProperty("dbName", "model/src/main/resources/config.properties");
+    private String driver = PropertyData.getProperty("driver", "model/src/main/resources/config.properties");
+    private String userName = PropertyData.getProperty("userName", "model/src/main/resources/config.properties");
+    private String password = PropertyData.getProperty("password", "model/src/main/resources/config.properties");
     public Connection conn;
     private static MysqlConnect instance;
     private MysqlConnect() {

@@ -3,7 +3,6 @@ package com.senla.view.actions;
 import com.senla.model.utils.input.StringInput;
 import com.senla.model.сontrollers.BookController;
 import com.senla.view.api.IAction;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 import java.time.LocalDate;
@@ -14,7 +13,6 @@ public class ActionCustomSearch implements IAction {
     static final Logger logger = Logger.getLogger(ActionCustomSearch.class);
     @Override
     public void execute() {
-        BasicConfigurator.configure();
         String firstDateString = null;
         LocalDate date = null;
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd,MM,yyyy");

@@ -1,7 +1,7 @@
 package com.senla.model.enumeration;
 
 public enum SQLRequestForBook {
-    GET_REQUEST_FOR_BOOK("SELECT * FROM request_for_book join `order` on request_for_book.order_id = `order`.id WHERE request_for_book.id = (?)"),
+    GET_REQUEST_FOR_BOOK("SELECT * FROM request_for_book join orders on request_for_book.order_id = orders.id WHERE request_for_book.id = (?)"),
     INSERT_REQUEST_FOR_BOOK("INSERT INTO request_for_book (id, title, author, request_for_book_status, order_id) VALUES ( DEFAULT, (?) , (?), (?), (?))"),
     DELETE_REQUEST_FOR_BOOK("DELETE FROM request_for_book WHERE id = (?)"),
     UPDATE_REQUEST_FOR_BOOK("UPDATE request_for_book SET title = (?), author = (?), request_for_book_status = (?), order_id = (?) WHERE id = (?)"),

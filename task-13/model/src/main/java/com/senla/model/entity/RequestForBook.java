@@ -16,9 +16,10 @@ public class RequestForBook implements Serializable {
     private String titleOfBook;
     @Column(name = "author", nullable = false)
     private String authorOfBook;
+    @Enumerated(EnumType.STRING)
     @Column(name = "request_for_book_status")
     private RequestForBookStatus requestStatus;
-    @ManyToOne(targetEntity = Order.class,fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = Order.class,fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     private Order order;
 

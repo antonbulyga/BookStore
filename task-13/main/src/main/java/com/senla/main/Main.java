@@ -24,20 +24,9 @@ public class Main {
         listOfInstance.add(RequestForBookController.getInstance());
         diContainer.setListOfInstance(listOfInstance);
         diContainer.configure();
-       /* System.out.println("Hibernate tutorial");/
-        Session session = HibernateSessionFactory.getSessionFactory().openSession();
-        session.beginTransaction();
-        Customer customer = new Customer();
-        customer.setAge(25);
-        customer.setName("LOL");
-        session.save(customer);
-        session.getTransaction().commit();
-        session.close();*/
 
         MenuController menuController = new MenuController();
         menuController.run();
-
-
 
     }
 

@@ -21,7 +21,7 @@ public class Book implements Serializable {
     private LocalDate arriveDate;
     @Column(name = "publication_date", nullable = false)
     private LocalDate publicationDate;
-    @ManyToOne(targetEntity = Order.class)
+    @ManyToOne(targetEntity = Order.class, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     private Order order;
 

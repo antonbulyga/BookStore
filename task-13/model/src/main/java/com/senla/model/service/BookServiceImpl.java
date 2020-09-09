@@ -8,7 +8,6 @@ import com.senla.model.entity.Order;
 import com.senla.model.entity.RequestForBook;
 import com.senla.model.enumeration.RequestForBookStatus;
 import com.senla.model.repository.api.BookRepository;
-import com.senla.model.repository.api.OrderRepository;
 import com.senla.model.repository.api.RequestForBookRepository;
 import com.senla.model.service.api.BookService;
 import com.senla.model.service.api.OrderService;
@@ -18,7 +17,6 @@ import com.senla.model.сomparators.BookAlphabeticalComparator;
 import com.senla.model.сomparators.BookArriveDataComparator;
 import com.senla.model.сomparators.BookPriceComparator;
 import com.senla.model.сomparators.BookPublicationDataComparator;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -36,8 +34,6 @@ public class BookServiceImpl implements BookService {
     @MyAutoWired
     private BookRepository bookRepository;
     @MyAutoWired
-    private OrderRepository orderRepository;
-    @MyAutoWired
     private RequestForBookService requestForBookService;
     @MyAutoWired
     private OrderService orderService;
@@ -51,7 +47,6 @@ public class BookServiceImpl implements BookService {
 
     public void customSearch(String author, LocalDate endDate) {
         List<Book> bookList = bookRepository.getAll();
-        BasicConfigurator.configure();
         bookList.stream()
                 .filter(x -> x.getAuthor().contains(author))
                 .filter(x -> x.getPublicationDate().isBefore(endDate))
@@ -118,6 +113,7 @@ public class BookServiceImpl implements BookService {
 
     public Book createBook(Book book) throws SQLException {
         bookRepository.create(book);
+        System.out.println("Book has been created");
         completingRequestAfterArrivingNewBook(book);
         return book;
     }
@@ -128,10 +124,12 @@ public class BookServiceImpl implements BookService {
 
     public void addBookToListOfBookInTheStorehouse(Book book) throws SQLException {
         bookRepository.create(book);
+        logger.debug("Book has been created");
     }
 
     public void bookUpdate(Book book) {
         bookRepository.update(book);
+        logger.debug("Book has been updated");
     }
 
        public void completingRequestAfterArrivingNewBook(Book book) {
@@ -140,7 +138,7 @@ public class BookServiceImpl implements BookService {
               if(requestForBooks.get(i).getTitleOfBook().equals(book.getTitle()) & requestForBooks.get(i).getAuthorOfBook().equals(book.getAuthor())) {
                   requestForBooks.get(i).setRequestStatus(RequestForBookStatus.COMPLETED);
                   requestForBookRepository.update(requestForBooks.get(i));
-                  Order order = requestForBooks.get(i).getOrder();
+                  Order order = orderService.read(requestForBooks.get(i).getOrder().getId());
                   orderService.executeOrder(order);
               }
            }
@@ -166,6 +164,7 @@ public class BookServiceImpl implements BookService {
 
     public void deleteBook(Book book){
         bookRepository.delete(book);
+        logger.debug("Book has been deleted");
     }
 
     public void showBooksInStock(){

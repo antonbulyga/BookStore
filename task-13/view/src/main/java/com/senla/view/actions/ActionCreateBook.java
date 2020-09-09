@@ -5,7 +5,6 @@ import com.senla.model.utils.input.DoubleInput;
 import com.senla.model.utils.input.StringInput;
 import com.senla.model.сontrollers.BookController;
 import com.senla.view.api.IAction;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 import java.sql.SQLException;
@@ -25,7 +24,6 @@ public class ActionCreateBook implements IAction {
         String publicationDateString = null;
         LocalDate publicationDate = null;
         while (title == null) {
-            BasicConfigurator.configure();
             logger.debug("Fill in the title of the book");
             title = StringInput.getStringInput();
             if(title.equals(" ")){

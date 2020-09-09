@@ -4,7 +4,6 @@ import com.senla.model.DAO.MysqlConnect;
 import com.senla.model.entity.Customer;
 import com.senla.model.enumeration.SQLCustomer;
 import com.senla.model.repository.api.CustomerRepository;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
@@ -26,7 +25,6 @@ public class CustomerRepositoryImpl implements CustomerRepository {
                 return true;
             }
         } catch (SQLException e) {
-            BasicConfigurator.configure();
             logger.error(e);
         }
         return false;

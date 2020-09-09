@@ -7,7 +7,6 @@ import com.senla.model.entity.Customer;
 import com.senla.model.repository.api.CustomerRepository;
 import com.senla.model.service.api.CustomerService;
 import com.senla.model.utils.ExportHelper;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
@@ -25,7 +24,6 @@ public class CustomerServiceImpl implements CustomerService {
 
     public void importCustomer(){
         List<Customer> customerList = getListOfCustomers();
-        BasicConfigurator.configure();
         try(BufferedReader reader = new BufferedReader(new FileReader(path))){
             String line;
             while ((line = reader.readLine()) != null) {

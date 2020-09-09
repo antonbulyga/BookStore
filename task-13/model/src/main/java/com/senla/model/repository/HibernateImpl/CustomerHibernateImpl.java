@@ -4,47 +4,105 @@ import com.senla.config.annotations.Component;
 import com.senla.model.entity.Customer;
 import com.senla.model.repository.api.CustomerRepository;
 import com.senla.model.utils.HibernateSessionFactory;
+import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.query.Query;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 @Component
 public class CustomerHibernateImpl implements CustomerRepository {
-    public Customer read(Integer id) {
-        return HibernateSessionFactory.getSessionFactory().openSession().get(Customer.class, id);
+    static final Logger logger = Logger.getLogger(OrderHibernateImpl.class);
+    @Override
+    public Customer read(Integer customerId) {
+        Customer result = new Customer();
+        Transaction transaction = null;
+        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            result = session.get(Customer.class, customerId);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.error(e);
+        }
+        return result;
     }
 
+    @Override
     public boolean create(Customer customer) {
-        Session session = HibernateSessionFactory.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
-        session.save(customer);
-        tx1.commit();
-        session.close();
+        Transaction transaction = null;
+        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.save(customer);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.error(e);
+        }
         return true;
     }
 
+    @Override
     public boolean update(Customer customer) {
-        Session session = HibernateSessionFactory.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
-        session.update(customer);
-        tx1.commit();
-        session.close();
+        Transaction transaction = null;
+        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            session.update(customer);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.error(e);
+        }
         return true;
     }
 
+    @Override
     public boolean delete(Customer customer) {
-        Session session = HibernateSessionFactory.getSessionFactory().openSession();
-        Transaction tx1 = session.beginTransaction();
-        session.delete(customer);
-        tx1.commit();
-        session.close();
+        Transaction transaction = null;
+        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+            session.beginTransaction();
+            session.delete(customer);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.error(e);
+        }
         return true;
     }
-
+@Override
     public List<Customer> getAll() {
-        List<Customer> customers = (List<Customer>) HibernateSessionFactory.getSessionFactory().openSession().createQuery("From Customer").list();
-        return customers;
+        List<Customer> results = new ArrayList<>();
+        Transaction transaction = null;
+        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<Customer> cr = cb.createQuery(Customer.class);
+            Root<Customer> root = cr.from(Customer.class);
+            cr.select(root);
+            Query<Customer> query = session.createQuery(cr);
+            results = query.getResultList();
+            transaction.commit();
+
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.error(e);
+        }
+        return results;
     }
 
 }

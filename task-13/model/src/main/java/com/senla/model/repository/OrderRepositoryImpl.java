@@ -10,7 +10,6 @@ import com.senla.model.enumeration.RequestForBookStatus;
 import com.senla.model.enumeration.SQLOrder;
 import com.senla.model.enumeration.SQLRequestForBook;
 import com.senla.model.repository.api.OrderRepository;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
@@ -40,7 +39,6 @@ public class OrderRepositoryImpl implements OrderRepository {
                 return true;
             }
         } catch (SQLException e) {
-            BasicConfigurator.configure();
             logger.error(e);
         }
         return false;
