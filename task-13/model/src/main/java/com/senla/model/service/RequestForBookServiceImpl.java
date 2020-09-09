@@ -129,7 +129,7 @@ public class RequestForBookServiceImpl implements RequestForBookService {
         RequestForBook requestForBook = new RequestForBook(bookTitle, bookAuthor, RequestForBookStatus.ACTIVE, order);
         try {
             requestForBookRepository.create(requestForBook);
-            System.out.println("Request has been created");
+            logger.info("Request has been created");
         } catch (SQLException e) {
             logger.error(e);
         }

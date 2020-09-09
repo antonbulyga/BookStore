@@ -13,11 +13,14 @@ import com.senla.model.service.api.BookService;
 import com.senla.model.service.api.OrderService;
 import com.senla.model.service.api.RequestForBookService;
 import com.senla.model.utils.ExportHelper;
+import com.senla.model.utils.HibernateSessionFactory;
 import com.senla.model.сomparators.BookAlphabeticalComparator;
 import com.senla.model.сomparators.BookArriveDataComparator;
 import com.senla.model.сomparators.BookPriceComparator;
 import com.senla.model.сomparators.BookPublicationDataComparator;
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -54,9 +57,9 @@ public class BookServiceImpl implements BookService {
                 .forEach(x -> logger.debug(x));
     }
 
-    public void importBook(){
+    public void importBook() {
         List<Book> bookList = bookRepository.getAll();
-        try{
+        try {
             BufferedReader reader = new BufferedReader(new FileReader(path));
             String line;
             while ((line = reader.readLine()) != null) {
@@ -82,12 +85,12 @@ public class BookServiceImpl implements BookService {
         }
     }
 
-    public boolean bookInStockChecker(String titleBook, String authorBook){
+    public boolean bookInStockChecker(String titleBook, String authorBook) {
         List<Book> bookList = getListOfBooksInStoreHouse();
         boolean flag = false;
         for (int i = 0; i < bookList.size(); i++) {
-            if(bookList.get(i).getTitle().equals(titleBook)){
-                if(bookList.get(i).getAuthor().equals(authorBook)){
+            if (bookList.get(i).getTitle().equals(titleBook)) {
+                if (bookList.get(i).getAuthor().equals(authorBook)) {
                     flag = true;
                 }
             }
@@ -95,18 +98,18 @@ public class BookServiceImpl implements BookService {
         return flag;
     }
 
-    public Book getBookByAuthorAndTitle(String titleBook, String authorBook){
+    public Book getBookByAuthorAndTitle(String titleBook, String authorBook) {
         List<Book> bookList = getListOfBooksInStoreHouse();
         Book book = null;
         for (int i = 0; i < bookList.size(); i++) {
-            if(bookList.get(i).getTitle().equals(titleBook) & bookList.get(i).getAuthor().equals(authorBook)){
+            if (bookList.get(i).getTitle().equals(titleBook) & bookList.get(i).getAuthor().equals(authorBook)) {
                 book = bookList.get(i);
             }
         }
         return book;
     }
 
-    public void exportBook(){
+    public void exportBook() {
         List<Book> bookList = getListOfBooksInStoreHouse();
         ExportHelper.write(null, bookList, null, null, path);
     }
@@ -117,9 +120,10 @@ public class BookServiceImpl implements BookService {
         completingRequestAfterArrivingNewBook(book);
         return book;
     }
-    public List<Book> getListOfBooksInStoreHouse(){
-       List<Book> books = bookRepository.getAll();
-       return books;
+
+    public List<Book> getListOfBooksInStoreHouse() {
+        List<Book> books = bookRepository.getAll();
+        return books;
     }
 
     public void addBookToListOfBookInTheStorehouse(Book book) throws SQLException {
@@ -132,16 +136,25 @@ public class BookServiceImpl implements BookService {
         logger.debug("Book has been updated");
     }
 
-       public void completingRequestAfterArrivingNewBook(Book book) {
-        List<RequestForBook> requestForBooks = requestForBookService.getListOfRequestForBook();
-           for (int i = 0; i < requestForBooks.size(); i++) {
-              if(requestForBooks.get(i).getTitleOfBook().equals(book.getTitle()) & requestForBooks.get(i).getAuthorOfBook().equals(book.getAuthor())) {
-                  requestForBooks.get(i).setRequestStatus(RequestForBookStatus.COMPLETED);
-                  requestForBookRepository.update(requestForBooks.get(i));
-                  Order order = orderService.read(requestForBooks.get(i).getOrder().getId());
-                  orderService.executeOrder(order);
-              }
-           }
+    public void completingRequestAfterArrivingNewBook(Book book) {
+        Transaction transaction = null;
+        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+            List<RequestForBook> requestForBooks = requestForBookService.getListOfRequestForBook();
+            for (int i = 0; i < requestForBooks.size(); i++) {
+                if (requestForBooks.get(i).getTitleOfBook().equals(book.getTitle()) & requestForBooks.get(i).getAuthorOfBook().equals(book.getAuthor())) {
+                    requestForBooks.get(i).setRequestStatus(RequestForBookStatus.COMPLETED);
+                    requestForBookRepository.update(requestForBooks.get(i));
+                    Order order = orderService.read(requestForBooks.get(i).getOrder().getId());
+                    orderService.executeOrder(order);
+                }
+            }
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.error(e);
+            logger.info("Method failed, rollback");
+        }
     }
 
     public void showUnsoldBooksMoreThanSixMonth() {
@@ -150,28 +163,28 @@ public class BookServiceImpl implements BookService {
         List<Book> arrayOfUnsoldBooksMoreThanSixMonth = new ArrayList<>();
         logger.debug("Books unsold for more than 6 month : ");
         for (int i = 0; i < books.size(); i++) {
-                LocalDate date2 = books.get(i).getArriveDate().plusMonths(6);
-                int compareResult = date2.compareTo(date);
-                if (compareResult < 0) {
-                    arrayOfUnsoldBooksMoreThanSixMonth.add(books.get(i));
-                }
+            LocalDate date2 = books.get(i).getArriveDate().plusMonths(6);
+            int compareResult = date2.compareTo(date);
+            if (compareResult < 0) {
+                arrayOfUnsoldBooksMoreThanSixMonth.add(books.get(i));
             }
+        }
 
         for (int i = 0; i < arrayOfUnsoldBooksMoreThanSixMonth.size(); i++) {
             logger.error(arrayOfUnsoldBooksMoreThanSixMonth.get(i).getTitle());
         }
     }
 
-    public void deleteBook(Book book){
+    public void deleteBook(Book book) {
         bookRepository.delete(book);
         logger.debug("Book has been deleted");
     }
 
-    public void showBooksInStock(){
+    public void showBooksInStock() {
         List<Book> books = bookRepository.getAll();
         logger.debug("List of the books in stock");
         for (int i = 0; i < books.size(); i++) {
-            System.out.println(books.get(i).getTitle() + ";" + books.get(i).getAuthor() + "; " +  i);
+            System.out.println(books.get(i).getTitle() + ";" + books.get(i).getAuthor() + "; " + i);
         }
 
     }
@@ -192,7 +205,7 @@ public class BookServiceImpl implements BookService {
         Collections.sort(books, bookAlphabeticalComparator);
         logger.debug("List of books sorted by author: ");
         for (int i = 0; i < books.size(); i++) {
-            System.out.println(books.get(i).getTitle() + " - " +books.get(i).getAuthor());
+            System.out.println(books.get(i).getTitle() + " - " + books.get(i).getAuthor());
         }
     }
 
@@ -216,7 +229,7 @@ public class BookServiceImpl implements BookService {
         }
     }
 
-    public Book getBookById(int id){
+    public Book getBookById(int id) {
         Book book = bookRepository.read(id);
         return book;
     }

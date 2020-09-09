@@ -15,10 +15,13 @@ import com.senla.model.service.api.CustomerService;
 import com.senla.model.service.api.OrderService;
 import com.senla.model.service.api.RequestForBookService;
 import com.senla.model.utils.ExportHelper;
+import com.senla.model.utils.HibernateSessionFactory;
 import com.senla.model.сomparators.OrderDataOfDoneComparator;
 import com.senla.model.сomparators.OrderPriceComparator;
 import com.senla.model.сomparators.OrderStatusComparator;
 import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -29,6 +32,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 @Component
 public class OrderServiceImpl implements OrderService {
     @MyAutoWired
@@ -50,12 +54,12 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
-    public void importOrder(){
+    public void importOrder() {
         List<Book> books = bookService.getListOfBooksInStoreHouse();
         List<Book> listOfBookInOrder = new ArrayList<>();
         List<Order> listOfOrders = orderService.getListOfOrders();
         List<Customer> customers = customerService.getListOfCustomers();
-        try(BufferedReader reader = new BufferedReader(new FileReader(path))){
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] strings = line.split(",");
@@ -66,8 +70,8 @@ public class OrderServiceImpl implements OrderService {
                 int customerId = Integer.parseInt(strings[4]);
                 double priceOfOrder = Double.parseDouble(strings[5]);
                 String[] idBooksList = listOfBooks.split(" ");
-                for (int i = 0; i <idBooksList.length ; i++) {
-                    if(Integer.parseInt(idBooksList[i]) == books.get(i).getId()){
+                for (int i = 0; i < idBooksList.length; i++) {
+                    if (Integer.parseInt(idBooksList[i]) == books.get(i).getId()) {
                         listOfBookInOrder.add(books.get(i));
                     }
                 }
@@ -75,10 +79,9 @@ public class OrderServiceImpl implements OrderService {
                 LocalDate dateOfDoneOrder = LocalDate.parse(dateOfDoneOrderString, dateTimeFormatter);
                 Order order = createOrder(listOfBookInOrder, null, customers.get(customerId), dateOfDoneOrder);
                 for (int i = 0; i < listOfOrders.size(); i++) {
-                    if(order.getId() == listOfOrders.get(i).getId()){
+                    if (order.getId() == listOfOrders.get(i).getId()) {
                         updateOrder(order);
-                    }
-                    else {
+                    } else {
                         addOrderToListOfOrders(order);
                     }
                 }
@@ -90,7 +93,7 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
-    public void exportOrder(){
+    public void exportOrder() {
         List<Order> orderList = getListOfOrders();
         ExportHelper.write(orderList, null, null, null, path);
     }
@@ -100,7 +103,7 @@ public class OrderServiceImpl implements OrderService {
         return orders;
     }
 
-    public void addOrderToListOfOrders(Order order){
+    public void addOrderToListOfOrders(Order order) {
         try {
             orderRepository.create(order);
         } catch (SQLException e) {
@@ -108,13 +111,20 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    public Order createOrder(List<Book> books , List<RequestForBook> requestForBooks, Customer customer, LocalDate dateOfDoneOrder){
+    public Order createOrder(List<Book> books, List<RequestForBook> requestForBooks, Customer customer, LocalDate dateOfDoneOrder) {
+        Transaction transaction = null;
+        Order order = null;
+        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
         int sumPriceOfOrder = 0;
         for (int i = 0; i < books.size(); i++) {
-           sumPriceOfOrder += books.get(i).getPrice();
+            sumPriceOfOrder += books.get(i).getPrice();
+        }
+        for (int i = 0; i < requestForBooks.size(); i++) {
+           Book book = bookService.getBookByAuthorAndTitle(requestForBooks.get(i).getTitleOfBook(),requestForBooks.get(i).getAuthorOfBook());
+            sumPriceOfOrder += books.get(i).getPrice();
         }
         LocalDate date = LocalDate.now();
-        Order order = new Order(date, dateOfDoneOrder, books, OrderStatus.NEW, customer, sumPriceOfOrder);
+        order = new Order(date, dateOfDoneOrder, books, OrderStatus.NEW, customer, sumPriceOfOrder);
         order.setListOfRequestForBooks(requestForBooks);
         for (int i = 0; i < requestForBooks.size(); i++) {
             requestForBooks.get(i).setOrder(order);
@@ -126,7 +136,7 @@ public class OrderServiceImpl implements OrderService {
             orderRepository.create(order);
             logger.debug("Order has been created");
             for (int i = 0; i < requestForBooks.size(); i++) {
-               requestForBookService.create(requestForBooks.get(i));
+                requestForBookService.create(requestForBooks.get(i));
             }
             for (int i = 0; i < books.size(); i++) {
                 bookService.bookUpdate(books.get(i));
@@ -134,41 +144,57 @@ public class OrderServiceImpl implements OrderService {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.error(e);
+            logger.info("Method failed, rollback");
+        }
         return order;
     }
 
     public void executeOrder(Order order) {
-        LocalDate date = LocalDate.now();
-        List<Book> listBookInOrder = order.getBooks();
-        List<RequestForBook> requestForBooksInOrder = order.getListOfRequestForBooks();
-        int tmp = 0;
-        if(requestForBooksInOrder.size() == 0){
-            order.setOrderStatus(OrderStatus.DONE);
-            order.setDateOfDoneOrder(date);
-            orderRepository.update(order);
-            logger.debug("Order has been updated");
-        }
-        for (int i = 0; i < requestForBooksInOrder.size(); i++) {
-            if (requestForBooksInOrder.get(i).getRequestStatus() == RequestForBookStatus.COMPLETED) {
-                tmp++;
-            }
-            if (tmp == requestForBooksInOrder.size()) {
+        Transaction transaction = null;
+        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
+            LocalDate date = LocalDate.now();
+            List<Book> listBookInOrder = order.getBooks();
+            List<RequestForBook> requestForBooksInOrder = order.getListOfRequestForBooks();
+            int tmp = 0;
+            if (requestForBooksInOrder.size() == 0) {
                 order.setOrderStatus(OrderStatus.DONE);
                 order.setDateOfDoneOrder(date);
-                for (int j = 0; j < listBookInOrder.size(); j++) {
-                    bookService.deleteBook(listBookInOrder.get(j));
-                    System.out.println("Book has been deleted");
-                }
-                for (int j = 0; j < requestForBooksInOrder.size(); j++) {
-                    Book book = bookService.getBookByAuthorAndTitle(requestForBooksInOrder.get(i).getTitleOfBook(),requestForBooksInOrder.get(i).getAuthorOfBook());
-                    bookService.deleteBook(book);
-                }
                 orderRepository.update(order);
+                logger.debug("Order has been updated");
             }
+            for (int i = 0; i < requestForBooksInOrder.size(); i++) {
+                if (requestForBooksInOrder.get(i).getRequestStatus() == RequestForBookStatus.COMPLETED) {
+                    tmp++;
+                }
+                if (tmp == requestForBooksInOrder.size()) {
+                    order.setOrderStatus(OrderStatus.DONE);
+                    order.setDateOfDoneOrder(date);
+                    for (int j = 0; j < listBookInOrder.size(); j++) {
+                        bookService.deleteBook(listBookInOrder.get(j));
+                        System.out.println("Book has been deleted");
+                    }
+                    for (int j = 0; j < requestForBooksInOrder.size(); j++) {
+                        Book book = bookService.getBookByAuthorAndTitle(requestForBooksInOrder.get(i).getTitleOfBook(), requestForBooksInOrder.get(i).getAuthorOfBook());
+                        bookService.deleteBook(book);
+                    }
+                    orderRepository.update(order);
+                }
+            }
+        } catch (Exception e) {
+            if (transaction != null) {
+                transaction.rollback();
+            }
+            logger.error(e);
+            logger.info("Method failed, rollback");
         }
     }
 
-    public void listOfDoneOrdersByPeriodOfTime(List<Order> orders, LocalDate date1, LocalDate date2){
+    public void listOfDoneOrdersByPeriodOfTime(List<Order> orders, LocalDate date1, LocalDate date2) {
         List<Order> listOfDoneOrdersByPeriodOfTime = new ArrayList<>();
         for (int i = 0; i < orders.size(); i++) {
             if (orders.get(i).getDateOfDoneOrder().compareTo(date1) == -1 && orders.get(i).getDateOfDoneOrder().compareTo(date2) == 1 || orders.get(i).getDateOfDoneOrder().compareTo(date2) == 0 || orders.get(i).getDateOfDoneOrder().compareTo(date1) == 0) {
@@ -181,29 +207,29 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
-    public void sortListOfDoneOrdersByPeriodOfTimeByDateOfDone(List<Order> listOfDoneOrdersByPeriodOfTime){
+    public void sortListOfDoneOrdersByPeriodOfTimeByDateOfDone(List<Order> listOfDoneOrdersByPeriodOfTime) {
         sortOrdersByDateOfDone();
     }
 
-    public void sortListOfDoneOrdersByPeriodOfTimeByPrice(List<Order> listOfDoneOrdersByPeriodOfTime){
+    public void sortListOfDoneOrdersByPeriodOfTimeByPrice(List<Order> listOfDoneOrdersByPeriodOfTime) {
         sortOrdersByPrice();
     }
 
-    public void sumOfMoneyPerPeriodOfTime(List<Order> orders , LocalDate date1, LocalDate date2) {
+    public void sumOfMoneyPerPeriodOfTime(List<Order> orders, LocalDate date1, LocalDate date2) {
         double sum = 0;
         for (int i = 0; i < orders.size(); i++) {
-            if(orders.get(i).getDateOfDoneOrder().compareTo(date1) == -1 && orders.get(i).getDateOfDoneOrder().compareTo(date2) == 1 || orders.get(i).getDateOfDoneOrder().compareTo(date2) == 0 || orders.get(i).getDateOfDoneOrder().compareTo(date1) ==0 ){
+            if (orders.get(i).getDateOfDoneOrder().compareTo(date1) == -1 && orders.get(i).getDateOfDoneOrder().compareTo(date2) == 1 || orders.get(i).getDateOfDoneOrder().compareTo(date2) == 0 || orders.get(i).getDateOfDoneOrder().compareTo(date1) == 0) {
                 sum += orders.get(i).getPriceOfOrder();
             }
         }
-        logger.debug("Amount of orders by period of time " + " from " + date1 + " to "+ date2 + " is "+ sum);
+        logger.debug("Amount of orders by period of time " + " from " + date1 + " to " + date2 + " is " + sum);
     }
 
     public void updateOrder(Order order) {
-      orderRepository.update(order);
+        orderRepository.update(order);
     }
 
-    public void showListOfOrders(){
+    public void showListOfOrders() {
         List<Order> orders = orderRepository.getAll();
         logger.debug("List of orders: ");
         for (int i = 0; i < orders.size(); i++) {
@@ -227,7 +253,7 @@ public class OrderServiceImpl implements OrderService {
         Collections.sort(orders, orderPriceComparator);
         logger.debug("List of orders sorted by price: ");
         for (int i = 0; i < orders.size(); i++) {
-            System.out.println(orders.get(i).getId() + " - " +orders.get(i).getPriceOfOrder());
+            System.out.println(orders.get(i).getId() + " - " + orders.get(i).getPriceOfOrder());
         }
     }
 
@@ -237,20 +263,20 @@ public class OrderServiceImpl implements OrderService {
         Collections.sort(orders, orderStatusComparator);
         logger.debug("List of orders sorted by status: ");
         for (int i = 0; i < orders.size(); i++) {
-            System.out.println(orders.get(i).getId() + " - " +orders.get(i).getOrderStatus());
+            System.out.println(orders.get(i).getId() + " - " + orders.get(i).getOrderStatus());
         }
     }
 
-    public void showDetailsOfOrder(Order order){
+    public void showDetailsOfOrder(Order order) {
         logger.debug("Details of the customer: " + "name: " + order.getCustomer().getName() + " age " + order.getCustomer().getAge());
-        logger.debug("Details of the order : " + "price of order is " +  order.getPriceOfOrder() + ", date of done order is: " +order.getDateOfDoneOrder());
+        logger.debug("Details of the order : " + "price of order is " + order.getPriceOfOrder() + ", date of done order is: " + order.getDateOfDoneOrder());
     }
 
-    public void deleteOrder(Order order){
+    public void deleteOrder(Order order) {
         orderRepository.delete(order);
     }
 
-    public void changeOrderStatusToCancelled(Order order){
+    public void changeOrderStatusToCancelled(Order order) {
         order.setOrderStatus(OrderStatus.CANCELLED);
         List<RequestForBook> requestForBooks = order.getListOfRequestForBooks();
         for (int i = 0; i < requestForBooks.size(); i++) {
@@ -268,8 +294,8 @@ public class OrderServiceImpl implements OrderService {
         logger.debug("Count of orders by period of time " + " from " + date1 + " to " + date2 + " is " + sum);
     }
 
-    public Order getOrderById(int id){
-      Order order = orderRepository.read(id);
+    public Order getOrderById(int id) {
+        Order order = orderRepository.read(id);
         return order;
     }
 
