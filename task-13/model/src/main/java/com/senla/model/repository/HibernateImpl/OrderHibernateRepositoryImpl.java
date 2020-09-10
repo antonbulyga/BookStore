@@ -2,6 +2,7 @@ package com.senla.model.repository.HibernateImpl;
 
 import com.senla.config.annotations.Component;
 import com.senla.model.entity.Order;
+import com.senla.model.entity.Order_;
 import com.senla.model.repository.api.OrderRepository;
 import com.senla.model.utils.HibernateSessionFactory;
 import org.apache.log4j.Logger;
@@ -9,6 +10,9 @@ import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -86,8 +90,13 @@ public class OrderHibernateRepositoryImpl implements OrderRepository {
         Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Query<Order> query = session.createQuery("select b from Order b left join fetch b.books " +
-                    "left join fetch b.listOfRequestForBooks left join fetch b.customer left join fetch b.listOfRequestForBooks");
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<Order> cr = cb.createQuery(Order.class);
+            Root<Order> root = cr.from(Order.class);
+            root.fetch(Order_.customer);
+            root.fetch(Order_.books);
+            root.fetch(Order_.listOfRequestForBooks);
+            Query<Order> query = session.createQuery(cr);
             results = query.getResultList();
             transaction.commit();
 

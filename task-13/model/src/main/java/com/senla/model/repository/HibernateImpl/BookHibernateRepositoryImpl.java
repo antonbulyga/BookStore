@@ -2,6 +2,7 @@ package com.senla.model.repository.HibernateImpl;
 
 import com.senla.config.annotations.Component;
 import com.senla.model.entity.Book;
+import com.senla.model.entity.Book_;
 import com.senla.model.repository.api.BookRepository;
 import com.senla.model.utils.HibernateSessionFactory;
 import org.apache.log4j.Logger;
@@ -11,6 +12,7 @@ import org.hibernate.query.Query;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
@@ -89,7 +91,11 @@ public class BookHibernateRepositoryImpl implements BookRepository {
         Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            Query<Book> query = session.createQuery("select b from Book b left join fetch b.order");
+            CriteriaBuilder cb = session.getCriteriaBuilder();
+            CriteriaQuery<Book> cr = cb.createQuery(Book.class);
+            Root<Book> root = cr.from(Book.class);
+            root.fetch(Book_.order, JoinType.LEFT);
+            Query<Book> query = session.createQuery(cr);
             results = query.getResultList();
             transaction.commit();
 
