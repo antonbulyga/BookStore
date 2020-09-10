@@ -1,8 +1,8 @@
 package com.senla.model.repository.HibernateImpl;
 
 import com.senla.config.annotations.Component;
-import com.senla.model.entity.Book;
-import com.senla.model.repository.api.BookRepository;
+import com.senla.model.entity.Customer;
+import com.senla.model.repository.api.CustomerRepository;
 import com.senla.model.utils.HibernateSessionFactory;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -16,15 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class BookHibernateImpl implements BookRepository {
-    static final Logger logger = Logger.getLogger(OrderHibernateImpl.class);
+public class CustomerHibernateRepositoryImpl implements CustomerRepository {
+    static final Logger logger = Logger.getLogger(OrderHibernateRepositoryImpl.class);
     @Override
-    public Book read(Integer bookId) {
-        Book result = new Book();
+    public Customer read(Integer customerId) {
+        Customer result = new Customer();
         Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            result = session.get(Book.class, bookId);
+            result = session.get(Customer.class, customerId);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -36,11 +36,11 @@ public class BookHibernateImpl implements BookRepository {
     }
 
     @Override
-    public boolean create(Book book) {
+    public boolean create(Customer customer) {
         Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.save(book);
+            session.save(customer);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -52,11 +52,11 @@ public class BookHibernateImpl implements BookRepository {
     }
 
     @Override
-    public boolean update(Book book) {
+    public boolean update(Customer customer) {
         Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
             session.beginTransaction();
-            session.update(book);
+            session.update(customer);
             session.getTransaction().commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -68,11 +68,11 @@ public class BookHibernateImpl implements BookRepository {
     }
 
     @Override
-    public boolean delete(Book book) {
+    public boolean delete(Customer customer) {
         Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
             session.beginTransaction();
-            session.delete(book);
+            session.delete(customer);
             session.getTransaction().commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -82,18 +82,17 @@ public class BookHibernateImpl implements BookRepository {
         }
         return true;
     }
-
-    @Override
-    public List<Book> getAll() {
-        List<Book> results = new ArrayList<>();
+@Override
+    public List<Customer> getAll() {
+        List<Customer> results = new ArrayList<>();
         Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaQuery<Book> cr = cb.createQuery(Book.class);
-            Root<Book> root = cr.from(Book.class);
+            CriteriaQuery<Customer> cr = cb.createQuery(Customer.class);
+            Root<Customer> root = cr.from(Customer.class);
             cr.select(root);
-            Query<Book> query = session.createQuery(cr);
+            Query<Customer> query = session.createQuery(cr);
             results = query.getResultList();
             transaction.commit();
 
@@ -106,22 +105,4 @@ public class BookHibernateImpl implements BookRepository {
         return results;
     }
 
-    public List<Book> sortBookByPrice(){
-        List<Book> results = new ArrayList<>();
-        Transaction transaction = null;
-        try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-        CriteriaBuilder cb = session.getCriteriaBuilder();
-        CriteriaQuery<Book> cr = cb.createQuery(Book.class);
-        Root<Book> root = cr.from(Book.class);
-        cr.orderBy(cb.asc(root.get("price")));
-        Query<Book> query = session.createQuery(cr);
-        results = query.getResultList();
-        } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            logger.error(e);
-        }
-        return results;
-    }
 }

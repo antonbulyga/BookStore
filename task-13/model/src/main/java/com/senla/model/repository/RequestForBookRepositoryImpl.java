@@ -6,7 +6,6 @@ import com.senla.model.entity.RequestForBook;
 import com.senla.model.enumeration.RequestForBookStatus;
 import com.senla.model.enumeration.SQLRequestForBook;
 import com.senla.model.repository.api.RequestForBookRepository;
-import org.apache.log4j.BasicConfigurator;
 import org.apache.log4j.Logger;
 
 import java.sql.PreparedStatement;
@@ -20,7 +19,7 @@ public class RequestForBookRepositoryImpl implements RequestForBookRepository {
     static final Logger logger = Logger.getLogger(RequestForBookRepositoryImpl.class);
     @Override
     public boolean create(RequestForBook requestForBook) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLRequestForBook.INSERT_REQUEST_FOR_BOOK.getQuery())) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().getConnection().prepareStatement(SQLRequestForBook.INSERT_REQUEST_FOR_BOOK.getQuery())) {
             statement.setString(1, requestForBook.getTitleOfBook());
             statement.setString(2, requestForBook.getAuthorOfBook());
             statement.setString(3, requestForBook.getRequestStatus().toString());
@@ -37,7 +36,7 @@ public class RequestForBookRepositoryImpl implements RequestForBookRepository {
 
     @Override
     public boolean update(RequestForBook requestForBook) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLRequestForBook.UPDATE_REQUEST_FOR_BOOK.getQuery())) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().getConnection().prepareStatement(SQLRequestForBook.UPDATE_REQUEST_FOR_BOOK.getQuery())) {
             statement.setString(1, requestForBook.getTitleOfBook());
             statement.setString(2, requestForBook.getAuthorOfBook());
             statement.setString(3, requestForBook.getRequestStatus().toString());
@@ -57,7 +56,7 @@ public class RequestForBookRepositoryImpl implements RequestForBookRepository {
 
     @Override
     public boolean delete(RequestForBook requestForBook) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLRequestForBook.DELETE_REQUEST_FOR_BOOK.getQuery())) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().getConnection().prepareStatement(SQLRequestForBook.DELETE_REQUEST_FOR_BOOK.getQuery())) {
             statement.setInt(1, requestForBook.getId());
             int i = statement.executeUpdate();
             if (i >= 1) {
@@ -74,7 +73,7 @@ public class RequestForBookRepositoryImpl implements RequestForBookRepository {
     public RequestForBook read(Integer requestForBookId) {
         final RequestForBook result = new RequestForBook();
         Order order = new Order();
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLRequestForBook.GET_REQUEST_FOR_BOOK.getQuery())) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().getConnection().prepareStatement(SQLRequestForBook.GET_REQUEST_FOR_BOOK.getQuery())) {
             statement.setInt(1, requestForBookId);
             final ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -95,7 +94,7 @@ public class RequestForBookRepositoryImpl implements RequestForBookRepository {
     public List<RequestForBook> getAll() {
         final List<RequestForBook> requestForBookList = new ArrayList<>();
         Order order = new Order();
-        try (Statement statement = MysqlConnect.getInstance().conn.createStatement()) {
+        try (Statement statement = MysqlConnect.getInstance().getConnection().createStatement()) {
             ResultSet resultSet = statement.executeQuery(SQLRequestForBook.GET_ALL_REQUEST_FOR_BOOK.getQuery());
             while (resultSet.next()) {
                 RequestForBook requestForBook = new RequestForBook();

@@ -24,7 +24,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     static final Logger logger = Logger.getLogger(OrderRepositoryImpl.class);
     @Override
     public boolean create(Order order) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLOrder.INSERT_ORDER.getQuery())) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().getConnection().prepareStatement(SQLOrder.INSERT_ORDER.getQuery())) {
             statement.setString(1, order.getDateOfOrder().toString());
             if (order.getDateOfDoneOrder() == null) {
                 statement.setDate(2, null);
@@ -46,7 +46,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public boolean update(Order order) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLOrder.UPDATE_ORDER.getQuery())) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().getConnection().prepareStatement(SQLOrder.UPDATE_ORDER.getQuery())) {
             statement.setString(1, order.getDateOfOrder().toString());
             if (order.getDateOfDoneOrder() == null) {
                 statement.setDate(2, null);
@@ -70,7 +70,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     @Override
     public boolean delete(Order order) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLOrder.DELETE_ORDER.getQuery())) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().getConnection().prepareStatement(SQLOrder.DELETE_ORDER.getQuery())) {
             statement.setInt(1, order.getId());
             int i = statement.executeUpdate();
             if (i >= 1) {
@@ -86,7 +86,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public Order read(Integer orderId) {
         final Order result = new Order();
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLOrder.GET_ORDER.getQuery())) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().getConnection().prepareStatement(SQLOrder.GET_ORDER.getQuery())) {
             statement.setInt(1, orderId);
             final ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -109,7 +109,7 @@ public class OrderRepositoryImpl implements OrderRepository {
     @Override
     public List<Order> getAll() {
        final List<Order> orderList = new ArrayList<>();
-        try (Statement statement = MysqlConnect.getInstance().conn.createStatement()) {
+        try (Statement statement = MysqlConnect.getInstance().getConnection().createStatement()) {
             ResultSet resultSet = statement.executeQuery(SQLOrder.GET_ALL_ORDER.getQuery());
             while (resultSet.next()) {
                 Order order = new Order();
@@ -132,7 +132,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     public List<Book> getBooksFromOrder(int orderId) {
         final List<Book> books = new ArrayList<>();
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLOrder.GET_BOOK_FROM_ORDER.getQuery())) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().getConnection().prepareStatement(SQLOrder.GET_BOOK_FROM_ORDER.getQuery())) {
             statement.setInt(1, orderId);
             final ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -153,7 +153,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     public Customer getCustomer(int orderId) throws SQLException {
         Customer customer = new Customer();
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLOrder.GET_CUSTOMER_FROM_ORDER.getQuery())) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().getConnection().prepareStatement(SQLOrder.GET_CUSTOMER_FROM_ORDER.getQuery())) {
             statement.setInt(1, orderId);
             final ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {
@@ -170,7 +170,7 @@ public class OrderRepositoryImpl implements OrderRepository {
 
     public List<RequestForBook> getListOfRequestForBookFromOrder(int orderId) {
         final List<RequestForBook> requestForBooks = new ArrayList<>();
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLRequestForBook.GET_REQUEST_FROM_BOOK_FROM_ORDER.getQuery())) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().getConnection().prepareStatement(SQLRequestForBook.GET_REQUEST_FROM_BOOK_FROM_ORDER.getQuery())) {
             statement.setInt(1, orderId);
             final ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()) {

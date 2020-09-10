@@ -17,7 +17,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     static final Logger logger = Logger.getLogger(CustomerRepositoryImpl.class);
     @Override
     public boolean create(Customer customer) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLCustomer.INSERT_CUSTOMER.getQuery())) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().getConnection().prepareStatement(SQLCustomer.INSERT_CUSTOMER.getQuery())) {
             statement.setInt(1, customer.getAge());
             statement.setString(2, customer.getName());
             int i = statement.executeUpdate();
@@ -32,7 +32,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
     @Override
     public boolean update(Customer customer) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLCustomer.UPDATE_CUSTOMER.getQuery())) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().getConnection().prepareStatement(SQLCustomer.UPDATE_CUSTOMER.getQuery())) {
             statement.setInt(1, customer.getAge());
             statement.setString(2, customer.getName());
             statement.setInt(3, customer.getId());
@@ -49,7 +49,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
 
     @Override
     public boolean delete(Customer customer) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLCustomer.DELETE_CUSTOMER.getQuery())) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().getConnection().prepareStatement(SQLCustomer.DELETE_CUSTOMER.getQuery())) {
             statement.setInt(1, customer.getId());
             int i = statement.executeUpdate();
             if(i >= 1) {
@@ -66,7 +66,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     @Override
     public Customer read(Integer customerId) {
         final Customer result = new Customer();
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLCustomer.GET_CUSTOMER.getQuery())) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().getConnection().prepareStatement(SQLCustomer.GET_CUSTOMER.getQuery())) {
             statement.setInt(1, customerId);
             final ResultSet resultSet = statement.executeQuery();
             if(resultSet.next()){
@@ -84,7 +84,7 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     @Override
     public List<Customer> getAll() {
         final List<Customer> listOfCustomers = new ArrayList<>();
-        try (Statement statement = MysqlConnect.getInstance().conn.createStatement()){
+        try (Statement statement = MysqlConnect.getInstance().getConnection().createStatement()){
             ResultSet resultSet = statement.executeQuery(SQLCustomer.GET_ALL_CUSTOMERS.getQuery());
             while(resultSet.next()) {
                 Customer customer = new Customer();

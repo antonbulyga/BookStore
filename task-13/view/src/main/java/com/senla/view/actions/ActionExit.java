@@ -15,7 +15,7 @@ public class ActionExit implements IAction {
         WriteObject.write();
         if(MysqlConnect.getInstance() != null){
             try {
-                MysqlConnect.getInstance().conn.close();
+                MysqlConnect.getInstance().getConnection().close();
             } catch (SQLException e) {
                 logger.error(e);
             }

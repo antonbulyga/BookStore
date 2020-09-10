@@ -1,8 +1,8 @@
 package com.senla.model.repository.HibernateImpl;
 
 import com.senla.config.annotations.Component;
-import com.senla.model.entity.Order;
-import com.senla.model.repository.api.OrderRepository;
+import com.senla.model.entity.RequestForBook;
+import com.senla.model.repository.api.RequestForBookRepository;
 import com.senla.model.utils.HibernateSessionFactory;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
@@ -16,15 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class OrderHibernateImpl implements OrderRepository {
-    static final Logger logger = Logger.getLogger(OrderHibernateImpl.class);
+public class RequestForBookHibernateRepositoryImpl implements RequestForBookRepository {
+    static final Logger logger = Logger.getLogger(OrderHibernateRepositoryImpl.class);
     @Override
-    public Order read(Integer orderId) {
-        Order result = new Order();
+    public RequestForBook read(Integer requestForBookId) {
+        RequestForBook result = new RequestForBook();
         Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            result = session.get(Order.class, orderId);
+            result = session.get(RequestForBook.class, requestForBookId);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -36,11 +36,11 @@ public class OrderHibernateImpl implements OrderRepository {
     }
 
     @Override
-    public boolean create(Order order) {
+    public boolean create(RequestForBook requestForBook) {
         Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.save(order);
+            session.save(requestForBook);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -52,11 +52,11 @@ public class OrderHibernateImpl implements OrderRepository {
     }
 
     @Override
-    public boolean update(Order order) {
+    public boolean update(RequestForBook requestForBook) {
         Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
             session.beginTransaction();
-            session.update(order);
+            session.update(requestForBook);
             session.getTransaction().commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -68,11 +68,11 @@ public class OrderHibernateImpl implements OrderRepository {
     }
 
     @Override
-    public boolean delete(Order order) {
+    public boolean delete(RequestForBook requestForBook) {
         Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
             session.beginTransaction();
-            session.delete(order);
+            session.delete(requestForBook);
             session.getTransaction().commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -84,16 +84,16 @@ public class OrderHibernateImpl implements OrderRepository {
     }
 
     @Override
-    public List<Order> getAll() {
-        List<Order> results = new ArrayList<>();
+    public List<RequestForBook> getAll() {
+        List<RequestForBook> results = new ArrayList<>();
         Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
             CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaQuery<Order> cr = cb.createQuery(Order.class);
-            Root<Order> root = cr.from(Order.class);
+            CriteriaQuery<RequestForBook> cr = cb.createQuery(RequestForBook.class);
+            Root<RequestForBook> root = cr.from(RequestForBook.class);
             cr.select(root);
-            Query<Order> query = session.createQuery(cr);
+            Query<RequestForBook> query = session.createQuery(cr);
             results = query.getResultList();
             transaction.commit();
 

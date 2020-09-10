@@ -1,30 +1,27 @@
 package com.senla.model.repository.HibernateImpl;
 
 import com.senla.config.annotations.Component;
-import com.senla.model.entity.Customer;
-import com.senla.model.repository.api.CustomerRepository;
+import com.senla.model.entity.Order;
+import com.senla.model.repository.api.OrderRepository;
 import com.senla.model.utils.HibernateSessionFactory;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Root;
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class CustomerHibernateImpl implements CustomerRepository {
-    static final Logger logger = Logger.getLogger(OrderHibernateImpl.class);
+public class OrderHibernateRepositoryImpl implements OrderRepository {
+    static final Logger logger = Logger.getLogger(OrderHibernateRepositoryImpl.class);
     @Override
-    public Customer read(Integer customerId) {
-        Customer result = new Customer();
+    public Order read(Integer orderId) {
+        Order result = new Order();
         Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            result = session.get(Customer.class, customerId);
+            result = session.get(Order.class, orderId);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -36,11 +33,11 @@ public class CustomerHibernateImpl implements CustomerRepository {
     }
 
     @Override
-    public boolean create(Customer customer) {
+    public boolean create(Order order) {
         Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            session.save(customer);
+            session.save(order);
             transaction.commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -52,11 +49,11 @@ public class CustomerHibernateImpl implements CustomerRepository {
     }
 
     @Override
-    public boolean update(Customer customer) {
+    public boolean update(Order order) {
         Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
             session.beginTransaction();
-            session.update(customer);
+            session.update(order);
             session.getTransaction().commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -68,11 +65,11 @@ public class CustomerHibernateImpl implements CustomerRepository {
     }
 
     @Override
-    public boolean delete(Customer customer) {
+    public boolean delete(Order order) {
         Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
             session.beginTransaction();
-            session.delete(customer);
+            session.delete(order);
             session.getTransaction().commit();
         } catch (Exception e) {
             if (transaction != null) {
@@ -82,17 +79,15 @@ public class CustomerHibernateImpl implements CustomerRepository {
         }
         return true;
     }
-@Override
-    public List<Customer> getAll() {
-        List<Customer> results = new ArrayList<>();
+
+    @Override
+    public List<Order> getAll() {
+        List<Order> results = new ArrayList<>();
         Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
             transaction = session.beginTransaction();
-            CriteriaBuilder cb = session.getCriteriaBuilder();
-            CriteriaQuery<Customer> cr = cb.createQuery(Customer.class);
-            Root<Customer> root = cr.from(Customer.class);
-            cr.select(root);
-            Query<Customer> query = session.createQuery(cr);
+            Query<Order> query = session.createQuery("select b from Order b left join fetch b.books " +
+                    "left join fetch b.listOfRequestForBooks left join fetch b.customer left join fetch b.listOfRequestForBooks");
             results = query.getResultList();
             transaction.commit();
 
@@ -104,5 +99,4 @@ public class CustomerHibernateImpl implements CustomerRepository {
         }
         return results;
     }
-
 }

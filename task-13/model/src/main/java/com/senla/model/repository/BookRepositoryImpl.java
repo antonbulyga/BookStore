@@ -19,7 +19,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public boolean create(Book book) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLBook.INSERT_BOOK.getQuery())) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().getConnection().prepareStatement(SQLBook.INSERT_BOOK.getQuery())) {
             statement.setString(1, book.getTitle());
             statement.setString(2, book.getAuthor());
             statement.setDouble(3,book.getPrice());
@@ -37,7 +37,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public boolean update(Book book) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLBook.UPDATE_BOOK.getQuery())) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().getConnection().prepareStatement(SQLBook.UPDATE_BOOK.getQuery())) {
             statement.setString(1, book.getTitle());
             statement.setString(2, book.getAuthor());
             statement.setDouble(3,book.getPrice());
@@ -57,7 +57,7 @@ public class BookRepositoryImpl implements BookRepository {
 
     @Override
     public boolean delete(Book book) {
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLBook.DELETE_BOOK.getQuery())) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().getConnection().prepareStatement(SQLBook.DELETE_BOOK.getQuery())) {
             statement.setInt(1, book.getId());
             int i = statement.executeUpdate();
             if(i >= 1) {
@@ -74,7 +74,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public Book read(Integer bookId) {
         final Book result = new Book();
-        try (PreparedStatement statement = MysqlConnect.getInstance().conn.prepareStatement(SQLBook.GET_BOOK.getQuery())) {
+        try (PreparedStatement statement = MysqlConnect.getInstance().getConnection().prepareStatement(SQLBook.GET_BOOK.getQuery())) {
             statement.setInt(1, bookId);
             final ResultSet resultSet = statement.executeQuery();
             if(resultSet.next()){
@@ -95,7 +95,7 @@ public class BookRepositoryImpl implements BookRepository {
     @Override
     public List<Book> getAll() {
         final List<Book> bookList = new ArrayList<>();
-        try (Statement statement = MysqlConnect.getInstance().conn.createStatement()){
+        try (Statement statement = MysqlConnect.getInstance().getConnection().createStatement()){
             ResultSet resultSet = statement.executeQuery(SQLBook.GET_ALL_BOOKS.getQuery());
             while(resultSet.next()) {
                 Book book = new Book();

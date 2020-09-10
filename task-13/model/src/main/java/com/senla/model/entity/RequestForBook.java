@@ -19,7 +19,7 @@ public class RequestForBook implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(name = "request_for_book_status")
     private RequestForBookStatus requestStatus;
-    @ManyToOne(targetEntity = Order.class,fetch = FetchType.EAGER)
+    @ManyToOne(targetEntity = Order.class,fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
     private Order order;
 

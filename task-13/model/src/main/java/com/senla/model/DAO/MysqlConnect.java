@@ -1,27 +1,40 @@
 package com.senla.model.DAO;
 
-import com.senla.config.PropertyData;
+import com.senla.config.annotations.MyInject;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-
 public class MysqlConnect {
-    private String url = PropertyData.getProperty("url", "model/src/main/resources/config.properties");
-    private String dbName = PropertyData.getProperty("dbName", "model/src/main/resources/config.properties");
-    private String driver = PropertyData.getProperty("driver", "model/src/main/resources/config.properties");
-    private String userName = PropertyData.getProperty("userName", "model/src/main/resources/config.properties");
-    private String password = PropertyData.getProperty("password", "model/src/main/resources/config.properties");
-    public Connection conn;
+    private static Connection conn = null;
     private static MysqlConnect instance;
-    private MysqlConnect() {
+    @MyInject( key = "url")
+    private String url;
+    @MyInject( key = "dbName")
+    private String dbName;
+    @MyInject( key = "driver")
+    private String driver;
+    @MyInject( key = "userName")
+    private String userName;
+    @MyInject( key = "password")
+    private String password;
+
+    public Connection getConnection() {
+        if(conn != null){
+            return conn;
+        }
+        return getConnection(url,dbName,userName,password);
+    }
+
+    private Connection getConnection(String url, String dbName, String userName, String password) {
         try {
-            Class.forName(driver).newInstance();
-            this.conn = (Connection)DriverManager.getConnection(url+dbName,userName,password);
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            this.conn = DriverManager.getConnection(url+dbName,userName,password);
         }
         catch (Exception sqle) {
             sqle.printStackTrace();
         }
+        return conn;
     }
 
     public static MysqlConnect getInstance() {
