@@ -1,11 +1,9 @@
 package com.senla.view.actions;
 
 import com.senla.model.entity.Order;
+import com.senla.model.utils.BeanGetter;
 import com.senla.model.utils.input.IntegerInput;
 import com.senla.model.utils.input.StringInput;
-import com.senla.model.сontrollers.BookController;
-import com.senla.model.сontrollers.OrderController;
-import com.senla.model.сontrollers.RequestForBookController;
 import com.senla.view.api.IAction;
 import org.apache.log4j.Logger;
 
@@ -16,13 +14,13 @@ public class ActionCreateRequestForBook implements IAction {
     @Override
     public void execute(){
         int indexOfOrder = 0;
-        List<Order> orders = OrderController.getOrderControllerBean().getListOfOrders();
-        BookController.getBookControllerBean().showBooksInStock();
+        List<Order> orders = BeanGetter.getInstance().getOrderControllerBean().getListOfOrders();
+        BeanGetter.getInstance().getBookControllerBean().showBooksInStock();
         logger.debug("Input the title of the book that you want to buy");
         String bookTitle = StringInput.getStringInput();
         logger.debug("Input the author of book that you want to buy");
         String bookAuthor = StringInput.getStringInput();
-        OrderController.getOrderControllerBean().showListOfOrders();
+        BeanGetter.getInstance().getOrderControllerBean().showListOfOrders();
         while (indexOfOrder == 0){
             logger.debug("Fill in index of order");
             indexOfOrder = IntegerInput.getInputInteger();
@@ -32,6 +30,6 @@ public class ActionCreateRequestForBook implements IAction {
             }
         }
 
-        RequestForBookController.getRequestForBookControllerBean().createRequestForBook(bookTitle, bookAuthor,orders.get(indexOfOrder));
+        BeanGetter.getInstance().getRequestForBookControllerBean().createRequestForBook(bookTitle, bookAuthor,orders.get(indexOfOrder));
     }
 }

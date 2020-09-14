@@ -13,7 +13,7 @@ import com.senla.model.сomparators.RequestForBookAlphabeticalComparator;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -22,7 +22,7 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.List;
 
-@Component
+@Service
 public class RequestForBookServiceImpl implements RequestForBookService {
     @Autowired
     private RequestForBookRepository requestForBookRepository;

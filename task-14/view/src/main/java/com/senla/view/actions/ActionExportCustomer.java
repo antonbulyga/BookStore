@@ -1,6 +1,6 @@
 package com.senla.view.actions;
 
-import com.senla.model.сontrollers.CustomerController;
+import com.senla.model.utils.BeanGetter;
 import com.senla.view.api.IAction;
 
 public class ActionExportCustomer implements IAction {
@@ -8,6 +8,6 @@ public class ActionExportCustomer implements IAction {
     @Override
     public void execute(){
 
-        CustomerController.getCustomerControllerBean().exportCustomer();
+        BeanGetter.getInstance().getCustomerControllerBean().exportCustomer();
     }
 }

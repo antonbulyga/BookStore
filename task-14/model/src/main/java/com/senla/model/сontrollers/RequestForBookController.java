@@ -5,26 +5,14 @@ import com.senla.model.entity.Order;
 import com.senla.model.entity.RequestForBook;
 import com.senla.model.service.api.RequestForBookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import java.util.List;
 
-@Component
+@Controller
 public class RequestForBookController {
     @Autowired
     private RequestForBookService requestForBookService;
-
-    private RequestForBookController(){
-
-    }
-
-    public static RequestForBookController getRequestForBookControllerBean(){
-        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-        RequestForBookController requestForBookController = context.getBean(RequestForBookController.class);
-        return requestForBookController;
-    }
 
     public void importRequestForBook(){
         requestForBookService.importRequestForBook();

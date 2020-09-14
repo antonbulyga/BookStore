@@ -3,27 +3,15 @@ package com.senla.model.сontrollers;
 import com.senla.model.entity.Customer;
 import com.senla.model.service.api.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import java.sql.SQLException;
 import java.util.List;
 
-@Component
+@Controller
 public class CustomerController {
     @Autowired
     private CustomerService customerService;
-
-    private CustomerController(){
-
-    }
-
-    public static CustomerController getCustomerControllerBean(){
-        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-        CustomerController customerController = context.getBean(CustomerController.class);
-        return customerController;
-    }
 
     public void importCustomer(){
         customerService.importCustomer();

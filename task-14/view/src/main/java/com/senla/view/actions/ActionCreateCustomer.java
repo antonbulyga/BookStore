@@ -1,6 +1,7 @@
 package com.senla.view.actions;
 
 import com.senla.model.entity.Customer;
+import com.senla.model.utils.BeanGetter;
 import com.senla.model.utils.input.IntegerInput;
 import com.senla.model.utils.input.StringInput;
 import com.senla.model.сontrollers.CustomerController;
@@ -34,7 +35,8 @@ public class ActionCreateCustomer implements IAction {
         Customer customer = new Customer(customerAge, customerName);
 
         try {
-            CustomerController.getCustomerControllerBean().addCustomerToListOfCustomers(customer);
+            CustomerController customerController = BeanGetter.getInstance().getCustomerControllerBean();
+            customerController.addCustomerToListOfCustomers(customer);
             System.out.println("Customer has been created");
         } catch (SQLException e) {
             logger.error(e);

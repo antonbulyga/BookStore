@@ -36,7 +36,7 @@ public class MysqlConnect {
     }
     private Connection getConnection(String url, String dbName, String userName, String password) {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
+            Class.forName(driver);
             this.conn = DriverManager.getConnection(url+dbName,userName,password);
         }
         catch (Exception sqle) {

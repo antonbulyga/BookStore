@@ -5,9 +5,8 @@ import com.senla.model.entity.Customer;
 import com.senla.model.entity.Order;
 import com.senla.model.entity.RequestForBook;
 import com.senla.model.enumeration.RequestForBookStatus;
+import com.senla.model.utils.BeanGetter;
 import com.senla.model.utils.input.StringInput;
-import com.senla.model.сontrollers.BookController;
-import com.senla.model.сontrollers.CustomerController;
 import com.senla.model.сontrollers.OrderController;
 import com.senla.view.api.IAction;
 import org.apache.log4j.Logger;
@@ -21,19 +20,19 @@ public class ActionCreateOrder implements IAction {
     public void execute() {
         List<Book> listOfBooksForOrder = new ArrayList<>();
         List<RequestForBook> requestForBooksForOrder = new ArrayList<>();
-        List<Customer> listOfCustomers = CustomerController.getCustomerControllerBean().getListOfCustomers();
+        List<Customer> listOfCustomers = BeanGetter.getInstance().getCustomerControllerBean().getListOfCustomers();
         String letter = null;
         String author = null;
         String title = null;
-        BookController.getBookControllerBean().showBooksInStock();
+        BeanGetter.getInstance().getBookControllerBean().showBooksInStock();
         while (true) {
             logger.info("Fill in the title of the book for your order from the list of books");
             title = StringInput.getStringInput();
             logger.info("Fill in the author of the book for your order from the list of books");
             author = StringInput.getStringInput();
-            boolean flag = BookController.getBookControllerBean().bookInStockChecker(title, author);
+            boolean flag = BeanGetter.getInstance().getBookControllerBean().bookInStockChecker(title, author);
             if (flag == true) {
-                Book book = BookController.getBookControllerBean().getBookByAuthorAndTitle(title, author);
+                Book book = BeanGetter.getInstance().getBookControllerBean().getBookByAuthorAndTitle(title, author);
                 listOfBooksForOrder.add(book);
             }
             else {
@@ -47,7 +46,8 @@ public class ActionCreateOrder implements IAction {
             }
         }
 
-        Order order = OrderController.getOrderControllerBean().createOrder(listOfBooksForOrder, requestForBooksForOrder, listOfCustomers.get(0), null);
-        OrderController.getOrderControllerBean().executeOrder(order);
+        OrderController orderController = BeanGetter.getInstance().getOrderControllerBean();
+        Order order = orderController.createOrder(listOfBooksForOrder, requestForBooksForOrder, listOfCustomers.get(0), null);
+        orderController.executeOrder(order);
     }
 }

@@ -7,7 +7,7 @@ import com.senla.model.enumeration.RequestForBookStatus;
 import com.senla.model.enumeration.SQLRequestForBook;
 import com.senla.model.repository.api.RequestForBookRepository;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,7 +16,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Repository
 public class RequestForBookRepositoryImpl implements RequestForBookRepository {
     static final Logger logger = Logger.getLogger(RequestForBookRepositoryImpl.class);
     @Override

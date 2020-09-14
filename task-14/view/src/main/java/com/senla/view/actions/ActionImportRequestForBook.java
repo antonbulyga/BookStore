@@ -1,13 +1,13 @@
 package com.senla.view.actions;
 
-import com.senla.model.сontrollers.RequestForBookController;
+import com.senla.model.utils.BeanGetter;
 import com.senla.view.api.IAction;
 
 public class ActionImportRequestForBook implements IAction {
 
     @Override
     public void execute(){
-        RequestForBookController.getRequestForBookControllerBean().importRequestForBook();
+        BeanGetter.getInstance().getRequestForBookControllerBean().importRequestForBook();
     }
 
 }

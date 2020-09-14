@@ -1,12 +1,11 @@
 package com.senla.view.actions;
 
 import com.senla.model.entity.Order;
+import com.senla.model.utils.BeanGetter;
 import com.senla.model.utils.input.StringInput;
 import com.senla.model.сontrollers.OrderController;
 import com.senla.view.api.IAction;
 import org.apache.log4j.Logger;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -52,9 +51,7 @@ public class ActionCountOfDoneOrdersByPeriodOfTime implements IAction {
         catch(DateTimeParseException e){
             logger.error("Incorrect input date");
         }
-
-        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-        OrderController orderController = context.getBean(OrderController.class);
+        OrderController orderController = BeanGetter.getInstance().getOrderControllerBean();
         List<Order> listOfOrdersInStore = orderController.getListOfOrders();
         orderController.countOfDoneOrdersByPeriodOfTime(listOfOrdersInStore, firstDate, secondDate);
     }

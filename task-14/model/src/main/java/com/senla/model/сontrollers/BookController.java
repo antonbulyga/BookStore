@@ -3,28 +3,16 @@ package com.senla.model.сontrollers;
 import com.senla.model.entity.Book;
 import com.senla.model.service.api.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;
 
-@Component
+@Controller
 public class BookController {
     @Autowired
     private BookService bookService;
-
-    private BookController(){
-
-    }
-
-    public static BookController getBookControllerBean(){
-        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-        BookController bookController = context.getBean(BookController.class);
-        return bookController;
-    }
 
     public void exportBook(){
         bookService.exportBook();

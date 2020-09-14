@@ -5,7 +5,7 @@ import com.senla.model.entity.Customer;
 import com.senla.model.enumeration.SQLCustomer;
 import com.senla.model.repository.api.CustomerRepository;
 import org.apache.log4j.Logger;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Repository
 public class CustomerRepositoryImpl implements CustomerRepository {
     static final Logger logger = Logger.getLogger(CustomerRepositoryImpl.class);
     @Override

@@ -6,27 +6,15 @@ import com.senla.model.entity.Order;
 import com.senla.model.entity.RequestForBook;
 import com.senla.model.service.api.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Component
+@Controller
 public class OrderController {
     @Autowired
     private OrderService orderService;
-
-    private OrderController(){
-
-    }
-
-    public static OrderController getOrderControllerBean(){
-        ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-        OrderController orderController = context.getBean(OrderController.class);
-        return orderController;
-    }
 
     public void importOrder(){
         orderService.importOrder();

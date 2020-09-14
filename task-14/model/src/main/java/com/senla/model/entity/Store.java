@@ -1,6 +1,6 @@
 package com.senla.model.entity;
 
-import com.senla.model.сontrollers.*;
+import com.senla.model.utils.BeanGetter;
 
 import java.io.Serializable;
 import java.util.List;
@@ -8,10 +8,10 @@ import java.util.List;
 public class Store implements Serializable {
     private static final long serialVersionUID = -6986537570809949800L;
     private static Store instance;
-    private List<Book> books = BookController.getBookControllerBean().getListOfBooksInStoreHouse();
-    private List<Order> orders = OrderController.getOrderControllerBean().getListOfOrders();
-    private List<RequestForBook> requestForBooks = RequestForBookController.getRequestForBookControllerBean().getListOfRequestForBook();
-    private List<Customer> customers = CustomerController.getCustomerControllerBean().getListOfCustomers();
+    private List<Book> books = BeanGetter.getInstance().getBookControllerBean().getListOfBooksInStoreHouse();
+    private List<Order> orders = BeanGetter.getInstance().getOrderControllerBean().getListOfOrders();
+    private List<RequestForBook> requestForBooks = BeanGetter.getInstance().getRequestForBookControllerBean().getListOfRequestForBook();
+    private List<Customer> customers = BeanGetter.getInstance().getCustomerControllerBean().getListOfCustomers();
 
     private Store(){
 

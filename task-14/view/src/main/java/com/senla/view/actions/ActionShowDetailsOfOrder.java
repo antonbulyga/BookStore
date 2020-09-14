@@ -1,8 +1,8 @@
 package com.senla.view.actions;
 
 import com.senla.model.entity.Order;
+import com.senla.model.utils.BeanGetter;
 import com.senla.model.utils.input.IntegerInput;
-import com.senla.model.сontrollers.OrderController;
 import com.senla.view.api.IAction;
 import org.apache.log4j.Logger;
 
@@ -13,8 +13,8 @@ public class ActionShowDetailsOfOrder implements IAction {
     @Override
     public void execute() {
         int number = 0;
-        OrderController.getOrderControllerBean().showListOfOrders();
-        List<Order> listOfOrdersInStore = OrderController.getOrderControllerBean().getListOfOrders();
+        BeanGetter.getInstance().getOrderControllerBean().showListOfOrders();
+        List<Order> listOfOrdersInStore = BeanGetter.getInstance().getOrderControllerBean().getListOfOrders();
         while (number == 0){
             logger.debug("Fill in the number of order");
             number = IntegerInput.getInputInteger();
@@ -22,6 +22,6 @@ public class ActionShowDetailsOfOrder implements IAction {
                 number = 0;
             }
         }
-        OrderController.getOrderControllerBean().showDetailsOfOrder(listOfOrdersInStore.get(number));
+        BeanGetter.getInstance().getOrderControllerBean().showDetailsOfOrder(listOfOrdersInStore.get(number));
     }
 }

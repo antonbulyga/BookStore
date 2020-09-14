@@ -1,7 +1,7 @@
 package com.senla.view.actions;
 
+import com.senla.model.utils.BeanGetter;
 import com.senla.model.utils.input.StringInput;
-import com.senla.model.сontrollers.BookController;
 import com.senla.view.api.IAction;
 import org.apache.log4j.Logger;
 
@@ -38,6 +38,6 @@ public class ActionCustomSearch implements IAction {
         author = StringInput.getStringInput();
 
 
-        BookController.getBookControllerBean().customSearch(author, date);
+        BeanGetter.getInstance().getBookControllerBean().customSearch(author, date);
     }
 }

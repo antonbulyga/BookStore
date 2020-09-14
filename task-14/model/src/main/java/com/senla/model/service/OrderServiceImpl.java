@@ -16,11 +16,10 @@ import com.senla.model.utils.input.IntegerInput;
 import com.senla.model.сomparators.OrderDataOfDoneComparator;
 import com.senla.model.сomparators.OrderPriceComparator;
 import com.senla.model.сomparators.OrderStatusComparator;
-import com.senla.model.сontrollers.OrderController;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -32,7 +31,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-@Component
+@Service
 public class OrderServiceImpl implements OrderService {
     @Autowired
     private OrderRepository orderRepository;
@@ -129,7 +128,7 @@ public class OrderServiceImpl implements OrderService {
         try {
             orderRepository.create(order);
             logger.debug("Order has been created");
-            OrderController.getOrderControllerBean().showListOfOrders();
+            orderService.showListOfOrders();
             logger.info("Input id of the last order");
             orderId = IntegerInput.getInputInteger();
             for (int i = 0; i < requestForBooks.size(); i++) {
