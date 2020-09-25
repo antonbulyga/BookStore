@@ -41,7 +41,7 @@ public class OrderServiceTest {
     private BookService bookService;
     @BeforeEach
     public void setUp(){
-        ReflectionTestUtils.setField(orderService, "path", "model/src/main/resources/files/Books.csv");
+        ReflectionTestUtils.setField(orderService, "path", "model/src/test/resources/files/Books.csv");
     }
     private final List<Book> bookList = new ArrayList<>();
     private final Customer customer = new Customer();

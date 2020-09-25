@@ -40,7 +40,7 @@ public class RequestForBookTest {
 
     @BeforeEach
     public void setUp() {
-        ReflectionTestUtils.setField(requestForBookService, "path", "model/src/main/resources/files/Customer.csv");
+        ReflectionTestUtils.setField(requestForBookService, "path", "model/src/test/resources/files/Customer.csv");
     }
 
     @Test

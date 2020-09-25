@@ -28,7 +28,7 @@ public class CustomerServiceTest {
     private CustomerRepository customerRepository;
     @BeforeEach
     public void setUp(){
-        ReflectionTestUtils.setField(customerService, "path", "model/src/main/resources/files/Customer.csv");
+        ReflectionTestUtils.setField(customerService, "path", "model/src/test/resources/files/Customer.csv");
     }
     private final Customer customer = new Customer (1, 23, "Антон Булыга");
 

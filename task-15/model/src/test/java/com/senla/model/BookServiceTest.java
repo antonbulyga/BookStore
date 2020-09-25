@@ -37,7 +37,7 @@ public class BookServiceTest {
     private RequestForBookRepository requestForBookRepository;
     @BeforeEach
     public void setUp(){
-        ReflectionTestUtils.setField(bookService, "path", "model/src/main/resources/files/Books.csv");
+        ReflectionTestUtils.setField(bookService, "path", "model/src/test/resources/files/Books.csv");
     }
     private final Book book = new Book(1, "Гоголь Николай", "Мертвые души",4, LocalDate.of(2012,05,13), LocalDate.of(1998,01,05));
 
