@@ -5,32 +5,46 @@ import com.senla.model.entity.Order;
 import com.senla.model.service.api.OrderService;
 import com.senla.model.utils.DtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.NoResultException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 @RestController
+@RequestMapping("/orders")
 public class OrderController {
-    @Autowired
     private OrderService orderService;
-    @Autowired
     private DtoConverter dtoConverter;
 
-    @GetMapping("orders/import")
-    public String importOrder(){
+    @Autowired
+    public void setOrderService(OrderService orderService) {
+        this.orderService = orderService;
+    }
+
+    @Autowired
+    public void setDtoConverter(DtoConverter dtoConverter) {
+        this.dtoConverter = dtoConverter;
+    }
+
+    @GetMapping("import")
+    public ResponseEntity<String> importOrder(){
         orderService.importOrder();
-        return "Order has been imported successfully";
+        return new ResponseEntity<>(
+                "Orders has been import successfully",
+                HttpStatus.OK);
     }
 
-    @GetMapping("orders/export")
-    public String exportOrder(){
+    @GetMapping("export")
+    public ResponseEntity<String> exportOrder(){
         orderService.exportOrder();
-        return "Order has been exported successfully";
+        return new ResponseEntity<>(
+                "Orders has been export successfully",
+                HttpStatus.OK);
     }
 
-    @GetMapping("orders/sum_of_money")
+    @GetMapping("show/sum")
     public List<OrderDto> sumOfMoneyPerPeriodOfTime(@PathVariable LocalDate date1,@PathVariable LocalDate date2) {
        List<Order> orders = orderService.sumOfMoneyPerPeriodOfTime(date1, date2);
         List<OrderDto> orderDtoList = new ArrayList<>();
@@ -41,7 +55,7 @@ public class OrderController {
         return orderDtoList;
     }
 
-    @GetMapping("orders")
+    @GetMapping("")
     public List<OrderDto> getListOfOrders() {
         List<Order> orders = orderService.getListOfOrders();
         List<OrderDto> orderDtoList = new ArrayList<>();
@@ -52,36 +66,29 @@ public class OrderController {
        return orderDtoList;
     }
 
-    @PostMapping("orders/create")
+    @PostMapping("create")
     public OrderDto addOrderToListOfOrders(@RequestBody OrderDto orderDto){
         Order order = dtoConverter.orderDtoToEntity(orderDto);
         orderService.addOrderToListOfOrders(order);
         return orderDto;
     }
 
-    @GetMapping("orders/{id}")
+    @GetMapping("{id}")
     public OrderDto getOrderById(@PathVariable String id){
         int orderId = Integer.parseInt(id);
-        OrderDto orderDto;
-        try {
-            Order order = orderService.getOrderById(orderId);
-            orderDto = dtoConverter.orderEntityToDto(order);
-        }
-        catch (NoResultException e){
-            throw new NoResultException("No Order with this ID");
-        }
-
+        Order order = orderService.getOrderById(orderId);
+        OrderDto orderDto = dtoConverter.orderEntityToDto(order);
         return orderDto;
     }
 
-    @PostMapping("orders/update")
+    @PostMapping("update")
     public OrderDto updateOrder(@RequestBody OrderDto orderDto) {
         Order order = dtoConverter.orderDtoToEntity(orderDto);
         orderService.updateOrder(order);
         return orderDto;
     }
 
-    @GetMapping("orders/sort/date_of_done")
+    @GetMapping("sort/dateOfDone")
     public List<OrderDto> sortOrdersByDateOfDone(){
         List<Order> orders = orderService.sortOrdersByDateOfDone();
         List<OrderDto> orderDtoList = new ArrayList<>();
@@ -92,7 +99,7 @@ public class OrderController {
         return orderDtoList;
 
     }
-    @GetMapping("orders/sort/price")
+    @GetMapping("sort/price")
     public List<OrderDto> sortOrdersByPrice(){
         List<Order> orders =  orderService.sortOrdersByPrice();
         List<OrderDto> orderDtoList = new ArrayList<>();
@@ -102,7 +109,7 @@ public class OrderController {
         }
         return orderDtoList;
     }
-    @GetMapping("orders/sort/status")
+    @GetMapping("sort/status")
     public List<OrderDto> sortOrdersByStatus(){
         List<Order> orders =  orderService.sortOrdersByStatus();
         List<OrderDto> orderDtoList = new ArrayList<>();
@@ -113,23 +120,16 @@ public class OrderController {
         return orderDtoList;
     }
 
-    @DeleteMapping("orders/delete")
+    @DeleteMapping("delete")
     public Order deleteOrder(@RequestBody OrderDto orderDto){
         Order order = dtoConverter.orderDtoToEntity(orderDto);
         orderService.deleteOrder(order);
         return order;
     }
-/*
-    @GetMapping("orders/change_status_to_cancel")
-    public void changeOrderStatusToCancelled(@PathVariable Order order){
-        orderService.changeOrderStatusToCancelled(order);
-    }*/
-
-    @GetMapping("orders/count_done_by_period")
+    @GetMapping("count_done_by_period")
     public int countOfDoneOrdersByPeriodOfTime(@PathVariable List<Order> orders,@PathVariable LocalDate date1, LocalDate date2){
        int count = orderService.countOfDoneOrdersByPeriodOfTime(orders, date1, date2);
        return count;
     }
-
 
 }

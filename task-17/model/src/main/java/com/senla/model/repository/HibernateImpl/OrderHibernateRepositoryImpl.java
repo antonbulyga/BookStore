@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.TypedQuery;
@@ -20,9 +19,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-@Primary
 public class OrderHibernateRepositoryImpl implements OrderRepository {
-    static final Logger logger = Logger.getLogger(OrderHibernateRepositoryImpl.class);
+    private static final Logger logger = Logger.getLogger(OrderHibernateRepositoryImpl.class);
     @Override
     public Order read(Integer orderId) {
         Session session = HibernateSessionFactory.getSessionFactory().openSession();

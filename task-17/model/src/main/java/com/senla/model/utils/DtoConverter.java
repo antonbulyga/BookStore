@@ -18,10 +18,17 @@ import java.util.List;
 
 @Component
 public class DtoConverter {
-    @Autowired
     private OrderService orderService;
-    @Autowired
     private CustomerService customerService;
+
+    @Autowired
+    public void setOrderService(OrderService orderService) {
+        this.orderService = orderService;
+    }
+    @Autowired
+    public void setCustomerService(CustomerService customerService) {
+        this.customerService = customerService;
+    }
 
     public BookDto bookEntityToDto(Book book){
         BookDto bookDto = new BookDto();

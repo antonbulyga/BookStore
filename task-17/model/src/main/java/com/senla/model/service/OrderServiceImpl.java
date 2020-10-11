@@ -21,6 +21,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.NoResultException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -33,19 +34,35 @@ import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
-    @Autowired
     private OrderRepository orderRepository;
-    @Autowired
     private RequestForBookService requestForBookService;
-    @Autowired
     private OrderService orderService;
-    @Autowired
     private CustomerService customerService;
-    @Autowired
     private BookService bookService;
     @Value("${orderFile}")
     private String path;
-    static final Logger logger = Logger.getLogger(OrderServiceImpl.class);
+    private static final Logger logger = Logger.getLogger(OrderServiceImpl.class);
+
+    @Autowired
+    public void setOrderRepository(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
+    @Autowired
+    public void setRequestForBookService(RequestForBookService requestForBookService) {
+        this.requestForBookService = requestForBookService;
+    }
+    @Autowired
+    public void setOrderService(OrderService orderService) {
+        this.orderService = orderService;
+    }
+    @Autowired
+    public void setCustomerService(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+    @Autowired
+    public void setBookService(BookService bookService) {
+        this.bookService = bookService;
+    }
 
     public Order read(Integer orderId) {
         Order order = orderRepository.read(orderId);
@@ -113,6 +130,9 @@ public class OrderServiceImpl implements OrderService {
 
     public List<Order> getListOfOrders() {
         List<Order> orders = orderRepository.getAll();
+        if (orders.isEmpty()) {
+            throw new NoResultException("No orders in the database");
+        }
         return orders;
     }
 
@@ -302,6 +322,9 @@ public class OrderServiceImpl implements OrderService {
 
     public Order getOrderById(int id) {
         Order order = orderRepository.read(id);
+        if(order == null) {
+            throw new NoResultException("No book with this ID");
+        }
         return order;
     }
 

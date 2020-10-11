@@ -12,7 +12,7 @@ public interface BookService {
     void addBookToListOfBookInTheStorehouse(Book book) throws SQLException;
     void bookUpdate(Book book);
     void completingRequestAfterArrivingNewBook(Book book);
-    void showUnsoldBooksMoreThanSixMonth();
+    List<Book> showUnsoldBooksMoreThanSixMonth();
     void deleteBook(Book book);
     void showBooksInStock();
     List<Book> sortBookByPrice();
@@ -22,7 +22,7 @@ public interface BookService {
     Book getBookById(int id);
     void importBook();
     void exportBook();
-    void customSearch(String author, LocalDate endDate);
+    List<Book> customSearch(String author, LocalDate endDate);
     boolean bookInStockChecker(String titleBook, String authorBook);
     Book getBookByAuthorAndTitle(String titleBook, String authorBook);
 }

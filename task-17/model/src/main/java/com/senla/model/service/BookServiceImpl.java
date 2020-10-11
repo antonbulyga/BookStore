@@ -5,7 +5,6 @@ import com.senla.model.entity.Order;
 import com.senla.model.entity.RequestForBook;
 import com.senla.model.enumeration.RequestForBookStatus;
 import com.senla.model.repository.api.BookRepository;
-import com.senla.model.repository.api.RequestForBookRepository;
 import com.senla.model.service.api.BookService;
 import com.senla.model.service.api.OrderService;
 import com.senla.model.service.api.RequestForBookService;
@@ -19,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.NoResultException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -28,31 +28,43 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class BookServiceImpl implements BookService {
-    @Autowired
     private BookRepository bookRepository;
-    @Autowired
     private RequestForBookService requestForBookService;
-    @Autowired
     private OrderService orderService;
-    @Autowired
-    private RequestForBookRepository requestForBookRepository;
     @Value("${bookFile}")
     private String path;
     @Value("${maxCountOfMonth}")
     private String maxCountOfMonthString;
+    private static final Logger logger = Logger.getLogger(BookServiceImpl.class);
 
-    static final Logger logger = Logger.getLogger(BookServiceImpl.class);
+    @Autowired
+    public void setBookRepository(BookRepository bookRepository) {
+        this.bookRepository = bookRepository;
+    }
+    @Autowired
+    public void setRequestForBookService(RequestForBookService requestForBookService) {
+        this.requestForBookService = requestForBookService;
+    }
+    @Autowired
+    public void setOrderService(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
-    public void customSearch(String author, LocalDate endDate) {
+
+
+    public List<Book> customSearch(String author, LocalDate endDate) {
         List<Book> bookList = bookRepository.getAll();
+        List<Book> result = new ArrayList<>();
         bookList.stream()
                 .filter(x -> x.getAuthor().contains(author))
                 .filter(x -> x.getPublicationDate().isBefore(endDate))
                 .sorted()
-                .forEach(x -> logger.debug(x));
+                .collect(Collectors.toCollection(() -> result));
+        return result;
     }
 
     public void importBook() {
@@ -130,6 +142,9 @@ public class BookServiceImpl implements BookService {
 
     public List<Book> getListOfBooksInStoreHouse() {
         List<Book> books = bookRepository.getAll();
+        if (books.isEmpty()) {
+            throw new NoResultException("No books in the database");
+        }
         return books;
     }
 
@@ -148,7 +163,7 @@ public class BookServiceImpl implements BookService {
             for (int i = 0; i < requestForBooks.size(); i++) {
                 if (requestForBooks.get(i).getTitleOfBook().equals(book.getTitle()) & requestForBooks.get(i).getAuthorOfBook().equals(book.getAuthor())) {
                     requestForBooks.get(i).setRequestStatus(RequestForBookStatus.COMPLETED);
-                    requestForBookRepository.update(requestForBooks.get(i));
+                    requestForBookService.update(requestForBooks.get(i));
                     List<Order> orderList = orderService.getListOfOrders();
                     for (int j = 0; j < orderList.size(); j++) {
                         if(orderList.get(j).getId() == requestForBooks.get(i).getOrder().getId()){
@@ -160,7 +175,7 @@ public class BookServiceImpl implements BookService {
         }
     }
 
-    public void showUnsoldBooksMoreThanSixMonth() {
+    public List<Book> showUnsoldBooksMoreThanSixMonth() {
         LocalDate date = LocalDate.now();
         List<Book> books = bookRepository.getAll();
         List<Book> arrayOfUnsoldBooksMoreThanSixMonth = new ArrayList<>();
@@ -171,11 +186,13 @@ public class BookServiceImpl implements BookService {
             if (compareResult < 0) {
                 arrayOfUnsoldBooksMoreThanSixMonth.add(books.get(i));
             }
+
         }
 
         for (int i = 0; i < arrayOfUnsoldBooksMoreThanSixMonth.size(); i++) {
             logger.error(arrayOfUnsoldBooksMoreThanSixMonth.get(i).getTitle());
         }
+        return arrayOfUnsoldBooksMoreThanSixMonth;
     }
 
     public void deleteBook(Book book) {
@@ -238,6 +255,9 @@ public class BookServiceImpl implements BookService {
 
     public Book getBookById(int id) {
         Book book = bookRepository.read(id);
+        if(book == null) {
+            throw new NoResultException("No book with this ID");
+        }
         return book;
     }
 

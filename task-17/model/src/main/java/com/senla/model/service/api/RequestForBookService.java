@@ -37,4 +37,6 @@ public interface RequestForBookService {
 
     void create(RequestForBook requestForBook);
 
+    void update(RequestForBook requestForBook);
+
 }

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.NoResultException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -16,11 +17,15 @@ import java.sql.SQLException;
 import java.util.List;
 @Service
 public class CustomerServiceImpl implements CustomerService {
-    @Autowired
     private CustomerRepository customerRepository;
     @Value("${customerFile}")
     private String path;
-    static final Logger logger = Logger.getLogger(CustomerServiceImpl.class);
+    private static final Logger logger = Logger.getLogger(CustomerServiceImpl.class);
+
+    @Autowired
+    public void setCustomerRepository(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
 
     public void importCustomer(){
         List<Customer> customerList = getListOfCustomers();
@@ -57,6 +62,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     public List<Customer> getListOfCustomers() {
         List<Customer> customers = customerRepository.getAll();
+        if (customers.isEmpty()) {
+            throw new NoResultException("No customers in the database");
+        }
         return customers;
     }
 
@@ -82,6 +90,9 @@ public class CustomerServiceImpl implements CustomerService {
 
     public Customer getCustomerById(int id) {
         Customer customer =  customerRepository.read(id);
+        if(customer == null) {
+            throw new NoResultException("No book with this ID");
+        }
         return customer;
     }
 

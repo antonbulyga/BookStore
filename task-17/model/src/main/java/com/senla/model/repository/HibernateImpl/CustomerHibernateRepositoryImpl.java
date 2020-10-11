@@ -7,7 +7,6 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
-import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.criteria.CriteriaBuilder;
@@ -17,9 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Repository
-@Primary
 public class CustomerHibernateRepositoryImpl implements CustomerRepository {
-    static final Logger logger = Logger.getLogger(OrderHibernateRepositoryImpl.class);
+    private static final Logger logger = Logger.getLogger(OrderHibernateRepositoryImpl.class);
     @Override
     public Customer read(Integer customerId) {
         Customer result = new Customer();

@@ -5,66 +5,74 @@ import com.senla.model.entity.Customer;
 import com.senla.model.service.api.CustomerService;
 import com.senla.model.utils.DtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.persistence.NoResultException;
 import java.sql.SQLException;
 import java.util.List;
 
 @RestController
+@RequestMapping("/customers")
 public class CustomerController {
-    @Autowired
     private CustomerService customerService;
-    @Autowired
     private DtoConverter dtoConverter;
 
-    @GetMapping("customers/import")
-    public String importCustomer() {
+    @Autowired
+    public void setCustomerService(CustomerService customerService) {
+        this.customerService = customerService;
+    }
+
+    @Autowired
+    public void setDtoConverter(DtoConverter dtoConverter) {
+        this.dtoConverter = dtoConverter;
+    }
+
+    @GetMapping("import")
+    public ResponseEntity<String> importCustomer() {
         customerService.importCustomer();
-        return "Customers has been import successfully";
+        return new ResponseEntity<>(
+                "Customers has been import successfully",
+                HttpStatus.OK);
     }
 
-    @GetMapping("customers/export")
-    public String exportCustomer() {
+    @GetMapping("export")
+    public ResponseEntity<String> exportCustomer() {
         customerService.exportCustomer();
-        return "Customers has been import successfully";
+        return new ResponseEntity<>(
+                "Customers has been export successfully",
+                HttpStatus.OK);
     }
 
-    @GetMapping("customers")
+    @GetMapping("")
     public List<Customer> getListOfCustomers() {
         List<Customer> customers = customerService.getListOfCustomers();
         return customers;
     }
 
-    @PostMapping("customers/add")
+    @PostMapping("add")
     public CustomerDto addCustomerToListOfCustomers(@RequestBody CustomerDto customerDto) throws SQLException {
         Customer customer = dtoConverter.customerDtoToEntity(customerDto);
         customerService.addCustomerToListOfCustomers(customer);
         return customerDto;
     }
 
-    @GetMapping("customers/{id}")
+    @GetMapping("{id}")
     public CustomerDto getCustomerById(@PathVariable String id) {
         int customerId = Integer.parseInt(id);
-        CustomerDto customerDto;
-        try {
-            Customer customer = customerService.getCustomerById(customerId);
-            customerDto = dtoConverter.customerEntityToDto(customer);
-        }
-        catch (NoResultException e){
-            throw new NoResultException("No customer with this ID");
-        }
+        Customer customer = customerService.getCustomerById(customerId);
+        CustomerDto customerDto = dtoConverter.customerEntityToDto(customer);
         return customerDto;
     }
 
-    @PostMapping("customers/update")
+    @PostMapping("update")
     public Customer updateCustomer(@RequestBody CustomerDto customerDto) {
         Customer customer = dtoConverter.customerDtoToEntity(customerDto);
         customerService.updateCustomer(customer);
         return customer;
     }
 
-    @DeleteMapping("customers/delete")
+    @DeleteMapping("delete")
     public Customer deleteCustomer(@RequestBody CustomerDto customerDto) {
         Customer customer = dtoConverter.customerDtoToEntity(customerDto);
         customerService.deleteCustomer(customer);

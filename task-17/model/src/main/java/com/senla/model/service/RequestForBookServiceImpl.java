@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.NoResultException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -24,18 +25,27 @@ import java.util.List;
 
 @Service
 public class RequestForBookServiceImpl implements RequestForBookService {
-    @Autowired
     private RequestForBookRepository requestForBookRepository;
-    @Autowired
     private BookService bookService;
-    @Autowired
     private OrderService orderService;
     @Value("${ableOfChange}")
     private String flag;
     @Value("${requestForBookFile}")
     private String path;
+    private static final Logger logger = Logger.getLogger(RequestForBookServiceImpl.class);
 
-    static final Logger logger = Logger.getLogger(RequestForBookServiceImpl.class);
+    @Autowired
+    public void setRequestForBookRepository(RequestForBookRepository requestForBookRepository) {
+        this.requestForBookRepository = requestForBookRepository;
+    }
+    @Autowired
+    public void setBookService(BookService bookService) {
+        this.bookService = bookService;
+    }
+    @Autowired
+    public void setOrderService(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
     public RequestForBook read(Integer requestForBookId){
         RequestForBook requestForBook = requestForBookRepository.read(requestForBookId);
@@ -162,11 +172,21 @@ public class RequestForBookServiceImpl implements RequestForBookService {
 
     public List<RequestForBook> getListOfRequestForBook(){
         List<RequestForBook> requestForBookList = getAll();
+        if (requestForBookList.isEmpty()) {
+            throw new NoResultException("No requests in the database");
+        }
         return requestForBookList;
     }
 
     public RequestForBook getRequestForBookById(int id){
         RequestForBook requestForBook = read(id);
+        if(requestForBook == null) {
+            throw new NoResultException("No book with this ID");
+        }
         return requestForBook;
+    }
+
+    public void update(RequestForBook requestForBook){
+        requestForBookRepository.update(requestForBook);
     }
 }
