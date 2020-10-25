@@ -7,7 +7,6 @@ import com.senla.model.repository.api.BookRepository;
 import com.senla.model.utils.HibernateSessionFactory;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
@@ -24,15 +23,9 @@ public class BookHibernateRepositoryImpl implements BookRepository {
     @Override
     public Book read(Integer bookId) {
         Book result = new Book();
-        Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
             result = session.get(Book.class, bookId);
-            transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             logger.error(e);
         }
         return result;
@@ -40,15 +33,9 @@ public class BookHibernateRepositoryImpl implements BookRepository {
 
     @Override
     public boolean create(Book book) {
-        Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
             session.save(book);
-            transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             logger.error(e);
         }
         return true;
@@ -56,15 +43,9 @@ public class BookHibernateRepositoryImpl implements BookRepository {
 
     @Override
     public boolean update(Book book) {
-        Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            session.beginTransaction();
             session.update(book);
-            session.getTransaction().commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             logger.error(e);
         }
         return true;
@@ -72,15 +53,9 @@ public class BookHibernateRepositoryImpl implements BookRepository {
 
     @Override
     public boolean delete(Book book) {
-        Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            session.beginTransaction();
             session.delete(book);
-            session.getTransaction().commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             logger.error(e);
         }
         return true;
@@ -89,9 +64,7 @@ public class BookHibernateRepositoryImpl implements BookRepository {
     @Override
     public List<Book> getAll() {
         List<Book> results = new ArrayList<>();
-        Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<Book> cr = cb.createQuery(Book.class);
             Root<Book> root = cr.from(Book.class);
@@ -99,12 +72,7 @@ public class BookHibernateRepositoryImpl implements BookRepository {
             root.fetch(Book_.order, JoinType.LEFT);
             Query<Book> query = session.createQuery(cr);
             results = query.getResultList();
-            transaction.commit();
-
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             logger.error(e);
         }
         return results;
@@ -112,7 +80,6 @@ public class BookHibernateRepositoryImpl implements BookRepository {
 
     public List<Book> sortBookByPrice(){
         List<Book> results = new ArrayList<>();
-        Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
         CriteriaBuilder cb = session.getCriteriaBuilder();
         CriteriaQuery<Book> cr = cb.createQuery(Book.class);
@@ -121,9 +88,6 @@ public class BookHibernateRepositoryImpl implements BookRepository {
         Query<Book> query = session.createQuery(cr);
         results = query.getResultList();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             logger.error(e);
         }
         return results;

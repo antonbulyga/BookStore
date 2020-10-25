@@ -2,8 +2,6 @@ package com.senla.model.сontrollers;
 
 import com.senla.model.dto.AdminUserDto;
 import com.senla.model.dto.UserDto;
-import com.senla.model.entity.Role;
-import com.senla.model.entity.Status;
 import com.senla.model.entity.User;
 import com.senla.model.repository.HibernateImpl.RoleHibernateRepository;
 import com.senla.model.service.UserServiceImpl;
@@ -50,41 +48,36 @@ public class AdminController {
     }
 
     @GetMapping(value = "")
-    public ResponseEntity<List<UserDto>> getAll(){
+    public ResponseEntity<List<AdminUserDto>> getAll(){
         List<User> users = userService.getAll();
-        List<UserDto> userDtoList = new ArrayList<>();
+        List<AdminUserDto> userDtoList = new ArrayList<>();
         if(users == null){
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
         for (int i = 0; i < users.size(); i++) {
-            UserDto result = dtoConverter.fromUser(users.get(i));
+            AdminUserDto result = dtoConverter.fromUserToAdmin(users.get(i));
             userDtoList.add(result);
         }
         return new ResponseEntity<>(userDtoList, HttpStatus.OK);
     }
     @DeleteMapping("delete")
-    public UserDto deleteBook(@RequestBody UserDto userDto) {
-        User user = dtoConverter.toUser(userDto);
+    public AdminUserDto deleteBook(@RequestBody AdminUserDto adminUserDto) {
+        User user = dtoConverter.adminToUser(adminUserDto);
         userService.deleteById(user.getId());
-        return userDto;
+        return adminUserDto;
     }
 
     @PostMapping("register")
-    public User register(@RequestBody UserDto userDto) {
-        Role roleUser = roleHibernateRepository.findByName("ROLE_USER");
-        List<Role> userRoles = new ArrayList<>();
-        User user = new User();
-        userRoles.add(roleUser);
+    public AdminUserDto register(@RequestBody AdminUserDto adminUserDto) {
+        User user = dtoConverter.adminToUser(adminUserDto);
+        userService.register(user);
+        return adminUserDto;
+    }
 
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(userRoles);
-        user.setStatus(Status.ACTIVE);
-
-        User registeredUser = userService.update(user);
-
-        logger.info("In register - user: " + registeredUser + "successfully registered");
-
-        return registeredUser;
+    public UserDto update(UserDto userDto){
+        User user = dtoConverter.toUser(userDto);
+        userService.update(user);
+        return userDto;
     }
 
 }

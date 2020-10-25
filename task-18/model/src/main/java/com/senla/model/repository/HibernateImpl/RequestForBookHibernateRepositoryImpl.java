@@ -6,7 +6,6 @@ import com.senla.model.repository.api.RequestForBookRepository;
 import com.senla.model.utils.HibernateSessionFactory;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Repository;
 
@@ -23,15 +22,9 @@ public class RequestForBookHibernateRepositoryImpl implements RequestForBookRepo
     @Override
     public RequestForBook read(Integer requestForBookId) {
         RequestForBook result = new RequestForBook();
-        Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
             result = session.get(RequestForBook.class, requestForBookId);
-            transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             logger.error(e);
         }
         return result;
@@ -39,15 +32,9 @@ public class RequestForBookHibernateRepositoryImpl implements RequestForBookRepo
 
     @Override
     public boolean create(RequestForBook requestForBook) {
-        Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
             session.save(requestForBook);
-            transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             logger.error(e);
         }
         return true;
@@ -55,15 +42,9 @@ public class RequestForBookHibernateRepositoryImpl implements RequestForBookRepo
 
     @Override
     public boolean update(RequestForBook requestForBook) {
-        Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            session.beginTransaction();
             session.update(requestForBook);
-            session.getTransaction().commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             logger.error(e);
         }
         return true;
@@ -71,15 +52,9 @@ public class RequestForBookHibernateRepositoryImpl implements RequestForBookRepo
 
     @Override
     public boolean delete(RequestForBook requestForBook) {
-        Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            session.beginTransaction();
             session.delete(requestForBook);
-            session.getTransaction().commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             logger.error(e);
         }
         return true;
@@ -88,9 +63,7 @@ public class RequestForBookHibernateRepositoryImpl implements RequestForBookRepo
     @Override
     public List<RequestForBook> getAll() {
         List<RequestForBook> results = new ArrayList<>();
-        Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<RequestForBook> cr = cb.createQuery(RequestForBook.class);
             Root<RequestForBook> root = cr.from(RequestForBook.class);
@@ -98,12 +71,7 @@ public class RequestForBookHibernateRepositoryImpl implements RequestForBookRepo
             root.fetch(RequestForBook_.order, JoinType.LEFT);
             Query<RequestForBook> query = session.createQuery(cr);
             results = query.getResultList();
-            transaction.commit();
-
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             logger.error(e);
         }
         return results;

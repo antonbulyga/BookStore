@@ -34,6 +34,7 @@
     <mapping class="com.senla.model.entity.RequestForBook"/>
     <mapping class="com.senla.model.entity.Role"/>
     <mapping class="com.senla.model.entity.User"/>
+    <mapping class="com.senla.model.entity.Token"/>
 
   </session-factory>
 

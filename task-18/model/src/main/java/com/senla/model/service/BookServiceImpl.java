@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
+import javax.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -54,8 +55,6 @@ public class BookServiceImpl implements BookService {
         this.orderService = orderService;
     }
 
-
-
     public List<Book> customSearch(String author, LocalDate endDate) {
         List<Book> bookList = bookRepository.getAll();
         List<Book> result = new ArrayList<>();
@@ -67,6 +66,7 @@ public class BookServiceImpl implements BookService {
         return result;
     }
 
+    @Transactional
     public void importBook() {
         List<Book> bookList = bookRepository.getAll();
         List<Order> orderList = orderService.getListOfOrders();
@@ -128,6 +128,7 @@ public class BookServiceImpl implements BookService {
         return book;
     }
 
+    @Transactional
     public void exportBook() {
         List<Book> bookList = getListOfBooksInStoreHouse();
         ExportHelper.write(null, bookList, null, null, path);
@@ -158,6 +159,7 @@ public class BookServiceImpl implements BookService {
         logger.debug("Book has been updated");
     }
 
+    @Transactional
     public void completingRequestAfterArrivingNewBook(Book book) { {
             List<RequestForBook> requestForBooks = requestForBookService.getListOfRequestForBook();
             for (int i = 0; i < requestForBooks.size(); i++) {

@@ -104,7 +104,7 @@ public class BookController {
         return bookDtoList;
     }
 
-    @PostMapping("create")
+    @PostMapping("addBook")
     public BookDto createBook(@RequestBody BookDto bookDto) throws SQLException {
         Book book = dtoConverter.bookDtoToEntity(bookDto);
         bookService.createBook(book);

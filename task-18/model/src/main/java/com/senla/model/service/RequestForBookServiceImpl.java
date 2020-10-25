@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
+import javax.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -47,6 +48,7 @@ public class RequestForBookServiceImpl implements RequestForBookService {
         this.orderService = orderService;
     }
 
+    @Transactional
     public RequestForBook read(Integer requestForBookId){
         RequestForBook requestForBook = requestForBookRepository.read(requestForBookId);
         int orderId = requestForBook.getOrder().getId();
@@ -55,6 +57,7 @@ public class RequestForBookServiceImpl implements RequestForBookService {
     }
 
 
+    @Transactional
     public List<RequestForBook> getAll(){
         List<RequestForBook> requestForBookList = requestForBookRepository.getAll();
         for (int i = 0; i < requestForBookList.size(); i++) {
@@ -65,6 +68,7 @@ public class RequestForBookServiceImpl implements RequestForBookService {
         return requestForBookList;
     }
 
+    @Transactional
     public void importRequestForBook(){
         List<Order> orders = orderService.getListOfOrders();
         List<RequestForBook> requestForBooks = getListOfRequestForBook();
@@ -112,7 +116,6 @@ public class RequestForBookServiceImpl implements RequestForBookService {
              System.out.println(listOfRequestForBooks.get(i).getTitleOfBook());
         }
     }
-
 
     public void requestSort(){
         sortRequestByAlphabet();

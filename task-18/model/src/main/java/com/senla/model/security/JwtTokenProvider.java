@@ -1,7 +1,9 @@
 package com.senla.model.security;
 
 import com.senla.model.entity.Role;
+import com.senla.model.service.api.TokenService;
 import io.jsonwebtoken.*;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -21,6 +23,8 @@ import java.util.List;
 
 @Component
 public class JwtTokenProvider {
+    @Autowired
+    private TokenService tokenService;
 
     @Value("${jwt.token.secret}")
     private String secret;
@@ -30,6 +34,7 @@ public class JwtTokenProvider {
 
     @Autowired
     private UserDetailsService userDetailsService;
+    private static final Logger logger = Logger.getLogger(JwtTokenProvider.class);
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -82,8 +87,11 @@ public class JwtTokenProvider {
             if (claims.getBody().getExpiration().before(new Date())) {
                 return false;
             }
+                if (tokenService.findByToken(token) == false) {
+                    return true;
+                }
 
-            return true;
+            return false;
         } catch (JwtException | IllegalArgumentException e) {
             throw new JwtAuthenticationException("JWT token is expired or invalid");
         }

@@ -6,7 +6,6 @@ import com.senla.model.repository.api.UserRepository;
 import com.senla.model.utils.HibernateSessionFactory;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
-import org.hibernate.Transaction;
 import org.hibernate.query.Query;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Repository;
@@ -25,9 +24,7 @@ public class UserHibernateRepositoryImpl implements UserRepository {
     @Override
     public List<User> findAll() {
         List<User> results = new ArrayList<>();
-        Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<User> cr = cb.createQuery(User.class);
             Root<User> root = cr.from(User.class);
@@ -35,12 +32,7 @@ public class UserHibernateRepositoryImpl implements UserRepository {
             root.fetch(User_.roles, JoinType.LEFT);
             Query<User> query = session.createQuery(cr);
             results = query.getResultList();
-            transaction.commit();
-
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             logger.error(e);
         }
         return results;
@@ -49,9 +41,7 @@ public class UserHibernateRepositoryImpl implements UserRepository {
     @Override
     public User findByUsername(String userName) {
         User user = new User();
-        Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
             CriteriaBuilder cb = session.getCriteriaBuilder();
             CriteriaQuery<User> cq = cb.createQuery(User.class);
             Root<User> root = cq.from(User.class);
@@ -59,7 +49,6 @@ public class UserHibernateRepositoryImpl implements UserRepository {
             root.fetch(User_.roles, JoinType.LEFT);
             cq.where(cb.equal(root.get(User_.userName), userName));
             user = session.createQuery(cq).getSingleResult();
-            transaction.commit();
         } catch (Exception e) {
             logger.info("User not found");
         }
@@ -69,15 +58,9 @@ public class UserHibernateRepositoryImpl implements UserRepository {
     @Override
     public User findById(Long id) {
         User result = new User();
-        Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            transaction = session.beginTransaction();
             result = session.get(User.class, id);
-            transaction.commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             logger.error(e);
         }
         return result;
@@ -86,31 +69,19 @@ public class UserHibernateRepositoryImpl implements UserRepository {
     @Override
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public void deleteById(Long id) {
-        Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            session.beginTransaction();
             User user = findById(id);
             session.delete(user);
-            session.getTransaction().commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             logger.error(e);
         }
     }
 
     @Override
     public User update(User user) {
-        Transaction transaction = null;
         try (Session session = HibernateSessionFactory.getSessionFactory().openSession()) {
-            session.beginTransaction();
             session.update(user);
-            session.getTransaction().commit();
         } catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
             logger.error(e);
         }
         return user;

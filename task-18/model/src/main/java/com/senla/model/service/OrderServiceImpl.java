@@ -22,6 +22,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.NoResultException;
+import javax.transaction.Transactional;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -69,6 +70,7 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
+    @Transactional
     public void importOrder() {
         List<Book> books = bookService.getListOfBooksInStoreHouse();
         List<Book> listOfBookInOrder = new ArrayList<>();
@@ -144,6 +146,7 @@ public class OrderServiceImpl implements OrderService {
         }
     }
 
+    @Transactional
     public Order createOrder(List<Book> books, List<RequestForBook> requestForBooks, Customer customer, LocalDate dateOfDoneOrder) {
         Order order = null;
         int sumPriceOfOrder = 0;
@@ -179,6 +182,7 @@ public class OrderServiceImpl implements OrderService {
         return order;
     }
 
+    @Transactional
     public void executeOrder(Order order) {
         LocalDate date = LocalDate.now();
         List<Book> listBookInOrder = order.getBooks();

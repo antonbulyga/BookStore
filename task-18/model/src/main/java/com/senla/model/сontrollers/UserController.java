@@ -1,8 +1,6 @@
 package com.senla.model.сontrollers;
 
 import com.senla.model.dto.UserDto;
-import com.senla.model.entity.Role;
-import com.senla.model.entity.Status;
 import com.senla.model.entity.User;
 import com.senla.model.repository.HibernateImpl.RoleHibernateRepository;
 import com.senla.model.service.UserServiceImpl;
@@ -57,16 +55,9 @@ public class UserController {
 
     @PostMapping("register")
     public User register(@RequestBody UserDto userDto) {
-        Role roleUser = roleHibernateRepository.findByName("ROLE_USER");
-        List<Role> userRoles = new ArrayList<>();
-        User user = new User();
-        userRoles.add(roleUser);
-        user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.setRoles(userRoles);
-        user.setStatus(Status.ACTIVE);
-        User registeredUser = userService.update(user);
-        logger.info("In register - user: " + registeredUser + "successfully registered");
-        return registeredUser;
+        User user = dtoConverter.toUser(userDto);
+        userService.register(user);
+        return user;
     }
 
     @GetMapping(value = "{id}")
@@ -77,5 +68,11 @@ public class UserController {
         }
         UserDto result = dtoConverter.fromUser(user);
         return new ResponseEntity<>(result, HttpStatus.OK);
+    }
+
+    public UserDto update(UserDto userDto){
+        User user = dtoConverter.toUser(userDto);
+        userService.update(user);
+        return userDto;
     }
 }
