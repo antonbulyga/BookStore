@@ -21,16 +21,12 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
     private final DtoConverter dtoConverter;
-    private final RoleHibernateRepository roleHibernateRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
     private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 
     @Autowired
     public UserController(UserService userService, DtoConverter dtoConverter, RoleHibernateRepository roleHibernateRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.dtoConverter = dtoConverter;
-        this.roleHibernateRepository = roleHibernateRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping(value = "")
@@ -69,10 +65,19 @@ public class UserController {
         UserDto result = dtoConverter.fromUser(user);
         return new ResponseEntity<>(result, HttpStatus.OK);
     }
-
+    @PutMapping("update")
     public UserDto update(UserDto userDto){
         User user = dtoConverter.toUser(userDto);
         userService.update(user);
+        return userDto;
+    }
+
+    @PutMapping("{id}/password")
+    public UserDto changeUserPassword(@PathVariable long id, @PathVariable String password) {
+        User user = userService.findById(id);
+        user.setPassword(password);
+        userService.update(user);
+        UserDto userDto = dtoConverter.fromUser(user);
         return userDto;
     }
 }

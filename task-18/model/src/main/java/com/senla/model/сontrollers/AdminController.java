@@ -23,16 +23,12 @@ public class AdminController {
 
     private final UserService userService;
     private final DtoConverter dtoConverter;
-    private final RoleHibernateRepository roleHibernateRepository;
-    private final BCryptPasswordEncoder passwordEncoder;
     private static final Logger logger = Logger.getLogger(UserServiceImpl.class);
 
     @Autowired
     public AdminController(UserService userService, DtoConverter dtoConverter, RoleHibernateRepository roleHibernateRepository, BCryptPasswordEncoder passwordEncoder) {
         this.userService = userService;
         this.dtoConverter = dtoConverter;
-        this.roleHibernateRepository = roleHibernateRepository;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping(value = "users/{id}")
@@ -74,10 +70,20 @@ public class AdminController {
         return adminUserDto;
     }
 
+    @PutMapping("update")
     public UserDto update(UserDto userDto){
         User user = dtoConverter.toUser(userDto);
         userService.update(user);
         return userDto;
+    }
+
+    @PutMapping("{id}/password")
+    public AdminUserDto changeUserPassword(@PathVariable long id, @PathVariable String password) {
+        User user = userService.findById(id);
+        user.setPassword(password);
+        userService.update(user);
+        AdminUserDto adminUserDto = dtoConverter.fromUserToAdmin(user);
+        return adminUserDto;
     }
 
 }
