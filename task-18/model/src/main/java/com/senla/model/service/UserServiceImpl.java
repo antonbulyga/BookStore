@@ -77,4 +77,11 @@ public class UserServiceImpl implements UserService {
         userRepository.update(user);
         return user;
     }
+
+    public User passwordCoder(User user){
+        String pass = user.getPassword();
+        String cryptPass = passwordEncoder.encode(pass);
+        user.setPassword(cryptPass);
+        return user;
+    }
 }

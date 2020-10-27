@@ -5,6 +5,7 @@ import com.senla.model.entity.Book;
 import com.senla.model.service.api.BookService;
 import com.senla.model.utils.DtoConverter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -44,18 +45,17 @@ public class BookController {
         return flag;
     }
 
-    @GetMapping("search/custom/{author}/{endYear}/{endMonth}/{endDay}")
-    public List<BookDto> customSearch(@PathVariable ("author") String author,
-                                      @PathVariable ("endYear") int endYear,
-                                      @PathVariable ("endMonth") int endMonth,
-                                      @PathVariable ("endDay") int endDay) {
-        LocalDate endDate1 = LocalDate.of(endYear,endMonth,endDay);
-        List<Book> books = bookService.customSearch(author, endDate1);
+    @PostMapping("search/custom")
+    public List<BookDto> customSearch(@RequestParam (name = "author") String author,
+                                      @RequestParam (name = "end_date") @DateTimeFormat (iso = DateTimeFormat.ISO.DATE) LocalDate endDate)
+            {
+        List<Book> books = bookService.customSearch(author, endDate);
         List<BookDto> bookDtoList = new ArrayList<>();
-        for (int i = 0; i < books.size(); i++) {
-            BookDto bookDto = dtoConverter.bookEntityToDto(books.get(i));
-            bookDtoList.add(bookDto);
-        }
+        for (int i = 0; i < books.size(); i++){
+        BookDto bookDto = dtoConverter.bookEntityToDto(books.get(i));
+        bookDtoList.add(bookDto);
+    }
+
         return bookDtoList;
     }
 
@@ -104,7 +104,7 @@ public class BookController {
         return bookDtoList;
     }
 
-    @PostMapping("addBook")
+    @PostMapping("add")
     public BookDto createBook(@RequestBody BookDto bookDto) throws SQLException {
         Book book = dtoConverter.bookDtoToEntity(bookDto);
         bookService.createBook(book);

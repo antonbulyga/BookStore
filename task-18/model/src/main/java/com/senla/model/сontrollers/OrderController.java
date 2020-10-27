@@ -66,7 +66,7 @@ public class OrderController {
        return orderDtoList;
     }
 
-    @PostMapping("addOrder")
+    @PostMapping("add")
     public OrderDto addOrderToListOfOrders(@RequestBody OrderDto orderDto){
         Order order = dtoConverter.orderDtoToEntity(orderDto);
         orderService.addOrderToListOfOrders(order);

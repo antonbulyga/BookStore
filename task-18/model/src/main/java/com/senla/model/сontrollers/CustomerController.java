@@ -50,7 +50,7 @@ public class CustomerController {
         return customers;
     }
 
-    @PostMapping("addCustomer")
+    @PostMapping("add")
     public CustomerDto addCustomerToListOfCustomers(@RequestBody CustomerDto customerDto) throws SQLException {
         Customer customer = dtoConverter.customerDtoToEntity(customerDto);
         customerService.addCustomerToListOfCustomers(customer);

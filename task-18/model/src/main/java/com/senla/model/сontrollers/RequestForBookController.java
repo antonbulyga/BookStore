@@ -81,7 +81,7 @@ public class RequestForBookController {
         return dtoRequests;
     }
 
-    @PostMapping("addRequest")
+    @PostMapping("add")
     public RequestForBook create(@RequestBody RequestDto requestDto) {
         RequestForBook requestForBook = dtoConverter.requestDtoToEntity(requestDto);
         requestForBookService.create(requestForBook);
